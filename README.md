@@ -14,7 +14,7 @@ Before you begin, make sure to have Python and pip installed on your system.<br>
 Clone this repository to your local environment:
 
 ```bash
-git clone https://github.com/seu-usuario/spacebio.git
+git clone https://github.com/your-username/spacebio.git
 ```
 <br><br>
 
