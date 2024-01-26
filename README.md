@@ -18,7 +18,7 @@ git clone https://github.com/your-username/spacebio.git
 ```
 <br><br>
 
-# Setting up the Environment for the SpaceBio Project
+## Setting up the Environment for the SpaceBio Project
 
 ## Virtual Environment
 
@@ -35,7 +35,7 @@ python -m venv .venv
 source .venv/bin/activate
 ```
 <br><br>
-# Installing Dependencies
+## Installing Dependencies
 
 To install project dependencies, follow the steps below:
 
@@ -53,7 +53,7 @@ cd spacebio
 pip install -r requirements.txt
 ```
 <br><br>
-# Configuring the Database
+## Configuring the Database
 Edit the `spacebio/settings.py` file to configure the database information as needed.
 
 ```python
@@ -69,7 +69,7 @@ DATABASES = {
 }
 ```
 <br><br>
-# Running the Development Server
+## Running the Development Server
 
 Start the development server:
 
