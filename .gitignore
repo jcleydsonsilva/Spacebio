@@ -7,3 +7,6 @@ db.sqlite3
 # Ignore the virtual environment
 venv/
 .venv/
+
+# Ignore Node.js modules
+node_modules/

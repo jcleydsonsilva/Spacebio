@@ -34,3 +34,6 @@ class SpaceExploration(models.Model):
 
     class Meta:
         db_table = 'spaceexploration'
+
+    def __str__(self):
+        return self.name

@@ -1,3 +1,6 @@
-from django.shortcuts import render
+from django.views.generic import TemplateView
 
-# Create your views here.
+from articles.models import SpaceExploration
+
+class ArticlesView(TemplateView):
+    template_name = 'articles/articles.html'
