@@ -1,6 +1,8 @@
-from django.views.generic import TemplateView
+from django.shortcuts import render
+from django.http import HttpResponse
 
 from articles.models import SpaceExploration
 
-class ArticlesView(TemplateView):
-    template_name = 'articles/articles.html'
+
+def home(request):
+    return render(request, 'articles/home.html')
