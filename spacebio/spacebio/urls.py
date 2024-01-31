@@ -36,7 +36,13 @@ DASHBOARD_PATHS = [
     path('dashboard/calendar', dashboard_views.calendar, name='dashboard/calendar'),
     path('dashboard/form-elements', dashboard_views.formElements, name='dashboard/form-elements'),
     path('dashboard/form-layout', dashboard_views.formLayout, name='dashboard/form-layout'),
-
+    path('dashboard/tables', dashboard_views.tables, name='dashboard/tables'),
+    path('dashboard/settings', dashboard_views.settings, name='dashboard/settings'),
+    path('dashboard/chart', dashboard_views.chart, name='dashboard/chart'),
+    path('dashboard/alerts', dashboard_views.alerts, name='dashboard/alerts'),
+    path('dashboard/buttons', dashboard_views.buttons, name='dashboard/buttons'),
+    path('dashboard/signin', dashboard_views.signIn, name ='dashboard/signin'),
+    path('dashboard/signup', dashboard_views.signUp, name='dashboard/signup')
 ]
 
 
