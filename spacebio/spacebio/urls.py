@@ -17,9 +17,33 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from articles import views
+from articles import (
+    views as articles_views,    
+)
 
-urlpatterns = [
-    path('admin/', admin.site.urls, name='admin:index'),
-    path('', views.home, name='home'),
+from dashboard import (
+    views as dashboard_views,
+)
+
+DJANGO_PATHS = [
+    path("admin/", admin.site.urls, name='admin:index'),
 ]
+
+
+DASHBOARD_PATHS = [
+    path('dashboard', dashboard_views.dashboard, name='dashboard'),
+    path('dashboard/profile', dashboard_views.profile, name='dashboard/profile'),
+    path('dashboard/calendar', dashboard_views.calendar, name='dashboard/calendar'),
+    path('dashboard/form-elements', dashboard_views.formElements, name='dashboard/form-elements'),
+    path('dashboard/form-layout', dashboard_views.formLayout, name='dashboard/form-layout'),
+
+]
+
+
+ARTICLES_PATHS = [
+    path('', articles_views.home, name='home'),
+
+]
+
+
+urlpatterns = DJANGO_PATHS + DASHBOARD_PATHS + ARTICLES_PATHS

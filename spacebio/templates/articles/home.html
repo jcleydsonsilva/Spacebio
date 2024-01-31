@@ -5,9 +5,9 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Methane</title>
+	<title>SpaceBio</title>
 	<!-- TAILWIND -->
-	<link rel="stylesheet" href="{% static "css/output.css" %}">
+	<link rel="stylesheet" href="{% static "articles/css/output.css" %}">
 	<!-- FONTAWESOME ICONS -->
 	<script src="https://kit.fontawesome.com/4a37dd3233.js" crossorigin="anonymous"></script>
 </head>
@@ -16,12 +16,12 @@
 	<div class="fixed top-0 w-full backdrop-filter backdrop-blur-lg">
 		<div class="flex justify-between gap-5 sm:gap-20 bg-transparent border-b border-zinc-800 text-white text-lg py-6 px-6 md:px-20">
 			<div class="">
-				<img class="h-8" src="{% static 'img/spacebio.png' %}" alt="">
+				<img class="h-8" src="{% static 'articles/img/spacebio.png' %}" alt="">
 			</div>
 			<div class="flex gap-5 sm:gap-20 font-semibold">
 				<a class="hover:text-violet-400 transition" href="">Home</a>
 				<a class="hover:text-violet-400 transition" href="">Articles</a>
-				<a class="hover:text-violet-400 transition" href="{% url "admin:index" %}">Admin</a>
+				<a class="hover:text-violet-400 transition" href="{% url "dashboard" %}">Admin</a>
 			</div>
 			<div class="">
 				<a class="px-4 py-2 bg-violet-800 rounded-full hover:bg-violet-600 transition" href="">Login</a>
@@ -35,7 +35,7 @@
 			<p class="my-5 text-xs min-[390px]:text-base text-center">The First Space Exploration Literature Database
 				focused on human space exploration</p>
 			<span class="h-px bg-zinc-800 w-full"></span>
-			<img class="" src="{% static 'img/Figure.png' %}" alt="">
+			<img class="" src="{% static 'articles/img/Figure.png' %}" alt="">
 			<p class="text-sm text-center my-4">Search for space exploration research papers</p>
 			<input class="w-3/4 bg-zinc-950 placeholder:text-xs rounded border-2 border-zinc-700 p-3 sm:p-2" type="text"
 				placeholder="Write short sentence to select papers, for example, Growing plants at the International Space Station, and press enter.">
@@ -102,8 +102,8 @@
 		</div>
 
 		<div class="flex items-center justify-between px-4 sm:px-8">
-			<img class="w-12 sm:w-20" src="{% static 'img/fig1.png' %}" alt="">
-			<img class="w-20 sm:w-36" src="{% static 'img/spacebio.png' %}" alt="">
+			<img class="w-12 sm:w-20" src="{% static 'articles/img/fig1.png' %}" alt="">
+			<img class="w-20 sm:w-36" src="{% static 'articles/img/spacebio.png' %}" alt="">
 		</div>
 
 
