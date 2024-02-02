@@ -12,7 +12,7 @@
   </head>
   </html>
   <body
-  x-data="{ page: 'ecommerce', 'loaded': true, 'darkMode': true, 'stickyMenu': false, 'sidebarToggle': false, 'scrollTop': false }"
+  x-data="{ page: 'ecommerce', 'loaded': true, 'darkMode': true, 'stickyMenu': false, 'sidebarToggle': true, 'scrollTop': false }"
   x-init="
   darkMode = JSON.parse(localStorage.getItem('darkMode'));
   $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))"
@@ -42,5 +42,14 @@
     <!-- ===== Page Wrapper End ===== -->
           
   <script defer src="{% static 'dashboard/js/bundle.js' %}"></script>
+  <script>
+    // Verifica se há mensagens de sucesso
+    {% if messages %}
+      // Exibe a mensagem pop-up usando Bootstrap
+      {% for message in messages %}
+        alert("{{ message }}");
+      {% endfor %}
+    {% endif %}
+  </script>
   </body>
   </html>  

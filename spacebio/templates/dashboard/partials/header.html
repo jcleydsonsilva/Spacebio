@@ -402,6 +402,7 @@
       </ul>
 
       <!-- User Area -->
+      {% if user.is_authenticated %}
       <div
         class="relative"
         x-data="{ dropdownOpen: false }"
@@ -414,7 +415,7 @@
         >
           <span class="hidden text-right lg:block">
             <span class="block text-sm font-medium text-black dark:text-white"
-              >Thomas Anree</span
+              >{{ username }}</span
             >
             <span class="block text-xs font-medium">UX Designer</span>
           </span>
@@ -521,9 +522,11 @@
               </a>
             </li>
           </ul>
+          <a href="{% url 'signout' %}">
           <button
             class="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
           >
+          
             <svg
               class="fill-current"
               width="22"
@@ -543,10 +546,19 @@
             </svg>
             Log Out
           </button>
+        </a>
         </div>
         <!-- Dropdown End -->
       </div>
       <!-- User Area -->
+      {% else %}
+      <div class="">
+				<a class="px-4 py-2 bg-violet-800 rounded-full hover:bg-violet-600 transition" href="{% url 'signin' %}">Login</a>
+			</div>
+      {% endif %}
+
     </div>
   </div>
 </header>
+
+</script>

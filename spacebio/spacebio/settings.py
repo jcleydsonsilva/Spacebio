@@ -42,6 +42,7 @@ DJANGO_APPS = [
 MY_APPS = [
     'articles.apps.ArticlesConfig',
     'dashboard.apps.DashboardConfig',
+    'accounts.apps.AccountsConfig',
 ]
 
 THIRD_PARTY_APPS = [
@@ -60,6 +61,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
 ROOT_URLCONF = 'spacebio.urls'
 
@@ -118,7 +121,10 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'accounts.backends.EmailBackend',  # Add email backend auth
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/

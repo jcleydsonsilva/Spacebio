@@ -17,6 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from accounts import (
+    views as accounts_views,
+)
+
 from articles import (
     views as articles_views,    
 )
@@ -29,6 +33,17 @@ DJANGO_PATHS = [
     path("admin/", admin.site.urls, name='admin:index'),
 ]
 
+ACCOUNTS_PATHS = [
+    path('signin', accounts_views.signin, name='signin'),
+    path('signup', accounts_views.signup, name='signup'),
+    path('signout', accounts_views.signout, name='signout'),
+]
+
+
+ARTICLES_PATHS = [
+    path('', articles_views.home, name='home'),
+
+]
 
 DASHBOARD_PATHS = [
     path('dashboard', dashboard_views.dashboard, name='dashboard'),
@@ -46,10 +61,6 @@ DASHBOARD_PATHS = [
 ]
 
 
-ARTICLES_PATHS = [
-    path('', articles_views.home, name='home'),
-
-]
 
 
-urlpatterns = DJANGO_PATHS + DASHBOARD_PATHS + ARTICLES_PATHS
+urlpatterns = DJANGO_PATHS + ACCOUNTS_PATHS + ARTICLES_PATHS + DASHBOARD_PATHS 
