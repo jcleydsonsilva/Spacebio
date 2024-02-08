@@ -1,11 +1,14 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 
 def dashboard(request):
     page = 'ecommerce'
     return render(request, 'dashboard/index.html', {'page' : page})
 
+@login_required(login_url="signin")
 def profile(request):
     page = 'profile'
     return render(request, 'dashboard/profile.html', {'page' : page})

@@ -1,12 +1,16 @@
-from django.shortcuts import redirect, render
 from django.http import HttpResponse
+from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 
 
 
+
 def signin(request):
+
+    if request.user.is_authenticated:
+        return redirect('dashboard')
 
     if request.method == 'POST':
         email = request.POST['email']
@@ -18,7 +22,7 @@ def signin(request):
             login(request, user)
             return redirect('dashboard')
         else:
-            messages.error(request, "Bad Credentials")
+            messages.error(request, "Email OR password is incorrect")
             return redirect('signin')
 
 
@@ -28,6 +32,9 @@ def signin(request):
 
 
 def signup(request):
+
+    if request.user.is_authenticated:
+        return redirect('dashboard')
 
     if request.method == 'POST':
         username = request.POST['username']
