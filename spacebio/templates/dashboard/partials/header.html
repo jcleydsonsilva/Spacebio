@@ -522,7 +522,7 @@
               </a>
             </li>
           </ul>
-          <a href="{% url 'signout' %}">
+          <a href="">
           <button
             class="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
           >
@@ -553,8 +553,23 @@
       <!-- User Area -->
       {% else %}
       <div class="">
-				<a class="px-4 py-2 bg-violet-800 rounded-full hover:bg-violet-600 transition" href="{% url 'signin' %}">Login</a>
+				<a class="px-4 py-2 bg-violet-800 rounded-full hover:bg-violet-600 transition" href="">Login</a>
 			</div>
+        {% if user.is_authenticated %}
+            <li>
+                <a href="{% url 'account_email' %}">Change Email</a>
+            </li>
+            <li>
+                <a href="{% url 'account_logout' %}">Sign Out</a>
+            </li>
+        {% else %}
+            <li>
+                <a href="{% url 'account_login' %}">Sign In</a>
+            </li>
+            <li>
+                <a href="{% url 'account_signup' %}">Sign Up</a>
+            </li>
+        {% endif %}
       {% endif %}
 
     </div>
