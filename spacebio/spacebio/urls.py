@@ -35,6 +35,7 @@ ALLAUTH_PATHS = [
 
 ARTICLES_PATHS = [
     path('', articles_views.home, name='home'),
+    path('articles/list', articles_views.article_list, name='articles')
 ]
 
 
