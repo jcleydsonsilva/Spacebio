@@ -4,10 +4,10 @@
   <div
     class="flex flex-grow items-center justify-between px-4 py-4 shadow-2 md:px-6 2xl:px-11"
   >
-    <div class="flex items-center gap-2 sm:gap-4 lg:hidden">
+    <div class="flex items-center gap-2 sm:gap-4">
       <!-- Hamburger Toggle BTN -->
       <button
-        class="z-99999 block rounded-sm border border-stroke bg-white p-1.5 shadow-sm dark:border-strokedark dark:bg-boxdark lg:hidden"
+        class="z-99999 block rounded-sm border border-stroke bg-white p-1.5 shadow-sm dark:border-strokedark dark:bg-boxdark"
         @click.stop="sidebarToggle = !sidebarToggle"
       >
         <span class="relative block h-5.5 w-5.5 cursor-pointer">
@@ -43,7 +43,7 @@
       </a>
     </div>
     <div class="hidden sm:block">
-      <form action="https://formbold.com/s/unique_form_id" method="POST">
+      <form action="{% url 'articles' %}" method="GET">
         <div class="relative">
           <button class="absolute left-0 top-1/2 -translate-y-1/2">
             <svg
@@ -71,8 +71,11 @@
 
           <input
             type="text"
-            placeholder="Type to search..."
+            placeholder="Search for space exploration research papers"
+            name="query"
             class="w-full bg-transparent pl-9 pr-4 focus:outline-none xl:w-125"
+            minlength="2"
+            required
           />
         </div>
       </form>
@@ -134,7 +137,7 @@
         </li>
 
         <!-- Notification Menu Area -->
-        <li
+        {% comment %} <li
           class="relative"
           x-data="{ dropdownOpen: false, notifying: true }"
           @click.outside="dropdownOpen = false"
@@ -244,11 +247,11 @@
             </ul>
           </div>
           <!-- Dropdown End -->
-        </li>
+        </li> {% endcomment %}
         <!-- Notification Menu Area -->
 
         <!-- Chat Notification Area -->
-        <li
+        {% comment %} <li
           class="relative"
           x-data="{ dropdownOpen: false, notifying: true }"
           @click.outside="dropdownOpen = false"
@@ -397,12 +400,12 @@
             </ul>
           </div>
           <!-- Dropdown End -->
-        </li>
+        </li> {% endcomment %}
         <!-- Chat Notification Area -->
       </ul>
 
       <!-- User Area -->
-      {% if user.is_authenticated %}
+      {% comment %} {% if user.is_authenticated %}
       <div
         class="relative"
         x-data="{ dropdownOpen: false }"
@@ -570,7 +573,7 @@
                 <a href="{% url 'account_signup' %}">Sign Up</a>
             </li>
         {% endif %}
-      {% endif %}
+      {% endif %} {% endcomment %}
 
     </div>
   </div>
