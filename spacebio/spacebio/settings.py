@@ -34,6 +34,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 DJANGO_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
+    'django.contrib.humanize',
     'django.contrib.sites',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -132,6 +133,22 @@ AUTHENTICATION_BACKENDS = [
     # `allauth` specific authentication methods, such as login by email
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
+
+if DEBUG:
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+            'LOCATION': 'unique-snowflake',
+        }
+    }
+# Configuração do cache em produção
+else:
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+            'LOCATION': '127.0.0.1:11211',
+        }
+    }
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/

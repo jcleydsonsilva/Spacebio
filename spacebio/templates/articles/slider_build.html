@@ -1,0 +1,42 @@
+{% block slider %}
+  <!-- SPLIDE JS -->
+  <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      new Splide('#splide2', {
+        type: 'carousel',
+        perPage: 3, // Apenas 2 cartões visíveis por vez
+        perMove: 1,
+        lazyLoad: true,
+        gap: 20,
+        autoplay: true, // Autoplay habilitado
+        loop: true,
+        interval: 5000, // Intervalo de tempo entre os slides (em milissegundos)
+        pauseOnHover: true, // Pausar autoplay ao passar o mouse sobre o slider
+        arrows: true, // Mostrar setas de navegação
+        pagination: true, // Desativar a paginação
+        rewind: true, // Permitir rebobinar o slider
+        breakpoints: {
+          1536: {
+            perPage: 2
+          },
+          768: {
+            perPage: 1, // Alterar o número de slides visíveis em telas menores
+            fixedWidth: '100%', // Largura total dos slides em telas menores para mostrar apenas 1 slide por vez
+            gap: 15, // Espaçamento entre os cartões em telas menores
+            pagination: false,
+            arrows: false // Esconder as setas de navegação em telas menores
+          }
+        },
+        speed: 1000, // Velocidade da transição entre os slides (em milissegundos)
+        easing: 'ease-in-out', // Tipo de easing para a transição entre os slides
+        drag: true, // Permitir arrastar o slider com o mouse
+        preloadPages: 2, // Quantidade de slides a serem pré-carregados
+        trimSpace: true, // Remover espaço em branco do final do track quando não houver mais slides
+        updateOnMove: true, // Atualizar o estado do slider enquanto é movido
+        accessibility: true, // Adicionar atributos de acessibilidade aos elementos do slider
+      }).mount()
+    })
+  </script>
+{% endblock %}
