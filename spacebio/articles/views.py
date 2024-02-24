@@ -6,13 +6,17 @@ file_path = os.path.join(current_directory, 'inputs.txt')
 
 from django.shortcuts import render
 from django.db.models import Q
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from articles.models import SpaceExploration
-
-
+from .apis import get_spaceflight_news
+ 
 def home(request):
     page = 'ecommerce'
-    return render(request, 'articles/home.html', {'page' : page})
+    space_news = get_spaceflight_news()
+
+    return render(request, 'articles/home.html', {'page' : page, 'space_news': space_news})
+
 
 def article_list(request):
     query = request.GET.get('query')

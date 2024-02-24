@@ -8,9 +8,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>eCommerce Dashboard | TailAdmin - Tailwind CSS Admin Dashboard Template</title>
     <link rel="icon" href="{% static 'dashboard/img/favicon.ico' %}" />
+    <!-- TAILWIND CSS -->
     <link href="{% static 'css/style.css' %}" rel="stylesheet" />
     <!-- FONTAWESOME ICONS -->
     <script src="https://kit.fontawesome.com/4a37dd3233.js" crossorigin="anonymous"></script>
+    <!-- SPLIDE CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/themes/splide-sea-green.min.css" rel="stylesheet">
   </head>
   </html>
   <body
@@ -85,12 +88,13 @@
             {% endif %}
 
             {% block content %}
-            {% endblock content %}          
+            {% endblock content %}         
         </div>
         <!-- ===== Content Area End ===== -->
     </div>
     <!-- ===== Page Wrapper End ===== -->
-          
+  <!-- DASHBOARD JS -->
   <script defer src="{% static 'dashboard/js/bundle.js' %}"></script>
+
   </body>
   </html>  
