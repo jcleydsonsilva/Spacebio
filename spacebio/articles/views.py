@@ -9,13 +9,14 @@ from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from articles.models import SpaceExploration
-from .apis import get_spaceflight_news
+from .apis import get_spaceflight_news, get_spacelaunchs
  
 def home(request):
     page = 'ecommerce'
     space_news = get_spaceflight_news()
+    spacelaunchs = get_spacelaunchs()
 
-    return render(request, 'articles/home.html', {'page' : page, 'space_news': space_news})
+    return render(request, 'articles/home.html', {'page' : page, 'space_news': space_news, 'spacelaunchs': spacelaunchs})
 
 
 def article_list(request):
