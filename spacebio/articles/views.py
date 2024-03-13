@@ -18,6 +18,11 @@ def home(request):
 
     return render(request, 'articles/home.html', {'page' : page, 'space_news': space_news, 'spacelaunchs': spacelaunchs})
 
+def article_main(request):
+    space_news = get_spaceflight_news()
+    spacelaunchs = get_spacelaunchs()
+    return render(request, 'articles/main.html', {'space_news': space_news, 'spacelaunchs': spacelaunchs})
+
 
 def article_list(request):
     query = request.GET.get('query')
