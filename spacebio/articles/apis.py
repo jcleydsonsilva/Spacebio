@@ -10,7 +10,7 @@ def get_spaceflight_news():
         response = requests.get(url)
         space_news = response.json()
         cache.set('spaceflight_news', space_news, timeout=(60 * 10))
-        print("Dados armazenados no cache:", space_news)  # Para fins de debug
+        # print("Dados armazenados no cache:", space_news)  # Para fins de debug
         return space_news
 
 
