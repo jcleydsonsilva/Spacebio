@@ -1,3 +1,33 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    [data-theme="light"] {
+        --background: 210, 210, 210;
+        --primary: 255, 255, 255;
+        --primary-2: 32, 32, 36;
+        --secondary: 159, 145, 204;
+        --contrast: 0, 0, 0;
+        --accent: 16, 244, 35;
+        --text: 31, 3, 48;
+        --name: 114, 4, 85;
+        --purple: 138, 5, 255;
+        --green: 11, 239, 30;
+        --blue: 30, 0, 255;
+    }
+
+    [data-theme="dark"] {
+        --background: 18, 18, 20;
+        --primary: 26, 26, 30;
+        --primary-2: 32, 32, 36;
+        --secondary: 41, 41, 46;
+        --contrast: 255, 255, 255;
+        --accent: 16, 244, 35;
+        --text: 235, 207, 252;
+        --name: 114, 4, 85;
+        --purple: 138, 5, 255;
+        --green: 30, 0, 255;
+        --blue: 11, 239, 30;
+    }
+}

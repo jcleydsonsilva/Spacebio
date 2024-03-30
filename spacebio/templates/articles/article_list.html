@@ -19,17 +19,17 @@
       </div>
       <!-- Breadcrumb End -->
 
-      <div class="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
+      <div class="rounded-sm  px-5 pb-2.5 pt-6 shadow-default sm:px-7.5 xl:pb-1">
         {% if result_count %}
-          <h4 class="mb-6 text-xl font-bold text-black dark:text-white">{{ result_count }} results found for terms <span class="text-green-500">{{ query }}</span></h4>
+          <h4 class="mb-6 text-xl font-bold text-text">{{ result_count }} results found for terms <span class="text-green-500">{{ query }}</span></h4>
         {% else %}
-          <h4 class="mb-6 text-xl font-bold text-black dark:text-white">0 results found for terms <span class="text-green-500">{{ query }}</span></h4>
+          <h4 class="mb-6 text-xl font-bold text-text">0 results found for terms <span class="text-green-500">{{ query }}</span></h4>
         {% endif %}
 
         <div class="flex flex-col pb-5 gap-4 sm:gap-10">
           {% if articles %}
             {% for article in articles %}
-              <div class="grid grid-flow-row gap-4 p-4 rounded-sm bg-gray-2 dark:bg-meta-4">
+              <div class="grid grid-flow-row gap-4 p-4 rounded-lg shadow-lg bg-primary text-text">
                 <div class="">
                   <h2 class="text-xl my-auto text-center mb-3 text-blue-500">{{ article.title|highlight_keywords:query }}</h2>
                   <p class="text-sm">{{ article.authorstring }}</p>

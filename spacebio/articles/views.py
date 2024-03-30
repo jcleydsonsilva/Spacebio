@@ -4,6 +4,7 @@ current_directory = os.path.dirname(os.path.abspath(__file__))
 # Define the path to the file within app directory
 file_path = os.path.join(current_directory, 'inputs.txt')
 
+from django.core.cache import cache
 from django.shortcuts import render
 from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -13,10 +14,16 @@ from .apis import get_spaceflight_news, get_spacelaunchs
  
 def home(request):
     page = 'ecommerce'
-    space_news = get_spaceflight_news()
-    spacelaunchs = get_spacelaunchs()
 
-    return render(request, 'articles/home.html', {'page' : page, 'space_news': space_news, 'spacelaunchs': spacelaunchs})
+    # space_news = cache.get('space_news')
+    # spacelaunchs = cache.get('spacelaunchs')
+    # if space_news is None or spacelaunchs is None:
+    #     space_news = get_spaceflight_news()
+    #     spacelaunchs = get_spacelaunchs()
+    #     cache.set('space_news', space_news, 60*10)  # 10 minutes
+    #     cache.set('spacelaunchs', spacelaunchs, 60*10)
+
+    return render(request, 'articles/home.html', {'page' : page})
 
 def article_main(request):
     space_news = get_spaceflight_news()

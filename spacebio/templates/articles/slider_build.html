@@ -2,11 +2,28 @@
   <!-- SPLIDE JS -->
   <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
 
+  <style>
+    .splide__arrow {
+      width: 50px; /* Increase the width of the arrows */
+      position: absolute; /* Set the position to absolute */
+      top: 50%; /* Position the arrows at the middle of the screen vertically */
+      transform: translateY(-50%); /* Adjust the vertical position */
+    }
+    
+    .splide__arrow--left {
+      left: 20px; /* Move the left arrow to the left corner of the screen */
+    }
+    
+    .splide__arrow--right {
+      right: 20px; /* Move the right arrow to the right corner of the screen */
+    }
+  </style>
+
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       new Splide('#splide2', {
         type: 'carousel',
-        perPage: 3, // Apenas 2 cartões visíveis por vez
+        perPage: 2, // Apenas 2 cartões visíveis por vez
         perMove: 1,
         lazyLoad: true,
         gap: 20,
@@ -19,7 +36,9 @@
         rewind: true, // Permitir rebobinar o slider
         breakpoints: {
           1536: {
-            perPage: 2
+            perPage: 2,
+            fixedWidth: '50%',
+            maxWidth: '200px'
           },
           768: {
             perPage: 1, // Alterar o número de slides visíveis em telas menores
@@ -35,7 +54,7 @@
         preloadPages: 2, // Quantidade de slides a serem pré-carregados
         trimSpace: true, // Remover espaço em branco do final do track quando não houver mais slides
         updateOnMove: true, // Atualizar o estado do slider enquanto é movido
-        accessibility: true, // Adicionar atributos de acessibilidade aos elementos do slider
+        accessibility: true // Adicionar atributos de acessibilidade aos elementos do slider
       }).mount()
     })
   </script>
