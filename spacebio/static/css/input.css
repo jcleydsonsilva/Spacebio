@@ -4,15 +4,15 @@
 
 @layer base {
     [data-theme="light"] {
-        --background: 210, 210, 210;
-        --primary: 255, 255, 255;
-        --primary-2: 32, 32, 36;
+        --background: 209,213,235;
+        --primary: 226,228,242;
+        --primary-2: 221,219,232;
         --secondary: 159, 145, 204;
         --contrast: 0, 0, 0;
         --accent: 16, 244, 35;
         --text: 31, 3, 48;
-        --name: 114, 4, 85;
-        --purple: 138, 5, 255;
+        --purple1: 99,97,217;
+        --purple2: 221,219,232;
         --green: 11, 239, 30;
         --blue: 30, 0, 255;
     }
@@ -25,8 +25,8 @@
         --contrast: 255, 255, 255;
         --accent: 16, 244, 35;
         --text: 235, 207, 252;
-        --name: 114, 4, 85;
-        --purple: 138, 5, 255;
+        --purple1: 99,97,217;
+        --purple2: 138, 5, 255;
         --green: 30, 0, 255;
         --blue: 11, 239, 30;
     }
