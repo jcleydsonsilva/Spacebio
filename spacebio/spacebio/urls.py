@@ -29,9 +29,6 @@ DJANGO_PATHS = [
     path("admin/", admin.site.urls, name='admin:index'),
 ]
 
-ALLAUTH_PATHS = [
-    path('accounts/', include('allauth.urls')),
-]
 
 ARTICLES_PATHS = [
     path('', articles_views.home, name='home'),
@@ -60,4 +57,4 @@ DASHBOARD_PATHS = [
 
 
 
-urlpatterns = DJANGO_PATHS + ARTICLES_PATHS + ALLAUTH_PATHS + DASHBOARD_PATHS 
+urlpatterns = DJANGO_PATHS + ARTICLES_PATHS + DASHBOARD_PATHS 

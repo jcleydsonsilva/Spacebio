@@ -32,64 +32,39 @@
 
     <!-- NAVBAR -->
     <div id="navWrap" class="top-0 w-full z-10">
-      <nav id="navbar" class="backdrop-blur-md border-b bg-primary border-gray-700 flex justify-between items-center w-full h-20 px-2 duration-75">
-        <div class="flex">
+      <nav id="navbar" class="backdrop-blur-md border-b bg-primary border-primary2 flex justify-between items-center w-full h-20 px-2 duration-75">
+        <div class="flex justify-between items-center">
           <div class="relative hidden lg:block mx-3">
             <button onclick="openSideNav()" class="text-text flex justify-center items-center bg-primary2 rounded w-10 h-10"><i class="fa fa-bars text-xl"></i></button>
-
-            <div class="opacity-0 w-64 right-0 absolute mt-4 bg-primary2 rounded-lg p-4 overflow-hidden duration-300 -translate-y-10">
-              <ul class="flex flex-col gap-2">
-                <li class="text-text p-3 hover:bg-secondary rounded-lg">
-                  <i class="fa fa-home text-lg me-3"></i>
-                  <span class="">Home</span>
-                </li>
-
-                <li class="text-text p-3 hover:hover:bg-secondary rounded-lg">
-                  <i class="fa fa-newspaper text-lg me-3"></i>
-                  <span class="">Space News</span>
-                </li>
-
-                <li class="text-text p-3 hover:hover:bg-secondary rounded-lg">
-                  <i class="fa fa-rocket text-lg me-3"></i>
-                  <span class="">Launches</span>
-                </li>
-              </ul>
-
-              <div class="flex flex-col w-full gap-5 justify-start items-end mt-5">
-                <label class="flex items-center cursor-pointer">
-                  <input onclick="navbarToggle()" type="checkbox" value="" class="sr-only peer" />
-                  <div class="relative w-11 h-6 bg-secondary peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-secondary"></div>
-                </label>
-              </div>
-            </div>
           </div>
-          <img src="{% static 'articles/img/spacebio.png' %}" alt="" class="w-36 sm:w-48" />
+          <img src="{% static 'articles/img/spacebio.png' %}" alt="" class="h-8" />
         </div>
 
-        <div class="flex justify-center">
-          <ul class="hidden md:flex gap-10 items-center font-semibold text-text text-lg">
-            <li class="">
-              <a href="">Home</a>
-            </li>
-            <li>
-              <a href="">Space Literature</a>
-            </li>
-            <li>
-              <a href="">Launches</a>
-            </li>
-          </ul>
+        <div class="hidden sm:block w-1/2">
+          <form class="max-w-md mx-auto">
+            <label for="default-search" class="mb-2 text-sm font-medium text-text sr-only">Search</label>
+            <div class="relative w-full">
+              <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none w-full">
+                <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                </svg>
+              </div>
+              <input type="search" id="default-search" class="block w-full p-4 ps-10 text-sm text-text border border-primary rounded-lg bg-background focus:ring-spacepurple focus:border-spacepurple" placeholder="Search articles, launches..." required />
+              <button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-spacepurple1/80 hover:bg-spacepurple1 focus:ring-4 focus:outline-none focus:ring-spacepurple font-medium rounded-lg text-sm px-4 py-2">Search</button>
+            </div>
+          </form>
         </div>
 
-        <div class="flex gap-7 pe-2 h-full items-center">
+        <div class="flex gap-7 me-2 sm:me-6 h-full items-center">
           <button id="theme-toggle" type="button" class="text-text transition-all rounded-lg">
             <i id="theme-toggle-dark-icon" class="fas fa-moon h-5 hidden"></i>
             <i id="theme-toggle-light-icon" class="fas fa-sun h-5 hidden"></i>
           </button>
 
           <div class="relative lg:hidden">
-            <button onclick="menuToggle()" class="text-text flex justify-center items-center bg-primary2 rounded w-10 h-10"><i class="fa fa-bars text-xl"></i></button>
+            <a onclick="menuToggle()" class="cursor-pointer text-text flex justify-center items-center bg-primary2 rounded w-10 h-10"><i class="fa fa-bars text-xl"></i></a>
 
-            <div id="mobile-menu" data-open="false" class="opacity-0 w-64 right-0 absolute mt-4 bg-primary2 rounded-lg p-4 overflow-hidden duration-300 -translate-y-10">
+            <div id="mobile-menu" data-open="false" class="opacity-0 w-64 right-0 absolute mt-4 bg-primary2 rounded-lg p-4 overflow-hidden duration-300 translate-y-10">
               <ul class="flex flex-col gap-2">
                 <li class="text-text p-3 hover:bg-secondary rounded-lg">
                   <i class="fa fa-home text-lg me-3"></i>
@@ -123,34 +98,34 @@
     <main class="flex h-full min-h-screen">
       <!-- SIDE MENU -->
       <div id="sidenavWrap" class="hidden lg:block sticky left-0 top-0 h-full">
-        <aside id="sidenav" class="flex flex-col h-screen justify-between border-e border-gray-700 w-20 items-start duration-300 bg-background shadow-xl overflow-y-visible">
+        <aside id="sidenav" class="flex flex-col h-screen justify-between border-e-2 border-primary w-20 items-start duration-300 bg-primary shadow-xl overflow-y-visible">
           <div id="stickyitems" class="w-full">
-            <button onclick="openSideNav()" class="absolute top-16 -right-3"><i id="navArrow" class="fas fa-angle-right text-xl text-black bg-accent rounded-full border border-black py-1 px-2"></i></button>
-            <div class="flex w-full ps-4 justify-start gap-2 mt-5 items-center h-20 overflow-hidden">
-              <span class=""><i class="fas fa-home text-xl text-accent p-1.5 border-2 border-secondary rounded-xl"></i></span>
-              <img src="{% static 'articles/img/spacebio.png' %}" alt="" id="sidebarImg" class="hidden w-3/4" />
-            </div>
-
-            <div class="flex w-full justify-start flex-1 text-text py-10 overflow-x-hidden overflow-y-auto">
-              <ul id="sideItems" class="flex flex-col gap-2 w-full px-2 justify-start items-start">
-                <li class="flex flex-nowrap items-center gap-1 w-full bg-hover hover:bg-secondary rounded-lg">
-                  <i class="fas fa-home w-5 text-contrast p-4"></i>
-                  <span class="hidden opacity-0 duration-300 text-nowrap">Home</span>
-                </li>
-                <li class="flex flex-nowrap items-center gap-1 w-full bg-hover hover:bg-secondary rounded-lg">
-                  <i class="fas fa-rocket w-5 text-contrast p-4"></i>
-                  <span class="hidden opacity-0 duration-300 text-nowrap">Launches</span>
-                </li>
-                <li class="flex flex-nowrap items-center gap-1 w-full bg-hover hover:bg-secondary rounded-lg">
-                  <i class="fas fa-newspaper w-5 text-contrast p-4"></i>
-                  <span class="hidden opacity-0 duration-300 text-nowrap">News</span>
-                </li>
-                <li class="flex flex-nowrap items-center gap-1 w-full bg-hover hover:bg-secondary rounded-lg text-zinc-500 cursor-wait">
-                  <i class="fas fa-users w-5 text-contrast/40 p-4"></i>
+            <div class="flex justify-start flex-1 text-text py-10 overflow-x-hidden overflow-y-auto">
+              <ul id="sideItems" class="flex flex-col gap-2  w-full px-3 justify-start">
+                <a href="" class="w-full">
+                  <li class="flex flex-nowrap justify-start items-center ps-0.5 gap-1 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
+                    <i class="fas fa-home text-text p-4"></i>
+                    <span class="hidden opacity-0 duration-300 text-nowrap">Home</span>
+                  </li>
+                </a>
+                <a href="" class="w-full">
+                  <li class="flex flex-nowrap justify-start items-center ps-0.5 gap-1 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
+                    <i class="fas fa-rocket text-text p-4"></i>
+                    <span class="hidden opacity-0 duration-300 text-nowrap">Launches</span>
+                  </li>
+                </a>
+                <a href="" class="w-full">
+                  <li class="flex flex-nowrap justify-start items-center ps-0.5 gap-1 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
+                    <i class="fas fa-newspaper text-text p-4"></i>
+                    <span class="hidden opacity-0 duration-300 text-nowrap">News</span>
+                  </li>
+                </a>
+                <li class="flex flex-nowrap justify-start items-center ps-0.5 gap-1 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg text-zinc-500 cursor-wait">
+                  <i class="fas fa-users text-text/40 p-4"></i>
                   <span class="hidden opacity-0 duration-300 text-nowrap">Team</span>
                 </li>
-                <li class="flex flex-nowrap items-center gap-1 w-full bg-hover hover:bg-secondary rounded-lg text-zinc-500 cursor-wait">
-                  <i class="fas fa-timeline w-5 text-contrast/40 p-4"></i>
+                <li class="flex flex-nowrap justify-start items-center ps-0.5 gap-1 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg text-zinc-500 cursor-wait">
+                  <i class="fas fa-timeline text-text/40 p-4"></i>
                   <span class="hidden opacity-0 duration-300 text-nowrap">Time line</span>
                 </li>
               </ul>
@@ -177,8 +152,6 @@
     function openSideNav() {
       document.getElementById('sidenav').classList.toggle('w-20')
       document.getElementById('sidenav').classList.toggle('w-52')
-      document.getElementById('sidebarImg').classList.toggle('hidden')
-      document.getElementById('navArrow').classList.toggle('rotate-180')
       const spans = document.querySelectorAll('#sideItems li span')
       spans.forEach((span) => {
         span.classList.toggle('hidden')
@@ -197,13 +170,13 @@
         mobileMenu.classList.remove('hidden')
         setTimeout(function () {
           mobileMenu.classList.toggle('opacity-0')
-          mobileMenu.classList.toggle('-translate-y-10')
+          mobileMenu.classList.toggle('translate-y-10')
           mobileMenu.classList.toggle('translate-y-0')
         }, 75)
         mobileMenu.setAttribute('data-open', 'true')
       } else {
         mobileMenu.classList.toggle('opacity-0')
-        mobileMenu.classList.toggle('-translate-y-10')
+        mobileMenu.classList.toggle('translate-y-10')
         mobileMenu.classList.toggle('translate-y-0')
         setTimeout(function () {
           mobileMenu.classList.add('hidden')

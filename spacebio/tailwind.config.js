@@ -17,7 +17,8 @@ module.exports = {
                 accent: "rgba(var(--accent))",
                 text: "rgba(var(--text))",
                 name: "rgba(var(--name))",
-                spacepurple: "rgba(var(--purple))",
+                spacepurple1: "rgba(var(--purple1))",
+                spacepurple2: "rgba(var(--purple2))",
                 spacegreen: "rgba(var(--green))",
                 spaceblue: "rgba(var(--blue))",
 
