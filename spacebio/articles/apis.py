@@ -14,13 +14,24 @@ def get_spaceflight_news():
         return space_news
 
 
-def get_spacelaunchs():
-    cached_data = cache.get('spacelaunchs')
+def get_spacelaunches():
+    cached_data = cache.get('spacelaunches')
     if cached_data:
         return cached_data
     else:
         url = "https://lldev.thespacedevs.com/2.2.0/launch/upcoming"
         response = requests.get(url, params={'limit': 4})
-        spacelaunchs = response.json()
-        cache.set('spacelaunchs', spacelaunchs, timeout=(60*10))
-        return spacelaunchs
+        spacelaunches = response.json()
+        cache.set('spacelaunchs', spacelaunches, timeout=(60*10))
+        return spacelaunches
+
+def get_nextspacelaunch():
+    cached_data = cache.get('nextspacelaunch')
+    if cached_data:
+        return cached_data
+    else:
+        url = "https://lldev.thespacedevs.com/2.2.0/launch/upcoming"
+        response = requests.get(url, params={'limit': 2})
+        nextspacelaunch = response.json()
+        cache.set('nextspacelaunchs', nextspacelaunch, timeout=(60*10))
+        return nextspacelaunch

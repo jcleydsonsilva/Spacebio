@@ -25,6 +25,19 @@ module.exports = {
             },
         },
         keyframes: {
+            blob: {
+                '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                '25%': { transform: 'translate(-40px, -10px) scale(1.1)' },
+                '50%': { transform: 'translate(50px, -40px) scale(1.1)' },
+                '75%': { transform: 'translate(-20px, 10px) scale(0.9)' },
+                '100%': { transform: 'translate(0px, 0px) scale(1)' },
+            },
+
+            tilt: {
+              "0%, 50%, 100%": { transform: "rotate(0deg)" },
+              "25%": { transform: "rotate(0.8deg)" },
+              "75%": { transform: "rotate(-0.8deg)" },
+            },
             linspin: {
                 '100%': { transform: 'rotate(360deg)' },
             },
@@ -62,6 +75,8 @@ module.exports = {
             },
         },
         animation: {
+            blob: 'blob 8s ease-in-out infinite',
+            tilt: 'tilt 5s ease-in-out infinite',
             linspin: 'linspin 1568.2353ms linear infinite',
             easespin: 'easespin 5332ms cubic-bezier(0.4, 0, 0.2, 1) infinite both',
             'left-spin':

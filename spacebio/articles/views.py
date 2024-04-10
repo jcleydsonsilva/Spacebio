@@ -1,4 +1,5 @@
 import os
+from datetime import datetime, timezone
 # Get the directory path of the current file (views.py)
 current_directory = os.path.dirname(os.path.abspath(__file__))
 # Define the path to the file within app directory
@@ -10,24 +11,32 @@ from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from articles.models import SpaceExploration
-from .apis import get_spaceflight_news, get_spacelaunchs
+from .apis import get_spaceflight_news, get_spacelaunches, get_nextspacelaunch
  
 def home(request):
-    page = 'ecommerce'
+    space_news = cache.get('space_news')
+    nextspacelaunch = cache.get('nextspacelaunch')
+    if space_news is None or nextspacelaunch is None:
+        space_news = get_spaceflight_news()
+        # nextspacelaunch = get_nextspacelaunch()
+        cache.set('space_news', space_news, 60*10)  # 10 minutes
+        # cache.set('nextspacelaunch', nextspacelaunch, 60*10)
+    
+    # for launch in nextspacelaunch['results']:
+    #     launch_time = datetime.fromisoformat(launch['window_start'])
+    #     current_time = datetime.now(timezone.utc)
+        
+    #     closest_launch = None
+    #     if current_time < launch_time:
+    #         closest_launch = launch
 
-    # space_news = cache.get('space_news')
-    # spacelaunchs = cache.get('spacelaunchs')
-    # if space_news is None or spacelaunchs is None:
-    #     space_news = get_spaceflight_news()
-    #     spacelaunchs = get_spacelaunchs()
-    #     cache.set('space_news', space_news, 60*10)  # 10 minutes
-    #     cache.set('spacelaunchs', spacelaunchs, 60*10)
-
-    return render(request, 'articles/home.html', {'page' : page})
+    # launchDate = closest_launch['window_start']
+    
+    return render(request, 'articles/home.html', {'space_news': space_news})
 
 def article_main(request):
     space_news = get_spaceflight_news()
-    spacelaunchs = get_spacelaunchs()
+    spacelaunchs = get_spacelaunches()
     return render(request, 'articles/main.html', {'space_news': space_news, 'spacelaunchs': spacelaunchs})
 
 
@@ -52,3 +61,15 @@ def article_list(request):
         file.write(query + '\n')
 
     return render(request, 'articles/article_list.html', {'articles': articles, 'query': query, 'result_count': result_count})
+
+def launches(request):
+    
+    # spacelaunches = cache.get('spacelaunches')
+    # if spacelaunches is None:
+    #     spacelaunches = get_spacelaunches()
+    #     cache.set('spacelaunches', spacelaunches, 60*10)
+    
+    
+    
+    
+    return render(request, 'articles/launches.html')

@@ -3,19 +3,49 @@
   <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
 
   <style>
+    .splide {
+      padding: 0;
+    }   
+    .splide__slide {
+      max-width: 500px;
+    }
     .splide__arrow {
-      width: 50px; /* Increase the width of the arrows */
+      width: 4rem;
+      height: 4rem;
       position: absolute; /* Set the position to absolute */
       top: 50%; /* Position the arrows at the middle of the screen vertically */
-      transform: translateY(-50%); /* Adjust the vertical position */
+    }
+    .splide__arrow svg {
+      height: 4rem;
+      width: 4rem;
+      fill: black;
     }
     
-    .splide__arrow--left {
-      left: 20px; /* Move the left arrow to the left corner of the screen */
+    .splide__arrow--prev {
+      left: 0px; /* Move the left arrow to the left corner of the screen */
+    }
+    .splide__arrow--next {
+      right: 0px; /* Move the right arrow to the right corner of the screen */
     }
     
-    .splide__arrow--right {
-      right: 20px; /* Move the right arrow to the right corner of the screen */
+    .splide__pagination {
+      position: static;
+      padding-top: 2rem;
+    }
+    
+    @media screen and (min-width: 1024px) {
+      .splide {
+        padding: 0 3rem;
+      }
+    }
+    @media screen and (min-width: 438px) and (max-width: 640px) {
+      .splide {
+        max-width: 400px;
+        margin: auto;
+      }
+      .splide__slide {
+        max-width: 400px;
+      }
     }
   </style>
 
@@ -26,7 +56,7 @@
         perPage: 2, // Apenas 2 cartões visíveis por vez
         perMove: 1,
         lazyLoad: true,
-        gap: 20,
+        gap: 0,
         autoplay: true, // Autoplay habilitado
         loop: true,
         interval: 5000, // Intervalo de tempo entre os slides (em milissegundos)
@@ -36,14 +66,18 @@
         rewind: true, // Permitir rebobinar o slider
         breakpoints: {
           1536: {
-            perPage: 2,
-            fixedWidth: '50%',
-            maxWidth: '200px'
+            Width: '50%',
+            arrows: false,
+            gap: 25
           },
-          768: {
+          1024: {
+            perPage: 2,
+            gap: 15
+          },
+          640: {
             perPage: 1, // Alterar o número de slides visíveis em telas menores
-            fixedWidth: '100%', // Largura total dos slides em telas menores para mostrar apenas 1 slide por vez
-            gap: 15, // Espaçamento entre os cartões em telas menores
+            Width: '100%', // Largura total dos slides em telas menores para mostrar apenas 1 slide por vez
+            gap: 10, // Espaçamento entre os cartões em telas menores
             pagination: false,
             arrows: false // Esconder as setas de navegação em telas menores
           }

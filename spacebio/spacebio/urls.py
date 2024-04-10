@@ -33,7 +33,8 @@ DJANGO_PATHS = [
 ARTICLES_PATHS = [
     path('', articles_views.home, name='home'),
     path('articles/list', articles_views.article_list, name='articles'),
-    path('articles/main', articles_views.article_main, name="main")
+    path('articles/main', articles_views.article_main, name="main"),
+    path('launches', articles_views.launches, name="launches"),
 ]
 
 
