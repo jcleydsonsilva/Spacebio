@@ -4,30 +4,39 @@
 
 @layer base {
     [data-theme="light"] {
-        --background: 209,213,235;
-        --primary: 226,228,242;
-        --primary-2: 221,219,232;
+        --background: 230, 230, 230;
+        --primary: 245,245,245;
+        --primary-2: 255, 255, 255;
         --secondary: 159, 145, 204;
         --contrast: 0, 0, 0;
         --accent: 16, 244, 35;
-        --text: 31, 3, 48;
+        --text: 0, 0, 0;
         --purple1: 99,97,217;
-        --purple2: 221,219,232;
+        --purple2: 138, 5, 255;
         --green: 11, 239, 30;
         --blue: 30, 0, 255;
     }
 
     [data-theme="dark"] {
-        --background: 18, 18, 20;
+        --background: 8, 8, 10;
         --primary: 26, 26, 30;
-        --primary-2: 32, 32, 36;
+        --primary-2: 0, 0, 0;
         --secondary: 41, 41, 46;
         --contrast: 255, 255, 255;
         --accent: 16, 244, 35;
-        --text: 235, 207, 252;
+        --text: 160, 160, 160;
         --purple1: 99,97,217;
         --purple2: 138, 5, 255;
-        --green: 30, 0, 255;
-        --blue: 11, 239, 30;
+        --green: 11, 239, 30;
+        --blue: 30, 0, 255;
+    }
+}
+
+@layer utilities {
+    .animation-delay-2000 {
+        animation-delay: 2s;
+    }
+    .animation-delay-4000 {
+        animation-delay: 4s;
     }
 }

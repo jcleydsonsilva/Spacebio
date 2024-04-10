@@ -1,91 +1,92 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>eCommerce Dashboard | TailAdmin - Tailwind CSS Admin Dashboard Template</title>
+    <title>SpaceBio</title>
     <link rel="icon" href="{% static 'articles/img/fig1.png' %}" />
     <!-- TAILWIND CSS -->
     <link href="{% static 'css/style.css' %}" rel="stylesheet" />
-    <!-- FONTAWESOME ICONS -->
-    <script src="https://kit.fontawesome.com/4a37dd3233.js" crossorigin="anonymous"></script>
+
+    <!-- JAVASCRIPT -->
+    <script src="{% static 'js/header_basehtml.js' %}"></script>
+
+    <!-- FLATICON ICONS -->
+    <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.2.0/uicons-regular-rounded/css/uicons-regular-rounded.css" />
+
     <!-- SPLIDE CSS -->
     <link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/themes/splide-sea-green.min.css" rel="stylesheet" />
-    <script>
-      function setTheme(theme) {
-        document.documentElement.setAttribute('data-theme', theme)
-        localStorage.setItem('color-theme', theme)
-      }
-      // It's best to inline this in `head` to avoid FOUC (flash of unstyled content) when changing pages or themes
-      if (localStorage.getItem('color-theme') === 'dark' || (!localStorage.getItem('color-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        setTheme('dark')
-      } else {
-        setTheme('light')
-      }
-    </script>
+
+    <script></script>
   </head>
   <body class="flex flex-col h-full bg-background duration-500">
-    {% comment %} {% include 'dashboard/partials/preloader.html' %} {% endcomment %}
-
     <!-- NAVBAR -->
     <div id="navWrap" class="top-0 w-full z-10">
-      <nav id="navbar" class="backdrop-blur-md border-b bg-primary border-primary2 flex justify-between items-center w-full h-20 px-2 duration-75">
+      <nav id="navbar" class="backdrop-blur border-b bg-primary2/75 border-text/15 flex justify-between items-center w-full py-3 px-2 duration-75">
+        {% comment %}SIDE MENU TOGGLE AND LOGO{% endcomment %}
         <div class="flex justify-between items-center">
           <div class="relative hidden lg:block mx-3">
-            <button onclick="openSideNav()" class="text-text flex justify-center items-center bg-primary2 rounded w-10 h-10"><i class="fa fa-bars text-xl"></i></button>
+            <button onclick="openSideNav()" class="text-text flex justify-center items-center bg-background rounded w-10 h-10 pt-1"><i class="fi fi-rr-menu-burger text-xl"></i></button>
           </div>
-          <img src="{% static 'articles/img/spacebio.png' %}" alt="" class="h-8" />
+          <a href="{% url 'home' %}"><img src="{% static 'articles/img/spacebio.png' %}" alt="" class="h-6 sm:h-8 sm:ms-3" /></a>
         </div>
 
+        {% comment %}SEARCH{% endcomment %}
         <div class="hidden sm:block w-1/2">
           <form class="max-w-md mx-auto">
             <label for="default-search" class="mb-2 text-sm font-medium text-text sr-only">Search</label>
             <div class="relative w-full">
               <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none w-full">
-                <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-                </svg>
+                <i class="fi fi-rr-search text-text/70"></i>
               </div>
-              <input type="search" id="default-search" class="block w-full p-4 ps-10 text-sm text-text border border-primary rounded-lg bg-background focus:ring-spacepurple focus:border-spacepurple" placeholder="Search articles, launches..." required />
-              <button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-spacepurple1/80 hover:bg-spacepurple1 focus:ring-4 focus:outline-none focus:ring-spacepurple font-medium rounded-lg text-sm px-4 py-2">Search</button>
+              <input type="search" id="default-search" class="block w-full p-4 ps-10 text-sm text-text border-2 border-text/10 rounded-lg bg-background outline-none ring-0 focus:border-spacepurple2" placeholder="Search papers" required />
+              <button type="submit" class="absolute end-2.5 bottom-2.5 bg-gradient-to-br from-spaceblue to-spacepurple2 text-white transition-all font-medium rounded-lg text-sm px-4 py-2">Search</button>
             </div>
           </form>
         </div>
 
-        <div class="flex gap-7 me-2 sm:me-6 h-full items-center">
+        <div class="flex gap-7 me-2 sm:me-6 h-full items-center pt-1">
+          {% comment %}THEME TOGGLE{% endcomment %}
           <button id="theme-toggle" type="button" class="text-text transition-all rounded-lg">
-            <i id="theme-toggle-dark-icon" class="fas fa-moon h-5 hidden"></i>
-            <i id="theme-toggle-light-icon" class="fas fa-sun h-5 hidden"></i>
+            <i id="theme-toggle-dark-icon" class="fi fi-rr-moon-stars h-5 hidden text-xl"></i>
+            <i id="theme-toggle-light-icon" class="fi fi-rr-brightness h-5 hidden text-xl"></i>
           </button>
 
-          <div class="relative lg:hidden">
-            <a onclick="menuToggle()" class="cursor-pointer text-text flex justify-center items-center bg-primary2 rounded w-10 h-10"><i class="fa fa-bars text-xl"></i></a>
+          {% comment %}MOBILE MENU{% endcomment %}
+          <div id="mobileMenuWrap" class="relative lg:hidden">
+            <a onclick="menuToggle()" class="cursor-pointer text-text flex justify-center items-center rounded w-10 h-10"><i class="fi fi-rr-menu-burger text-2xl text-text/70"></i></a>
 
-            <div id="mobile-menu" data-open="false" class="opacity-0 w-64 right-0 absolute mt-4 bg-primary2 rounded-lg p-4 overflow-hidden duration-300 translate-y-10">
-              <ul class="flex flex-col gap-2">
-                <li class="text-text p-3 hover:bg-secondary rounded-lg">
-                  <i class="fa fa-home text-lg me-3"></i>
-                  <span class="">Home</span>
-                </li>
+            <div id="mobile-menu" data-open="false" class="hidden opacity-0 w-64 right-0 absolute mt-4 border border-spacepurple2/40 bg-primary2 rounded-lg overflow-hidden duration-300 translate-y-10">
+              <ul class="flex flex-col gap-2 w-full h-full p-4 bg-gradient-to-r from-transparent to-spacepurple2/10">
+                <a href="{% url 'home' %}" data-url="{% url 'home' %}/">
+                  <li class="text-text p-3 hover:bg-secondary rounded-lg">
+                    <i class="fi fi-rr-home text-lg me-3"></i>
+                    <span class="">Home</span>
+                  </li>
+                </a>
 
-                <li class="text-text p-3 hover:hover:bg-secondary rounded-lg">
-                  <i class="fa fa-newspaper text-lg me-3"></i>
-                  <span class="">Space News</span>
-                </li>
+                <a href="##">
+                  <li class="text-text p-3 hover:hover:bg-secondary rounded-lg">
+                    <i class="fi fi-rr-newspaper text-lg me-3"></i>
+                    <span class="">Space News</span>
+                  </li>
+                </a>
 
-                <li class="text-text p-3 hover:hover:bg-secondary rounded-lg">
-                  <i class="fa fa-rocket text-lg me-3"></i>
-                  <span class="">Launches</span>
-                </li>
+                <a href="{% url 'launches' %}" data-url="{% url 'launches' %}/">
+                  <li class="text-text p-3 hover:hover:bg-secondary rounded-lg">
+                    <i class="fi fi-rr-rocket-lunch text-lg me-3"></i>
+                    <span class="">Launches</span>
+                  </li>
+                </a>
               </ul>
 
-              <div class="flex flex-col w-full gap-5 justify-start items-end mt-5">
+              <div class="flex w-full gap-5 justify-end bg-gradient-to-r from-transparent to-spacepurple2/10 items-end py-3 px-3">
+                <span class="text-text">Fixed Navbar</span>
                 <label class="flex items-center cursor-pointer">
-                  <input onclick="navbarToggle()" type="checkbox" value="" class="sr-only peer" />
-                  <div class="relative w-11 h-6 bg-secondary peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-secondary"></div>
+                  <input onclick="navbarToggle(this)" type="checkbox" value="" class="sr-only peer" />
+                  <div class="relative w-11 h-6 bg-spacepurple1/40 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-gradient-to-br from-spaceblue to-spacepurple2 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-spacepurple1/85"></div>
                 </label>
               </div>
             </div>
@@ -95,141 +96,90 @@
     </div>
 
     <!-- MAIN CONTENT -->
-    <main class="flex h-full min-h-screen">
+    <div class="flex h-full min-h-screen w-full">
       <!-- SIDE MENU -->
       <div id="sidenavWrap" class="hidden lg:block sticky left-0 top-0 h-full">
-        <aside id="sidenav" class="flex flex-col h-screen justify-between border-e-2 border-primary w-20 items-start duration-300 bg-primary shadow-xl overflow-y-visible">
+        <aside id="sidenav" data-open="" class="flex bg-primary2 flex-col h-screen justify-between border-e border-primary items-start duration-300 shadow-xl overflow-y-visible">
           <div id="stickyitems" class="w-full">
             <div class="flex justify-start flex-1 text-text py-10 overflow-x-hidden overflow-y-auto">
-              <ul id="sideItems" class="flex flex-col gap-2  w-full px-3 justify-start">
-                <a href="" class="w-full">
-                  <li class="flex flex-nowrap justify-start items-center ps-0.5 gap-1 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
-                    <i class="fas fa-home text-text p-4"></i>
+              {% comment %}LINKS{% endcomment %}
+              <ul id="sideItems" class="flex flex-col gap-2 w-full ps-2.5 pe-2 items-stretch justify-start">
+                <a href="{% url 'home' %}" data-url="{% url 'home' %}" class="w-full">
+                  <li class="flex flex-nowrap justify-start items-center gap-1 ps-1 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
+                    <i class="fi fi-rr-home text-xl text-text p-4"></i>
                     <span class="hidden opacity-0 duration-300 text-nowrap">Home</span>
                   </li>
                 </a>
-                <a href="" class="w-full">
-                  <li class="flex flex-nowrap justify-start items-center ps-0.5 gap-1 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
-                    <i class="fas fa-rocket text-text p-4"></i>
+                <a href="{% url 'launches' %}" data-url="{% url 'launches' %}" class="w-full">
+                  <li class="flex flex-nowrap justify-start items-center gap-1 ps-1 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
+                    <i class="fi fi-rr-rocket-lunch text-xl text-text p-4"></i>
                     <span class="hidden opacity-0 duration-300 text-nowrap">Launches</span>
                   </li>
                 </a>
-                <a href="" class="w-full">
-                  <li class="flex flex-nowrap justify-start items-center ps-0.5 gap-1 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
-                    <i class="fas fa-newspaper text-text p-4"></i>
+                <a href="##" class="w-full">
+                  <li class="flex flex-nowrap justify-start items-center gap-1 ps-1 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
+                    <i class="fi fi-rr-newspaper text-xl text-text p-4"></i>
                     <span class="hidden opacity-0 duration-300 text-nowrap">News</span>
                   </li>
                 </a>
-                <li class="flex flex-nowrap justify-start items-center ps-0.5 gap-1 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg text-zinc-500 cursor-wait">
-                  <i class="fas fa-users text-text/40 p-4"></i>
+                <li class="flex flex-nowrap justify-start items-center gap-1 ps-1 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg text-zinc-500 cursor-wait">
+                  <i class="fi fi-rr-users-alt text-xl text-text/40 p-4"></i>
                   <span class="hidden opacity-0 duration-300 text-nowrap">Team</span>
                 </li>
-                <li class="flex flex-nowrap justify-start items-center ps-0.5 gap-1 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg text-zinc-500 cursor-wait">
-                  <i class="fas fa-timeline text-text/40 p-4"></i>
+                <li class="flex flex-nowrap justify-start items-center gap-1 ps-1 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg text-zinc-500 cursor-wait">
+                  <i class="fi fi-rr-list-timeline text-xl text-text/40 p-4"></i>
                   <span class="hidden opacity-0 duration-300 text-nowrap">Time line</span>
                 </li>
               </ul>
             </div>
           </div>
 
-          <div class="flex sticky bottom-5 flex-col w-full ps-4 gap-5 justify-end">
+          {% comment %}NAVBAR TOGGLE{% endcomment %}
+          <div class="flex sticky bottom-5 w-full ps-4 gap-5 justify-start">
             <label class="flex items-center cursor-pointer">
-              <input onclick="navbarToggle()" type="checkbox" value="" class="sr-only peer" />
-              <div class="relative w-11 h-6 bg-secondary peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-secondary"></div>
+              <input onclick="navbarToggle(this)" type="checkbox" value="" class="sr-only peer"/>
+              <div class="relative w-11 h-6 bg-spacepurple1/40 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-gradient-to-br from-spaceblue to-spacepurple2 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-spacepurple1/85"></div>
             </label>
+            <span class="hidden opacity-0 duration-300 text-nowrap text-text/60 font-medium">Fixed Navbar</span>
           </div>
         </aside>
       </div>
 
-      <div class="flex-1 mt-10 mx-3">
-        {% block content %}
+      <div class="flex-1 mt-5 sm:mt-0">
+        {% comment %}CONTENT{% endcomment %}
+        <main class="min-h-screen">
+          {% block content %}
 
-        {% endblock %}
+          {% endblock %}
+        </main>
+        {% comment %}FOOTER{% endcomment %}
+        <footer class="mt-10 bg-primary md:px-10 text-text">
+          <div class="flex justify-between mb-2 py-2">
+            <p class="mb-2 text-xs sm:text-base">About Lupe Project</p>
+            <p class="mb-2 text-xs sm:text-base text-right">Powered by Cleydson Silva Since 2017</p>
+          </div>
+
+          <div class="flex mx-auto w-3/4">
+            <p class="text-xs sm:text-base text-center mb-2 sm:mb-4 text-green-500">The Lupe Project's mission is to advance understanding of all researches outside Earth by providing exceptional access the space literature as a way smart through Artificial Intelligence and Machine Intelligence.</p>
+          </div>
+
+          <div class="flex items-center justify-between px-4 sm:px-8">
+            <img class="w-12 sm:w-20" src="{% static 'articles/img/fig1.png' %}" alt="" />
+            <img class="w-20 sm:w-36" src="{% static 'articles/img/spacebio.png' %}" alt="" />
+          </div>
+
+          <div class="flex gap-2 mt-4 text-3xl items-center justify-center">
+            <div class="header-icons flex gap-2 sm:gap-6 text-xl sm:text-3xl">
+              <a href=""><i class="fi fi-brands-twitter transform transition-transform hover:scale-110 hover:translate-y-[-8px] text-blue-500"></i></a>
+              <a href=""><i class="fi fi-brands-linkedin transform transition-transform hover:scale-110 hover:translate-y-[-8px] text-blue-400"></i></a>
+              <a href=""><i class="fa-brands fa-researchgate transform transition-transform hover:scale-110 hover:translate-y-[-8px] text-emerald-800"></i></a>
+              <a href=""><i class="fa-brands fa-google-scholar transform transition-transform hover:scale-110 hover:translate-y-[-8px] text-blue-500"></i></a>
+              <a href=""><i class="fi fi-brands-github transform transition-transform hover:scale-110 hover:translate-y-[-8px] text-orange-600"></i></a>
+            </div>
+          </div>
+        </footer>
       </div>
-    </main>
+    </div>
   </body>
-  <script>
-    function openSideNav() {
-      document.getElementById('sidenav').classList.toggle('w-20')
-      document.getElementById('sidenav').classList.toggle('w-52')
-      const spans = document.querySelectorAll('#sideItems li span')
-      spans.forEach((span) => {
-        span.classList.toggle('hidden')
-        setTimeout(function () {
-          span.classList.toggle('opacity-0')
-          span.classList.toggle('opacity-100')
-          span.classList.toggle('delay-200')
-        }, 75)
-      })
-    }
-    
-    function menuToggle() {
-      const mobileMenu = document.getElementById('mobile-menu')
-    
-      if (mobileMenu.getAttribute('data-open') == 'false') {
-        mobileMenu.classList.remove('hidden')
-        setTimeout(function () {
-          mobileMenu.classList.toggle('opacity-0')
-          mobileMenu.classList.toggle('translate-y-10')
-          mobileMenu.classList.toggle('translate-y-0')
-        }, 75)
-        mobileMenu.setAttribute('data-open', 'true')
-      } else {
-        mobileMenu.classList.toggle('opacity-0')
-        mobileMenu.classList.toggle('translate-y-10')
-        mobileMenu.classList.toggle('translate-y-0')
-        setTimeout(function () {
-          mobileMenu.classList.add('hidden')
-        }, 200)
-        mobileMenu.setAttribute('data-open', 'false')
-      }
-    }
-    
-    function navbarToggle() {
-      document.getElementById('stickyitems').classList.toggle('sticky')
-      document.getElementById('stickyitems').classList.toggle('top-20')
-      document.getElementById('sidenavWrap').classList.toggle('top-0')
-      document.getElementById('sidenavWrap').classList.toggle('top-20')
-      document.getElementById('navWrap').classList.toggle('sticky')
-      document.getElementById('navbar').classList.toggle('bg-primary/90')
-      document.getElementById('navbar').classList.toggle('shadow-md')
-    }
-    
-    function setTheme(theme) {
-      document.documentElement.setAttribute('data-theme', theme)
-      localStorage.setItem('color-theme', theme)
-    }
-    
-    // Change the icons inside the button based on previous settings
-    var themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon')
-    var themeToggleLightIcon = document.getElementById('theme-toggle-light-icon')
-    if (localStorage.getItem('color-theme') === 'dark' || (!localStorage.getItem('color-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      themeToggleLightIcon.classList.remove('hidden')
-    } else {
-      themeToggleDarkIcon.classList.remove('hidden')
-    }
-    
-    var themeToggleBtn = document.getElementById('theme-toggle')
-    themeToggleBtn.addEventListener('click', function () {
-      // toggle icons inside button
-      document.getElementById('theme-toggle-dark-icon').classList.toggle('hidden')
-      document.getElementById('theme-toggle-light-icon').classList.toggle('hidden')
-    
-      // if set via local storage previously
-      if (localStorage.getItem('color-theme')) {
-        if (localStorage.getItem('color-theme') === 'light') {
-          setTheme('dark')
-        } else {
-          setTheme('light')
-        }
-      } else {
-        // if NOT set via local storage previously
-        if (document.documentElement.getAttribute('data-theme') === 'light') {
-          setTheme('dark')
-        } else {
-          setTheme('light')
-        }
-      }
-    })
-  </script>
+  <script src="{% static 'js/footer_basehtml.js' %}"></script>
 </html>
