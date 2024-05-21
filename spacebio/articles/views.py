@@ -1,5 +1,5 @@
 import os
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 # Get the directory path of the current file (views.py)
 current_directory = os.path.dirname(os.path.abspath(__file__))
 # Define the path to the file within app directory
@@ -16,23 +16,14 @@ from .apis import get_spaceflight_news, get_spacelaunches, get_nextspacelaunch
 def home(request):
     space_news = cache.get('space_news')
     nextspacelaunch = cache.get('nextspacelaunch')
+    cache.get('nextspacelaunch')
     if space_news is None or nextspacelaunch is None:
         space_news = get_spaceflight_news()
-        # nextspacelaunch = get_nextspacelaunch()
-        cache.set('space_news', space_news, 60*10)  # 10 minutes
-        # cache.set('nextspacelaunch', nextspacelaunch, 60*10)
+        nextspacelaunch = get_nextspacelaunch()
+        cache.set('space_news', space_news, 60*100)
+        cache.set('nextspacelaunch', nextspacelaunch, 60*100)
     
-    # for launch in nextspacelaunch['results']:
-    #     launch_time = datetime.fromisoformat(launch['window_start'])
-    #     current_time = datetime.now(timezone.utc)
-        
-    #     closest_launch = None
-    #     if current_time < launch_time:
-    #         closest_launch = launch
-
-    # launchDate = closest_launch['window_start']
-    
-    return render(request, 'articles/home.html', {'space_news': space_news})
+    return render(request, 'articles/home.html', {'space_news': space_news, 'nextspacelaunch': nextspacelaunch})
 
 def article_main(request):
     space_news = get_spaceflight_news()
@@ -64,12 +55,15 @@ def article_list(request):
 
 def launches(request):
     
-    # spacelaunches = cache.get('spacelaunches')
-    # if spacelaunches is None:
-    #     spacelaunches = get_spacelaunches()
-    #     cache.set('spacelaunches', spacelaunches, 60*10)
+    spacelaunches = cache.get('spacelaunches')
+    if spacelaunches is None:
+        spacelaunches = get_spacelaunches()
+        cache.set('spacelaunches', spacelaunches, 60*10)
     
+    return render(request, 'articles/launches.html', {'spacelaunches': spacelaunches})
+
+def news(request):
     
+    space_news = get_spaceflight_news()
     
-    
-    return render(request, 'articles/launches.html')
+    return render(request, 'articles/news.html', {'space_news': space_news})

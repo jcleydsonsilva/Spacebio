@@ -37,7 +37,7 @@
         <div class="hidden sm:block w-1/2">
           <form class="max-w-md mx-auto">
             <label for="default-search" class="mb-2 text-sm font-medium text-text sr-only">Search</label>
-            <div class="relative w-full">
+            <div class="relative w-fullflex items-center">
               <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none w-full">
                 <i class="fi fi-rr-search text-text/70"></i>
               </div>
@@ -59,18 +59,11 @@
             <a onclick="menuToggle()" class="cursor-pointer text-text flex justify-center items-center rounded w-10 h-10"><i class="fi fi-rr-menu-burger text-2xl text-text/70"></i></a>
 
             <div id="mobile-menu" data-open="false" class="hidden opacity-0 w-64 right-0 absolute mt-4 border border-spacepurple2/40 bg-primary2 rounded-lg overflow-hidden duration-300 translate-y-10">
-              <ul class="flex flex-col gap-2 w-full h-full p-4 bg-gradient-to-r from-transparent to-spacepurple2/10">
+              <ul class="flex flex-col gap-2 w-full h-full p-4">
                 <a href="{% url 'home' %}" data-url="{% url 'home' %}/">
                   <li class="text-text p-3 hover:bg-secondary rounded-lg">
                     <i class="fi fi-rr-home text-lg me-3"></i>
                     <span class="">Home</span>
-                  </li>
-                </a>
-
-                <a href="##">
-                  <li class="text-text p-3 hover:hover:bg-secondary rounded-lg">
-                    <i class="fi fi-rr-newspaper text-lg me-3"></i>
-                    <span class="">Space News</span>
                   </li>
                 </a>
 
@@ -80,9 +73,16 @@
                     <span class="">Launches</span>
                   </li>
                 </a>
+
+                <a href="{% url 'news' %}" data-url="{% url 'news' %}/">
+                  <li class="text-text p-3 hover:hover:bg-secondary rounded-lg">
+                    <i class="fi fi-rr-newspaper text-lg me-3"></i>
+                    <span class="">Space News</span>
+                  </li>
+                </a>
               </ul>
 
-              <div class="flex w-full gap-5 justify-end bg-gradient-to-r from-transparent to-spacepurple2/10 items-end py-3 px-3">
+              <div class="flex w-full gap-5 justify-end items-end py-3 px-3">
                 <span class="text-text">Fixed Navbar</span>
                 <label class="flex items-center cursor-pointer">
                   <input onclick="navbarToggle(this)" type="checkbox" value="" class="sr-only peer" />
@@ -116,7 +116,7 @@
                     <span class="hidden opacity-0 duration-300 text-nowrap">Launches</span>
                   </li>
                 </a>
-                <a href="##" class="w-full">
+                <a href="{% url 'news' %}" data-url="{% url 'news' %}" class="w-full">
                   <li class="flex flex-nowrap justify-start items-center gap-1 ps-1 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
                     <i class="fi fi-rr-newspaper text-xl text-text p-4"></i>
                     <span class="hidden opacity-0 duration-300 text-nowrap">News</span>
@@ -137,7 +137,7 @@
           {% comment %}NAVBAR TOGGLE{% endcomment %}
           <div class="flex sticky bottom-5 w-full ps-4 gap-5 justify-start">
             <label class="flex items-center cursor-pointer">
-              <input onclick="navbarToggle(this)" type="checkbox" value="" class="sr-only peer"/>
+              <input onclick="navbarToggle(this)" type="checkbox" value="" class="sr-only peer" />
               <div class="relative w-11 h-6 bg-spacepurple1/40 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-gradient-to-br from-spaceblue to-spacepurple2 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-spacepurple1/85"></div>
             </label>
             <span class="hidden opacity-0 duration-300 text-nowrap text-text/60 font-medium">Fixed Navbar</span>
@@ -153,7 +153,7 @@
           {% endblock %}
         </main>
         {% comment %}FOOTER{% endcomment %}
-        <footer class="mt-10 bg-primary md:px-10 text-text">
+        <footer class="mt-10 bg-primary2 md:px-10 text-text border-t border-text/20">
           <div class="flex justify-between mb-2 py-2">
             <p class="mb-2 text-xs sm:text-base">About Lupe Project</p>
             <p class="mb-2 text-xs sm:text-base text-right">Powered by Cleydson Silva Since 2017</p>
@@ -169,12 +169,12 @@
           </div>
 
           <div class="flex gap-2 mt-4 text-3xl items-center justify-center">
-            <div class="header-icons flex gap-2 sm:gap-6 text-xl sm:text-3xl">
-              <a href=""><i class="fi fi-brands-twitter transform transition-transform hover:scale-110 hover:translate-y-[-8px] text-blue-500"></i></a>
-              <a href=""><i class="fi fi-brands-linkedin transform transition-transform hover:scale-110 hover:translate-y-[-8px] text-blue-400"></i></a>
-              <a href=""><i class="fa-brands fa-researchgate transform transition-transform hover:scale-110 hover:translate-y-[-8px] text-emerald-800"></i></a>
-              <a href=""><i class="fa-brands fa-google-scholar transform transition-transform hover:scale-110 hover:translate-y-[-8px] text-blue-500"></i></a>
-              <a href=""><i class="fi fi-brands-github transform transition-transform hover:scale-110 hover:translate-y-[-8px] text-orange-600"></i></a>
+            <div class="header-icons flex gap-2 sm:gap-6 pb-2 sm:pb-3">
+              <a href=""><img src="{% static 'icons/researchgate.svg' %}" alt="reasearchgate" class="transform transition-transform hover:scale-110 hover:translate-y-[-8px] w-6 h-6 sm:w-8 sm:h-8"></a>
+              <a href=""><img src="{% static 'icons/google-scholar.svg' %}" alt="google-scholar" class="transform transition-transform hover:scale-110 hover:translate-y-[-8px] w-6 h-6 sm:w-8 sm:h-8"></a>
+              <a href=""><img src="{% static 'icons/linkedin.svg' %}" alt="linkedin" class="transform transition-transform hover:scale-110 hover:translate-y-[-8px] w-6 h-6 sm:w-8 sm:h-8"></a>
+              <a href=""><img src="{% static 'icons/twitter.svg' %}" alt="twitter" class="transform transition-transform hover:scale-110 hover:translate-y-[-8px] w-6 h-6 sm:w-8 sm:h-8"></a>
+              <a href=""><img src="{% static 'icons/github.svg' %}" alt="github" class="transform transition-transform hover:scale-110 hover:translate-y-[-8px] w-6 h-6 sm:w-8 sm:h-8"></a>
             </div>
           </div>
         </footer>

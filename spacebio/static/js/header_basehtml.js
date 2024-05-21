@@ -42,11 +42,11 @@ function updateIconsBasedOnPage() {
         if (windowPath == linkUrl) {
             icon.classList.remove('text-text')
             span.classList.remove('text-text')
-            icon.classList.add('text-spacepurple2')
-            span.classList.add('text-spacepurple2')
+            icon.classList.add(...['bg-clip-text', 'text-transparent', 'bg-gradient-to-tr', 'from-pink-500', 'to-spaceblue'])
+            span.classList.add(...['bg-clip-text', 'text-transparent', 'bg-gradient-to-tr', 'from-pink-500', 'to-spaceblue'])
         } else {
-            icon.classList.remove('text-spacepurple2')
-            span.classList.remove('text-spacepurple2')
+            icon.classList.remove('bg-clip-text', 'text-transparent', 'bg-gradient-to-tr', 'from-pink-500', 'to-spaceblue')
+            span.classList.remove('bg-clip-text', 'text-transparent', 'bg-gradient-to-tr', 'from-pink-500', 'to-spaceblue')
             icon.classList.add('text-text')
             span.classList.add('text-text')
         }

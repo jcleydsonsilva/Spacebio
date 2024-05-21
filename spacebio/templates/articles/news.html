@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static date_format humanize %}
+{% block content %}
+  <!-- Breadcrumb Start -->
+
+  <section class="flex flex-col container mx-auto mt-12">
+    <div class="flex justify-between items-center flex-wrap gap-3 text-sm sm:text-base mb-6 mt-12 px-2 min-[390px]:px-7 lg:px-20">
+      <h2 class="font-bold w-1/2 text-text text-xl sm:text-2xl">News</h2>
+
+      <div>
+        <ol class="flex items-center gap-2">
+          <li>
+            <a class="font-medium text-text" href="{% url 'home' %}">SpaceBio /</a>
+          </li>
+          <li class="font-medium text-text/60">News</li>
+        </ol>
+      </div>
+    </div>
+    <!-- Breadcrumb End -->
+    <div class="grid md:grid-cols-2 gap-6 px-2 min-[390px]:px-7 lg:px-20 mb-20">
+      {% for news in space_news.results %}
+        <div class="w-full h-full xl:max-h-80">
+          <div onclick="window.open('{{ news.url }}', '_blank')" class="relative group w-full h-full rounded-lg shadow-md overflow-hidden cursor-pointer">
+            <div class="h-60 min-[390px]:min-h-60 min-[390px]:max-h-72 sm:h-72 md:h-64 xl:h-80 w-full">
+              <img src="{{ news.image_url }}" alt="" class="h-full w-full object-cover" />
+            </div>
+
+            <div class="absolute bottom-0 inset-0 h-full flex flex-col justify-end">
+              <div class="absolute h-1/2 flex flex-col gap-1 justify-end w-full bottom-0 px-4 pb-4 text-white bg-gradient-to-b from-transparent via-black/70 to-black/85 pt-7">
+                <div class="flex flex-col justify-between h-full">
+                  <h3 class="text-start sm:text-lg lg:text-xl line-clamp-2 sm:pt-5 md:pt-0 xl:pt-4">{{ news.title }}</h3>
+                  <span class="text-white/50 text-xs truncate">{{ news.published_at|format_published_at|naturalday }} | <a href="{{ news.url }}" class="text-blue-500" target="_blank">{{ news.news_site }}</a></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </section>
+  <script src="{% static 'js/launch_time.js' %}"></script>
+{% endblock %}
