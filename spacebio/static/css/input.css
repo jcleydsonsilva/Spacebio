@@ -3,15 +3,16 @@
 @tailwind utilities;
 
 @layer base {
+
     [data-theme="light"] {
-        --background: 230, 230, 230;
-        --primary: 245,245,245;
+        --background: 245, 245, 245;
+        --primary: 255, 255, 255;
         --primary-2: 255, 255, 255;
         --secondary: 159, 145, 204;
         --contrast: 0, 0, 0;
         --accent: 16, 244, 35;
         --text: 0, 0, 0;
-        --purple1: 99,97,217;
+        --purple1: 99, 97, 217;
         --purple2: 138, 5, 255;
         --green: 11, 239, 30;
         --blue: 30, 0, 255;
@@ -25,7 +26,7 @@
         --contrast: 255, 255, 255;
         --accent: 16, 244, 35;
         --text: 160, 160, 160;
-        --purple1: 99,97,217;
+        --purple1: 99, 97, 217;
         --purple2: 138, 5, 255;
         --green: 11, 239, 30;
         --blue: 30, 0, 255;
@@ -36,6 +37,7 @@
     .animation-delay-2000 {
         animation-delay: 2s;
     }
+
     .animation-delay-4000 {
         animation-delay: 4s;
     }

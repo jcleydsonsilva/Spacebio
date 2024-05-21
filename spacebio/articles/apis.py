@@ -20,8 +20,8 @@ def get_spacelaunches():
         return cached_data
     else:
         url = "https://lldev.thespacedevs.com/2.2.0/launch/upcoming"
-        response = requests.get(url, params={'limit': 4})
-        spacelaunches = response.json()
+        response = requests.get(url, params={'limit': 8})
+        spacelaunches = response.json
         cache.set('spacelaunchs', spacelaunches, timeout=(60*10))
         return spacelaunches
 

@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
 {% load static date_format humanize %}
 {% block content %}
-  <section class="flex flex-col gap-y-8 container mx-auto">
-    <div class="rounded-xl px-2 py-5 flex flex-col gap-4 items-center text-text">
-      <p class="mb-5 text-center ">The First Space Exploration Literature Database focused on human space exploration</p>
+  <section class="flex flex-col container mx-auto">
+    <div class="px-2 py-5 sm:py-8 md:py-12 flex flex-col gap-4 items-center text-text">
+      <p class="mb-5 text-center sm:mt-2 font-pavelt">The First Space Exploration Literature Database focused on human space exploration</p>
 
       <img class="" src="{% static 'articles/img/Figure.png' %}" alt="" />
       <p class="text-sm sm:text-base text-center text-text mt-12">Write a short sentence to select papers, for example, Growing plants at the International Space Station, and press enter.</p>
 
-      <form action="{% url 'articles' %}" method="GET" class="mt-2 relative group w-full max-w-4xl min-[390px]:px-1">
+      <form action="{% url 'articles' %}" method="GET" class="mt-2 relative group w-full min-[390px]:px-1 sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-4xl">
         <div class="absolute -inset-0.5 rounded-2xl blur bg-gradient-to-r from-spacepurple1 to-spacepurple2 opacity-55 group-hover:opacity-100 group-hover:duration-200 transition duration-1000 overflow-hidden">
           <div class="w-full h-48 bg-spaceblue blur-xl animate-rotating"></div>
         </div>
@@ -32,36 +32,54 @@
     </div>
 
     {% comment %}NEXT LAUNCH{% endcomment %}
-    <div class="grid lg:grid-cols-2 gap-3 mb-8 sm:mb-12 sm:gap-6 min-[390px]:px-7 lg:px-20">
-      <h2 class="text-lg sm:text-3xl my-2 text-center font-semibold text-text">Next Launch</h2>
-      {% for launch in spacelaunchs.results %}
-        <div class="flex rounded-xl shadow-md bg-primary text-text">
-          <img src="{{ launch.image }}" alt="" class="w-1/3 object-cover rounded-s-xl" />
-          <div class="p-2 sm:p-4 flex flex-col justify-between">
-            <span class="rounded text-sm md:text-base text-text">{{ launch.launch_service_provider.name }}</span>
-            {% comment %} <span class="text-red-600 font-semibold rounded p-0.5">&circledcirc; Live</span> {% endcomment %}
-            <p class="font-semibold sm:text-xl">{{ launch.name }}</p>
-            <p class="text-sm sm:text-base">{{ launch.pad.name }}, {{ launch.pad.location.name }}</p>
-            <p class="text-sm sm:text-base">{{ launch.window_start }}</p>
+    <div class="flex flex-col gap-3 mb-16 px-2 sm:mb-32 sm:gap-6 min-[390px]:px-7 lg:px-20">
+      <div class="flex justify-between items-center">
+        <h2 class="text-lg sm:text-xl md:text-2xl font-semiboldbold text-text uppercase">Next Launchs<i class="ms-4 text-2xl bg-clip-text text-transparent bg-gradient-to-tr from-spaceblue to-pink-500 fi fi-rr-rocket-lunch"></i></h2>
+        <a href="{% url 'launches' %}" class="mt-2 border border-text/25 rounded-md hover:border-spacepurple2/70 transition-all py-1 px-1.5 sm:pt-2 md:px-2"><span class="text-text/75 text-sm md:text-base font-medium">View All</span><i class="text-spacepurple2 sm:text-xl fi fi-rr-arrow-right ms-2 align-middle"></i></a>
+      </div>
+      <div class="grid md:grid-cols-2 grid-cols-1 gap-6 lg:px-6">
+        {% for launch in nextspacelaunch.results %}
+          <div class="flex rounded-xl shadow-md bg-primary text-text gap-0 h-48">
+            <img src="{{ launch.image }}" alt="" class="w-1/3 object-cover rounded-s-xl h-full" />
+            <div class="p-2 sm:p-4 flex flex-col justify-between">
+              <span class="rounded text-sm md:text-base text-text">{{ launch.launch_service_provider.name }}</span>
+              {% comment %} <span class="text-red-600 font-semibold rounded p-0.5">&circledcirc; Live</span> {% endcomment %}
+              <p class="font-semibold sm:text-xl">{{ launch.name }}</p>
+              <p class="text-sm sm:text-base line-clamp-2">{{ launch.pad.name }}, {{ launch.pad.location.name }}</p>
+              <p class="countdown font-medium sm:text-lg text-spacepurple2" data-launch-date="{{ launch.window_start }}"></p>
+              <p class="text-sm sm:text-base">Starts at: {{ launch.window_start|format_published_at|naturalday }}</p>
+            </div>
           </div>
-        </div>
-      {% endfor %}
+        {% endfor %}
+      </div>
     </div>
 
     {% comment %}LATEST NEWS{% endcomment %}
-    <h2 class="text-xl sm:text-3xl mt-3 sm:mb-2 text-center font-semibold text-text">Latest News</h2>
-    <div class="grid mb-2 sm:mb-12 sm:gap-6 sm:px-3 md:px-16">
+    <div class="flex justify-between items-center mt-4 px-2 min-[390px]:px-7 lg:px-20">
+      <h2 class="text-lg sm:text-xl md:text-2xl font-semiboldbold text-text uppercase">Latest News<i class="ms-4 text-2xl bg-clip-text text-transparent bg-gradient-to-tr from-spaceblue to-pink-500 fi fi-rr-newspaper"></i></h2>
+      <a href="{% url 'launches' %}" class="mt-2 border border-text/25 rounded-md hover:border-spacepurple2/70 transition-all py-1 px-1.5 sm:pt-2 sm:px-2"><span class="text-text/75 text-sm md:text-base font-medium">View All</span><i class="text-spacepurple2 sm:text-xl fi fi-rr-arrow-right ms-2 align-middle"></i></a>
+    </div>
+
+    <div class="relative grid place-content-center mb-16 mt-3 sm:mb-32 sm:px-3 lg:px-16">
+      <div class="absolute -z-20 inset-x-0 m-auto w-2/3 h-28 sm:h-60 max-w-lg bg-blue-700/60 blur-[118px]"></div>
+
       <div class="splide overflow-hidden" id="splide2">
-        <div class="splide__track">
-          <ul class="splide__list flex">
+        <div class="splide__track xl:max-w-5xl 2xl:max-w-full">
+          <ul class="splide__list flex w-full">
             {% for news in space_news.results %}
-              <li class="splide__slide">
-                <div class="flex flex-col w-full h-full sm:h-4/5 max-w-max rounded rounded-t-lg bg-primary text-text shadow-md">
-                  <img src="{{ news.image_url }}" alt="" class="h-4/6 object-cover rounded-t-lg" />
-                  <div class="flex flex-col justify-between px-3 py-2 flex-grow">
-                    <h3 class="text-center sm:text-lg lg:text-xl line-clamp-1 truncate">{{ news.title }}</h3>
-                    <p class="text-center text-sm line-clamp-2">{{ news.summary }}</p>
-                    <span class="text-sm sm:text-base">{{ news.published_at|format_published_at|naturalday }} | <a href="{{ news.url }}" class="text-blue-500">{{ news.news_site }}. Read More</a></span>
+              <li class="splide__slide w-full h-full xl:max-h-80">
+                <div onclick="window.open('{{ news.url }}', '_blank')" class="relative group w-full h-full rounded-lg shadow-md overflow-hidden cursor-pointer">
+                  <div class="h-60 min-[390px]:min-h-60 min-[390px]:max-h-72 sm:h-72 md:h-64 xl:h-80 w-full">
+                    <img src="{{ news.image_url }}" alt="" class="h-full w-full object-cover" />
+                  </div>
+
+                  <div class="absolute bottom-0 inset-0 h-full flex flex-col justify-end">
+                    <div class="absolute h-1/2 flex flex-col gap-1 justify-end w-full bottom-0 px-4 pb-4 text-white bg-gradient-to-b from-transparent via-black/70 to-black/85 pt-7">
+                      <div class="flex flex-col justify-between h-full">
+                        <h3 class="text-start sm:text-lg lg:text-xl line-clamp-2 sm:pt-5 md:pt-0 xl:pt-4">{{ news.title }}</h3>
+                        <span class="text-white/50 text-xs truncate">{{ news.published_at|format_published_at|naturalday }} | <a href="{{ news.url }}" class="text-blue-500" target="_blank">{{ news.news_site }}</a></span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </li>
@@ -71,15 +89,19 @@
       </div>
     </div>
 
-    {% comment %}Highlighted Papers {% endcomment %}
+    {% comment %}Highlighted Papers{% endcomment %}
     <div class="flex flex-col lg:flex-row gap-4 w-full">
-      <div class="shadow-md rounded-xl m-3 p-1 lg:p-7 min-[390px]:m-6 sm:first-letter:m-7 flex flex-col items-center lg:w-1/2 bg-gradient-to-r from-primary2 to-spacepurple2/10 border border-spacepurple2/50 text-text">
-        <p class="my-3 min-[390px]:text-base text-center">Highlighted Papers</p>
+      <div class="shadow-md rounded-xl m-3 p-1 lg:p-7 min-[390px]:m-6 sm:first-letter:m-7 flex flex-col lg:w-1/2 text-text">
+        <p class="my-3 mx-2 text-start uppercase">Most Recent Papers</p>
         <span class="h-px bg-zinc-800 w-full"></span>
 
-        <p class="text-sm font-semibold text-center my-4">
-          Thorne, Steve. <a href="" class="text-blue-700 hover:underline">Modeling the role of gravitation in metabolic processes.</a> Communicative & Integrative Biology 14.1 (2021): 115-135.
-        </p>
+        <ol class="list-decimal list-inside">
+          <li class="my-4">
+            <p class="text-sm font-semibold text-center">
+              Paul, Anna-Lisa et al., <a href="" class="text-blue-700 hover:underline">Plants grown in Apollo lunar regolith present stress-associated transcriptomes that inform prospects for lunar exploration.</a> Communications biology 5.1 (2022): 382.
+            </p>
+          </li>
+        </ol>
 
         <p class="text-sm font-semibold text-center my-4">
           Paul, Anna-Lisa et al., <a href="" class="text-blue-700 hover:underline">Plants grown in Apollo lunar regolith present stress-associated transcriptomes that inform prospects for lunar exploration.</a> Communications biology 5.1 (2022): 382.
@@ -104,32 +126,7 @@
       </div>
     </div>
   </section>
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const inputField = document.querySelector('input[name="query"]')
-      const suggestions = ['Search for space exploration research papers', 'Astrobiology', 'Microgravity', 'Space habitats', 'Lunar missions', 'Exoplanet exploration']
-      let index = 0
-    
-      function typeEffect() {
-        const suggestion = suggestions[index]
-        let suggestionIndex = 0
-    
-        let typing = setInterval(function () {
-          if (suggestionIndex <= suggestion.length) {
-            inputField.placeholder = suggestion.substring(0, suggestionIndex)
-            suggestionIndex++
-          } else {
-            clearInterval(typing)
-            setTimeout(function () {
-              index = (index + 1) % suggestions.length // Reset index to 0 if it reaches the end
-              typeEffect()
-            }, 1000) // Delay before showing the next suggestion
-          }
-        }, 80) // Adjust the delay here for typing speed
-      }
-    
-      typeEffect()
-    })
-  </script>
+  <script src="{% static 'js/launch_time.js' %}"></script>
+  <script src="{% static 'js/type_effect.js' %}"></script>
   {% include 'articles/slider_build.html' %}
 {% endblock %}
