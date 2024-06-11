@@ -1,6 +1,7 @@
 import requests
 from django.core.cache import cache
 
+# gets data from api
 def get_spaceflight_news():
     cached_data = cache.get('spaceflight_news')
     if cached_data:
@@ -12,26 +13,3 @@ def get_spaceflight_news():
         cache.set('spaceflight_news', space_news, timeout=(60 * 10))
         # print("Dados armazenados no cache:", space_news)  # Para fins de debug
         return space_news
-
-
-def get_spacelaunches():
-    cached_data = cache.get('spacelaunches')
-    if cached_data:
-        return cached_data
-    else:
-        url = "https://lldev.thespacedevs.com/2.2.0/launch/upcoming"
-        response = requests.get(url, params={'limit': 8})
-        spacelaunches = response.json
-        cache.set('spacelaunchs', spacelaunches, timeout=(60*10))
-        return spacelaunches
-
-def get_nextspacelaunch():
-    cached_data = cache.get('nextspacelaunch')
-    if cached_data:
-        return cached_data
-    else:
-        url = "https://lldev.thespacedevs.com/2.2.0/launch/upcoming"
-        response = requests.get(url, params={'limit': 2})
-        nextspacelaunch = response.json()
-        cache.set('nextspacelaunchs', nextspacelaunch, timeout=(60*10))
-        return nextspacelaunch
