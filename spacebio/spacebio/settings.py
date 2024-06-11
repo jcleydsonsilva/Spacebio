@@ -43,7 +43,7 @@ DJANGO_APPS = [
 
 MY_APPS = [
     'articles.apps.ArticlesConfig',
-    'dashboard.apps.DashboardConfig',
+    'space.apps.SpaceConfig',
 ]
 
 THIRD_PARTY_APPS = [

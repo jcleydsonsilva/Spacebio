@@ -11,24 +11,22 @@ from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from articles.models import SpaceExploration
-from .apis import get_spaceflight_news, get_spacelaunches, get_nextspacelaunch
+from space.models import *
+from space.apis import fetch_spacenews
+from .apis import get_spaceflight_news
+from space.apis import fecth_spacelaunchs
  
 def home(request):
     space_news = cache.get('space_news')
-    nextspacelaunch = cache.get('nextspacelaunch')
-    cache.get('nextspacelaunch')
-    if space_news is None or nextspacelaunch is None:
-        space_news = get_spaceflight_news()
-        nextspacelaunch = get_nextspacelaunch()
-        cache.set('space_news', space_news, 60*100)
-        cache.set('nextspacelaunch', nextspacelaunch, 60*100)
+
+    nextspacelaunch = fecth_spacelaunchs(limit=2)
+    space_news = fetch_spacenews(limit=10)
     
     return render(request, 'articles/home.html', {'space_news': space_news, 'nextspacelaunch': nextspacelaunch})
 
 def article_main(request):
     space_news = get_spaceflight_news()
-    spacelaunchs = get_spacelaunches()
-    return render(request, 'articles/main.html', {'space_news': space_news, 'spacelaunchs': spacelaunchs})
+    return render(request, 'articles/main.html', {'space_news': space_news})
 
 
 def article_list(request):
@@ -55,11 +53,8 @@ def article_list(request):
 
 def launches(request):
     
-    spacelaunches = cache.get('spacelaunches')
-    if spacelaunches is None:
-        spacelaunches = get_spacelaunches()
-        cache.set('spacelaunches', spacelaunches, 60*10)
-    
+    spacelaunches = fecth_spacelaunchs()
+
     return render(request, 'articles/launches.html', {'spacelaunches': spacelaunches})
 
 def news(request):
