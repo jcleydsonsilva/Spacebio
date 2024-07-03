@@ -1036,6 +1036,11 @@ video {
   margin-bottom: auto;
 }
 
+.mx-1 {
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+}
+
 .-mb-9 {
   margin-bottom: -2.25rem;
 }
@@ -1953,6 +1958,10 @@ video {
   list-style-type: decimal;
 }
 
+.list-none {
+  list-style-type: none;
+}
+
 .appearance-none {
   -webkit-appearance: none;
      -moz-appearance: none;
@@ -2350,6 +2359,11 @@ video {
 
 .gap-y-3 {
   row-gap: 0.75rem;
+}
+
+.gap-x-2 {
+  -moz-column-gap: 0.5rem;
+       column-gap: 0.5rem;
 }
 
 .space-x-2 > :not([hidden]) ~ :not([hidden]) {
@@ -2919,6 +2933,10 @@ video {
   border-color: rgb(0 0 0 / var(--tw-border-opacity));
 }
 
+.border-blue-600\/50 {
+  border-color: rgb(37 99 235 / 0.5);
+}
+
 .border-indigo-500 {
   --tw-border-opacity: 1;
   border-color: rgb(99 102 241 / var(--tw-border-opacity));
@@ -3022,10 +3040,6 @@ video {
   background-color: rgb(0 0 0 / var(--tw-bg-opacity));
 }
 
-.bg-blue-600\/50 {
-  background-color: rgb(37 99 235 / 0.5);
-}
-
 .bg-blue-700\/60 {
   background-color: rgb(29 78 216 / 0.6);
 }
@@ -3091,6 +3105,16 @@ video {
   background-color: rgb(39 39 42 / var(--tw-bg-opacity));
 }
 
+.bg-gray-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(75 85 99 / var(--tw-bg-opacity));
+}
+
+.bg-gray-800 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(31 41 55 / var(--tw-bg-opacity));
+}
+
 .bg-opacity-10 {
   --tw-bg-opacity: 0.1;
 }
@@ -3117,6 +3141,12 @@ video {
 
 .bg-gradient-to-tr {
   background-image: linear-gradient(to top right, var(--tw-gradient-stops));
+}
+
+.from-black\/40 {
+  --tw-gradient-from: rgb(0 0 0 / 0.4) var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(0 0 0 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 
 .from-pink-500 {
@@ -3873,6 +3903,10 @@ video {
   color: rgba(var(--text), 0.6);
 }
 
+.text-text\/65 {
+  color: rgba(var(--text), 0.65);
+}
+
 .text-text\/70 {
   color: rgba(var(--text), 0.7);
 }
@@ -4613,6 +4647,10 @@ video {
 
 .hover\:hover\:bg-secondary:hover:hover {
   background-color: rgba(var(--secondary));
+}
+
+.hover\:bg-spacepurple1:hover {
+  background-color: rgba(var(--purple1));
 }
 
 .hover\:bg-opacity-70:hover {

@@ -160,3 +160,11 @@ class News(models.Model):
     
     class Meta:
         db_table = 'space_news'
+        
+        
+class ExecutionLog(models.Model):
+    script_name = models.CharField(max_length=100)
+    last_executed = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.script_name} last executed at {self.last_executed}"
