@@ -44,6 +44,16 @@ def article_list(request):
         articles = SpaceExploration.objects.filter(query_filter)
         result_count = articles.count()
 
+    articles_paginator = Paginator(articles, 10)
+    page_number = request.GET.get('page')
+
+    try:
+        articles = articles_paginator.page(page_number)
+    except PageNotAnInteger:
+        articles = articles_paginator.page(1)
+    except EmptyPage:
+        articles = articles_paginator.page(articles_paginator.num_pages)
+
     # Open or create the file for writing
     with open(file_path, 'a+') as file:
         # Write the user input to the file

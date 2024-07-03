@@ -42,10 +42,10 @@
           <div class="flex rounded-xl shadow-md bg-primary text-text gap-0 h-48">
             <img src="{{ launch.image }}" alt="" class="w-1/3 object-cover rounded-s-xl h-full" />
             <div class="p-2 sm:p-4 flex flex-col justify-between">
-              <span class="rounded text-sm md:text-base text-text">{{ launch.launch_service_provider.name }}</span>
+              <span class="rounded text-sm md:text-base text-text/60">{{ launch.launch_service_provider.name }}</span>
               {% comment %} <span class="text-red-600 font-semibold rounded p-0.5">&circledcirc; Live</span> {% endcomment %}
-              <p class="font-semibold sm:text-xl">{{ launch.name }}</p>
-              <p class="text-sm sm:text-base line-clamp-2">{{ launch.pad.name }}, {{ launch.pad.location.name }}</p>
+              <p class="font-semibold text-sm sm:text-base md:text-xl">{{ launch.name }}</p>
+              <p class="text-text/65 text-sm sm:text-base line-clamp-2">{{ launch.pad.name }}, {{ launch.pad.location.name }}</p>
               <p class="countdown font-medium sm:text-lg text-spacepurple2" data-launch-date="{{ launch.window_start|date:"m/d/Y" }}"></p>
               <p class="text-sm sm:text-base">Starts at: {{ launch.window_start }}</p>
             </div>

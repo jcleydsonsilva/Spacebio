@@ -1,14 +1,15 @@
 from django.core.management.base import BaseCommand
 import requests
-from random import choice
 from django.utils.dateparse import parse_datetime
+from django.utils import timezone
 from space.models import *
+from urllib.parse import urlencode, urlparse, urlunparse
+
 
 class Command(BaseCommand):
     help = 'Fetch and save launch data from API'
 
     def create_default_mission(self):
-        # Cria uma missão padrão e orbita
         default_orbit, _ = Orbit.objects.get_or_create(
             name='Not Informed',
             defaults={'abbrev': 'NI'}
@@ -25,7 +26,17 @@ class Command(BaseCommand):
         return default_mission, default_orbit
 
     def handle(self, *args, **kwargs):
-        url = 'https://lldev.thespacedevs.com/2.2.0/launch/upcoming/'
+        script_name = 'fetch_and_insert_launches'
+        execution_log = ExecutionLog.objects.filter(script_name=script_name).first()
+        last_executed = execution_log.last_executed if execution_log else None
+
+        base_url = 'https://lldev.thespacedevs.com/2.2.0/launch/upcoming/'
+        params = {'ordering': 'last_updated'}
+        if last_executed:
+            params['last_updated__gt'] = last_executed.isoformat()
+
+        url = base_url + '?' + urlencode(params)
+
         total_inserted = 0
         total_updated = 0
         errors = []
@@ -43,6 +54,7 @@ class Command(BaseCommand):
             for item in data['results']:
                 try:
                     self.stdout.write(self.style.NOTICE(f'Processing launch: {item["name"]}'))
+                    
                     launch, created = Launch.objects.update_or_create(
                         slug=item['slug'],
                         defaults={
@@ -147,6 +159,14 @@ class Command(BaseCommand):
                     self.stdout.write(self.style.ERROR(f'Error processing launch {item["name"]}: {e}'))
                     
             url = data.get('next')
+
+        # Atualizar o timestamp da última execução
+        if execution_log:
+            execution_log.last_executed = timezone.now()
+            execution_log.save()
+        else:
+            ExecutionLog.objects.create(script_name=script_name)
+
         self.stdout.write(self.style.SUCCESS(f'Concluído! {total_inserted} lançamentos inseridos e {total_updated} lançamentos atualizados.'))
         
         if errors:

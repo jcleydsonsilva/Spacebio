@@ -1,13 +1,25 @@
 from django.core.management.base import BaseCommand
 import requests
 from django.utils.dateparse import parse_datetime
+from django.utils import timezone
 from space.models import *
+from urllib.parse import urlencode
 
 class Command(BaseCommand):
     help = 'Fetch and save news data from API'
 
     def handle(self, *args, **kwargs):
-        url = 'https://api.spaceflightnewsapi.net/v4/articles'
+        script_name = 'fetch_and_insert_news'
+        execution_log = ExecutionLog.objects.filter(script_name=script_name).first()
+        last_executed = execution_log.last_executed if execution_log else None
+
+        base_url = 'https://api.spaceflightnewsapi.net/v4/articles'
+        params = {}
+        if last_executed:
+            params['last_updated__gt'] = last_executed.isoformat()
+
+        url = base_url + '?' + urlencode(params)
+
         total_inserted = 0
         errors = []
         
@@ -45,11 +57,18 @@ class Command(BaseCommand):
                     except Exception as e:
                         errors.append((item, e))
                 
-                url = data.get('next', None)
+                url = data.get('next')
             
             except requests.exceptions.RequestException as e:
                 self.stdout.write(self.style.ERROR(f'Error making the request: {e}'))
         
+        # Atualizar o timestamp da última execução
+        if execution_log:
+            execution_log.last_executed = timezone.now()
+            execution_log.save()
+        else:
+            ExecutionLog.objects.create(script_name=script_name)
+
         self.stdout.write(self.style.SUCCESS(f'Finished! {total_inserted} news inserted.'))
         
         if errors:
@@ -57,4 +76,3 @@ class Command(BaseCommand):
             for item, error in errors:
                 self.stdout.write(self.style.ERROR(f'Item with error: {item}'))
                 self.stdout.write(self.style.ERROR(f'Error message: {error}'))
-
