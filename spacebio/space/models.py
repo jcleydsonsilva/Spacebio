@@ -99,7 +99,7 @@ class Location(models.Model):
 class Pad(models.Model):
     name = models.CharField(max_length=255)
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
-    map_url = models.URLField()
+    map_url = models.URLField(default='https://www.google.com/maps')
     latitude = models.CharField(max_length=50, null=True, blank=True)
     longitude = models.CharField(max_length=50, null=True, blank=True)
     total_launch_count = models.IntegerField()
@@ -137,7 +137,7 @@ class Launch(models.Model):
     launch_service_provider = models.ForeignKey(LaunchServiceProvider, on_delete=models.CASCADE)
     rocket = models.ForeignKey(Rocket, on_delete=models.CASCADE)
     mission = models.ForeignKey(Mission, on_delete=models.CASCADE)
-    pad = models.ForeignKey(Pad, on_delete=models.CASCADE)
+    pad = models.ForeignKey(Pad, on_delete=models.CASCADE, default='Not available')
     webcast_live = models.BooleanField(default=False)
     image = models.URLField(null=True, blank=True)
     infographic = models.URLField(null=True, blank=True)
@@ -147,10 +147,10 @@ class Launch(models.Model):
         db_table = 'space_launch'
 
 class News(models.Model):
-    title = models.CharField(max_length=255)
-    url = models.URLField()
-    image_url = models.URLField()
-    news_site = models.CharField(max_length=100)
+    title = models.TextField()
+    url = models.TextField()
+    image_url = models.TextField()
+    news_site = models.TextField()
     summary = models.TextField()
     published_at = models.DateTimeField()
     updated_at = models.DateTimeField()
@@ -164,7 +164,8 @@ class News(models.Model):
         
 class ExecutionLog(models.Model):
     script_name = models.CharField(max_length=100)
+    url = models.URLField(unique=True, default='No url provided')
     last_executed = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.script_name} last executed at {self.last_executed}"
+        return f"{self.script_name} for {self.url} last executed at {self.last_executed}"

@@ -1,45 +1,60 @@
 from django.core.management.base import BaseCommand
 import requests
 from django.utils.dateparse import parse_datetime
-from django.utils import timezone
-from space.models import *
-from urllib.parse import urlencode
+from space.models import ExecutionLog, News, Launch
+import logging
+from colorama import Fore, Style
+from datetime import datetime, timezone
+
+# Configure logging
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.DEBUG)
 
 class Command(BaseCommand):
     help = 'Fetch and save news data from API'
 
     def handle(self, *args, **kwargs):
         script_name = 'fetch_and_insert_news'
-        execution_log = ExecutionLog.objects.filter(script_name=script_name).first()
-        last_executed = execution_log.last_executed if execution_log else None
+        base_url = 'https://api.spaceflightnewsapi.net/v4/articles/'
 
-        base_url = 'https://api.spaceflightnewsapi.net/v4/articles'
-        params = {}
+        # Fetch the last execution log
+        last_execution_log = ExecutionLog.objects.filter(script_name=script_name, url=base_url).first()
+        if last_execution_log:
+            last_executed = last_execution_log.last_executed
+        else:
+            last_executed = None
+
+        # If there was a previous execution, add the timestamp to the URL
         if last_executed:
-            params['last_updated__gt'] = last_executed.isoformat()
+            last_executed_str = last_executed.isoformat().replace("+00:00", "Z")
+            url = f'{base_url}?updated_at_gte={last_executed_str}'
+        else:
+            url = base_url
 
-        url = base_url + '?' + urlencode(params)
+        logger.info(f'Fetching data updated after {last_executed}')
+        logger.info(f'Fetching data from {url}')
 
         total_inserted = 0
+        total_updated = 0
         errors = []
-        
+
         while url:
             try:
                 response = requests.get(url)
                 response.raise_for_status()
                 data = response.json()
-                
+
                 for item in data['results']:
                     try:
                         launch = None
                         launch_data = item.get('launches')
                         if launch_data and isinstance(launch_data, list):
-                            launch_info = launch_data[0]  # Verificar se há pelo menos um elemento na lista
+                            launch_info = launch_data[0]  # Ensure there's at least one element
                             launch_id = launch_info.get('launch_id')
                             if launch_id:
                                 launch = Launch.objects.filter(launch_id=launch_id).first()
-
-                        News.objects.update_or_create(
+                                
+                        news, created = News.objects.update_or_create(
                             title=item['title'],
                             defaults={
                                 'url': item['url'],
@@ -52,27 +67,35 @@ class Command(BaseCommand):
                                 'launch': launch,
                             }
                         )
-                        total_inserted += 1
-                   
+
+                        if created:
+                            total_inserted += 1
+                            logger.info(f'{Fore.BLUE}Inserted new news: {item["title"]}{Style.RESET_ALL}')
+                        else:
+                            total_updated += 1
+                            logger.info(f'{Fore.GREEN}Updated existing news: {item["title"]}{Style.RESET_ALL}')
+
                     except Exception as e:
                         errors.append((item, e))
-                
-                url = data.get('next')
-            
-            except requests.exceptions.RequestException as e:
-                self.stdout.write(self.style.ERROR(f'Error making the request: {e}'))
-        
-        # Atualizar o timestamp da última execução
-        if execution_log:
-            execution_log.last_executed = timezone.now()
-            execution_log.save()
-        else:
-            ExecutionLog.objects.create(script_name=script_name)
+                        logger.error(f'{Fore.RED}Error processing news {item["title"]}: {e}{Style.RESET_ALL}')
 
-        self.stdout.write(self.style.SUCCESS(f'Finished! {total_inserted} news inserted.'))
-        
+                url = data.get('next', None)
+
+            except requests.exceptions.RequestException as e:
+                logger.error(f'{Fore.RED}Error making the request: {e}{Style.RESET_ALL}')
+                break  # Exit loop if there is a request error
+
+        logger.info(f'{Fore.GREEN}Finished! {total_inserted} news inserted and {total_updated} news updated.{Style.RESET_ALL}')
+
         if errors:
-            self.stdout.write(self.style.ERROR('Errors encountered during processing:'))
+            logger.error(f'{Fore.RED}Errors encountered during processing:{Style.RESET_ALL}')
             for item, error in errors:
-                self.stdout.write(self.style.ERROR(f'Item with error: {item}'))
-                self.stdout.write(self.style.ERROR(f'Error message: {error}'))
+                logger.error(f'{Fore.RED}Item with error: {item}{Style.RESET_ALL}')
+                logger.error(f'{Fore.RED}Error message: {error}{Style.RESET_ALL}')
+
+        # Update or create the execution log
+        ExecutionLog.objects.update_or_create(
+            script_name=script_name,
+            url=base_url,
+            defaults={'last_executed': datetime.now(timezone.utc)}
+        )
