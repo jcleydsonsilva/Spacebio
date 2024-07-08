@@ -61,7 +61,7 @@ class Command(BaseCommand):
             try:
                 response = requests.get(url, params=params)
                 response.raise_for_status()  # Raise an exception for bad status codes
-                logger.debug(f'{Fore.BLUE}Fetched data from API successfully for {url}{Style.RESET_ALL}')
+                logger.debug(f'{Fore.MAGENTA}Fetched data from API successfully for {url}{Style.RESET_ALL}')
 
                 data = response.json()
 
@@ -192,13 +192,13 @@ class Command(BaseCommand):
                                     updated |= update_if_different(launch, field, launch_data.get(field))
 
                             if updated:
-                                logger.debug(f"{Fore.YELLOW}Updated fields for launch {launch.name}{Style.RESET_ALL}")
+                                logger.debug(f"{Fore.BLUE}Updated fields for launch {launch.name}{Style.RESET_ALL}")
                                 launch.save()
                                 total_updated += 1
                                 self.stdout.write(self.style.SUCCESS(f'Updated existing launch: {launch_data["name"]}'))
 
                     except (RequestException, JSONDecodeError, Exception) as e:
-                        logger.error(f'Error processing launch {launch_data["name"]}: {str(e)}', exc_info=True)
+                        logger.error(f'{Fore.RED}Error processing launch {launch_data["name"]}: {str(e)}', exc_info=True)
 
                 # Update the last executed timestamp for the URL
                 execution_log.last_executed = now()
@@ -207,5 +207,5 @@ class Command(BaseCommand):
             except RequestException as e:
                 logger.error(f'{Fore.RED}Error making API request: {str(e)}{Style.RESET_ALL}')
 
-        logger.debug(f'{Fore.GREEN}Total inserted: {total_inserted}{Style.RESET_ALL}')
-        logger.debug(f'{Fore.YELLOW}Total updated: {total_updated}{Style.RESET_ALL}')
+        logger.debug(f'{Fore.BLUE}Total launches updated: {total_updated}{Style.RESET_ALL}')
+        logger.debug(f'{Fore.GREEN}Total launches inserted: {total_inserted}{Style.RESET_ALL}')

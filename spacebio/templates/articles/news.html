@@ -18,7 +18,7 @@
     </div>
     <!-- Breadcrumb End -->
     <div class="grid md:grid-cols-2 gap-6 px-2 min-[390px]:px-7 lg:px-20 mb-20">
-      {% for news in space_news.results %}
+      {% for news in space_news %}
         <div class="w-full h-full xl:max-h-80">
           <div onclick="window.open('{{ news.url }}', '_blank')" class="relative group w-full h-full rounded-lg shadow-md overflow-hidden cursor-pointer">
             <div class="h-60 min-[390px]:min-h-60 min-[390px]:max-h-72 sm:h-72 md:h-64 xl:h-80 w-full">
@@ -29,13 +29,33 @@
               <div class="absolute h-1/2 flex flex-col gap-1 justify-end w-full bottom-0 px-4 pb-4 text-white bg-gradient-to-b from-transparent via-black/70 to-black/85 pt-7">
                 <div class="flex flex-col justify-between h-full">
                   <h3 class="text-start sm:text-lg lg:text-xl line-clamp-2 sm:pt-5 md:pt-0 xl:pt-4">{{ news.title }}</h3>
-                  <span class="text-white/50 text-xs truncate">{{ news.published_at|format_published_at|naturalday }} | <a href="{{ news.url }}" class="text-blue-500" target="_blank">{{ news.news_site }}</a></span>
+                  <span class="text-white/50 text-xs truncate">{{ news.published_at }} | <a href="{{ news.url }}" class="text-blue-500" target="_blank">{{ news.news_site }}</a></span>
                 </div>
               </div>
             </div>
           </div>
         </div>
       {% endfor %}
+    </div>
+    <div class="flex justify-center items-center my-4">
+      <span class="text-sm text-gray-600 me-3">Page {{ space_news.number }} of {{ space_news.paginator.num_pages }}</span>
+      <div class="flex items-center space-x-2">
+        {% if space_news.has_previous %}
+          <a href="?page=1" class="px-3 py-1.5 bg-primary text-text/50 rounded">First</a>
+          <a href="?page={{ space_news.previous_page_number }}" class="px-3 py-1.5 bg-primary text-text/50 rounded">Previous</a>
+        {% endif %}
+        {% for num in space_news.paginator.page_range %}
+          {% if space_news.number == num %}
+            <span class="px-3 py-1.5 bg-gradient-to-br from-spaceblue to-spacepurple2 rounded text-white max-w-min">{{ num }}</span>
+          {% elif num > space_news.number|add:'-3' and num < space_news.number|add:'3' %}
+            <a href="?page={{ num }}" class="px-3 py-1.5 bg-primary text-text/50 rounded">{{ num }}</a>
+          {% endif %}
+        {% endfor %}
+        {% if space_news.has_next %}
+          <a href="?page={{ space_news.next_page_number }}" class="px-2 py-1.5 bg-primary text-text/50 rounded">Next</a>
+          <a href="?page={{ space_news.paginator.num_pages }}" class="px-3 py-1.5 bg-primary text-text/50 rounded">Last</a>
+        {% endif %}
+      </div>
     </div>
   </section>
   <script src="{% static 'js/launch_time.js' %}"></script>

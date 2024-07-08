@@ -27,6 +27,7 @@ def get_nextspacelaunch():
         cache.set('nextspacelaunchs', nextspacelaunch, timeout=(60*10))
         return nextspacelaunch
     
+    
 # gets data from database
 def fecth_spacelaunchs(limit=None):
     current_time = now()

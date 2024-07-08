@@ -31,8 +31,8 @@ class Command(BaseCommand):
         else:
             url = base_url
 
-        logger.info(f'Fetching data updated after {last_executed}')
-        logger.info(f'Fetching data from {url}')
+        logger.info(f'{Fore.MAGENTA}Fetching data updated after {last_executed}')
+        logger.info(f'{Fore.MAGENTA}Fetching data from {url}')
 
         total_inserted = 0
         total_updated = 0
@@ -70,10 +70,10 @@ class Command(BaseCommand):
 
                         if created:
                             total_inserted += 1
-                            logger.info(f'{Fore.BLUE}Inserted new news: {item["title"]}{Style.RESET_ALL}')
+                            logger.info(f'{Fore.GREEN}Inserted new news: {item["title"]}{Style.RESET_ALL}')
                         else:
                             total_updated += 1
-                            logger.info(f'{Fore.GREEN}Updated existing news: {item["title"]}{Style.RESET_ALL}')
+                            logger.info(f'{Fore.BLUE}Updated existing news: {item["title"]}{Style.RESET_ALL}')
 
                     except Exception as e:
                         errors.append((item, e))
