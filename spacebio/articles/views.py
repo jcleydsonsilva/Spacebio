@@ -12,9 +12,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from articles.models import SpaceExploration
 from space.models import *
-from space.apis import fetch_spacenews
-from .apis import get_spaceflight_news
-from space.apis import fecth_spacelaunchs
+from space.apis import fecth_spacelaunchs, fetch_spacenews
  
 def home(request):
     space_news = cache.get('space_news')
@@ -23,10 +21,6 @@ def home(request):
     space_news = fetch_spacenews(limit=10)
     
     return render(request, 'articles/home.html', {'space_news': space_news, 'nextspacelaunch': nextspacelaunch})
-
-def article_main(request):
-    space_news = get_spaceflight_news()
-    return render(request, 'articles/main.html', {'space_news': space_news})
 
 
 def article_list(request):
@@ -61,14 +55,49 @@ def article_list(request):
 
     return render(request, 'articles/article_list.html', {'articles': articles, 'query': query, 'result_count': result_count})
 
-def launches(request):
-    
-    spacelaunches = fecth_spacelaunchs()
 
-    return render(request, 'articles/launches.html', {'spacelaunches': spacelaunches})
+def launches(request):
+    # Fetch space launches from the database
+    launches = fecth_spacelaunchs()
+    
+    # Create a paginator for the launches
+    launches_paginator = Paginator(launches, 10)
+    
+    # Get the page number from the request
+    page_number = request.GET.get('page')
+    
+    try:
+        # Get the launches for the requested page
+        launches = launches_paginator.page(page_number)
+    except PageNotAnInteger:
+        # If page number is not an integer, deliver first page.
+        launches = launches_paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        launches = launches_paginator.page(launches_paginator.num_pages)
+
+    # Render the launches page with the launches data
+    return render(request, 'articles/launches.html', {'launches': launches})
+
 
 def news(request):
+    # Fetch space news from the database
+    space_news = fetch_spacenews()
     
-    space_news = get_spaceflight_news()
+    #create a paginator for the news
+    news_paginator = Paginator(space_news, 8)
+    
+    # Get the page number from the request
+    page_number = request.GET.get('page')
+    
+    try:
+        # Get the news for the requested page
+        space_news = news_paginator.page(page_number)
+    except PageNotAnInteger:
+        # If page number is not an integer, deliver first page.
+        space_news = news_paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        space_news = news_paginator.page(news_paginator.num_pages)
     
     return render(request, 'articles/news.html', {'space_news': space_news})
