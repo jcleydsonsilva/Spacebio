@@ -47,7 +47,8 @@ MY_APPS = [
 ]
 
 THIRD_PARTY_APPS = [
-    "django_apscheduler",
+    'django_apscheduler',
+    'django_filters',
 ]
 
 SITE_ID = 1
@@ -98,7 +99,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'spacebio',
         'USER': 'postgres',
-        'PASSWORD': 'Pass181203.',
+        'PASSWORD': 'admin',
         'HOST': 'localhost',
         'PORT': '5432',
     }
