@@ -13,6 +13,8 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from articles.models import SpaceExploration
 from space.models import *
 from space.apis import fecth_spacelaunchs, fetch_spacenews
+
+from space.filters import LaunchFilter
  
 def home(request):
     space_news = cache.get('space_news')
@@ -58,10 +60,15 @@ def article_list(request):
 
 def launches(request):
     # Fetch space launches from the database
-    launches = fecth_spacelaunchs()
+    launches = Launch.objects.all()
     
+    # Aplicar o filtro
+    launch_filter = LaunchFilter(request.GET, queryset=launches)
+    filtered_launches = launch_filter.qs
+     # Debug: print query to check applied filters
+    print(filtered_launches.query)
     # Create a paginator for the launches
-    launches_paginator = Paginator(launches, 10)
+    launches_paginator = Paginator(filtered_launches, 10)
     
     # Get the page number from the request
     page_number = request.GET.get('page')
@@ -75,17 +82,21 @@ def launches(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         launches = launches_paginator.page(launches_paginator.num_pages)
+    
+    return render(request, 'articles/launches.html', {'launches': launches, 'filter': launch_filter})
 
-    # Render the launches page with the launches data
-    return render(request, 'articles/launches.html', {'launches': launches})
-
+def launch(request, launch_id):
+    launch = Launch.objects.get(id=launch_id)
+    
+    
+    return render(request, 'space/launch.html', {'launch': launch})
 
 def news(request):
     # Fetch space news from the database
     space_news = fetch_spacenews()
     
     #create a paginator for the news
-    news_paginator = Paginator(space_news, 8)
+    news_paginator = Paginator(space_news, 10)
     
     # Get the page number from the request
     page_number = request.GET.get('page')

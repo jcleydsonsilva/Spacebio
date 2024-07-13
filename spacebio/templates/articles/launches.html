@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 {% load static date_format humanize %}
+
 {% block content %}
   <!-- Breadcrumb Start -->
-
   <section class="flex flex-col container mx-auto mt-12">
-    <div class="flex justify-between items-center flex-wrap gap-3 text-sm sm:text-base mb-6 mt-12 px-2 min-[390px]:px-7 lg:px-20">
+    <div class="flex justify-between items-center flex-wrap gap-3 text-sm sm:text-base mb-6 mt-12 px-2 lg:px-20">
       <h2 class="font-bold w-1/2 text-text text-xl sm:text-2xl">Launches</h2>
 
       <div>
@@ -16,50 +16,83 @@
         </ol>
       </div>
     </div>
+    <!-- Filtros -->
+    <form method="get" class="mb-4 px-2 lg:px-20">
+      <div class="flex justify-between items-center w-full gap-4">
+        <div class="flex gap-2">
+          <div class="">
+            <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+            <input type="text" name="name" id="name" placeholder="Filter by name" value="{{ request.GET.name }}" class="w-full shadow-sm sm:text-sm bg-primary text-text rounded-md p-2" />
+          </div>
+          <div class="flex items-end">
+            <button type="submit" class="px-3 py-1.5 bg-gradient-to-br from-spaceblue to-spacepurple2 text-white rounded-md"><i class="fi fi-rr-search"></i></button>
+          </div>
+        </div>
+        <div class="flex gap-4">
+          <div>
+            <label for="window_start" class="block text-sm font-medium text-gray-700">Date</label>
+            <input type="date" name="window_start" id="window_start" value="{{ request.GET.window_start|date:'Y-m-d' }}" class="appearance-none mt-1 p-2 block w-full shadow-sm sm:text-sm bg-primary text-text rounded-md date:text-text" />
+          </div>
+          <div>
+            <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
+            <select name="status" id="status" class="mt-1 p-2 block w-full shadow-sm sm:text-sm bg-primary text-text rounded-md">
+              <option value="">Any</option>
+              <option value="upcoming" {% if request.GET.status == 'upcoming' %}selected{% endif %}>Upcoming</option>
+              <option value="completed" {% if request.GET.status == 'completed' %}selected{% endif %}>Completed</option>
+            </select>
+          </div>
+          <div class="flex items-end">
+            <button type="submit" class="px-3 py-1.5 bg-gradient-to-br from-spaceblue to-spacepurple2 text-white rounded-md">Filter</button>
+          </div>
+        </div>
+      </div>
+    </form>
     <!-- Breadcrumb End -->
-    <div class="grid md:grid-cols-2 gap-6 px-2 min-[390px]:px-7 lg:px-20 mb-20">
+    <div class="grid md:grid-cols-2 gap-6 px-2 lg:px-20 mb-20">
       {% for launch in launches %}
-        <div class="relative flex gap-5 rounded-lg shadow-lg text-text h-64">
-          <img src="{{ launch.image }}" alt="" class="absolute h-full w-full top-0 left-0 object-cover -z-10 rounded-s-lg" />
-          <div class="flex flex-col from-black/40 to-transparent justify-between gap-4 py-2">
-            <div class="flex flex-col gap-1">
-              <h2 class="text-xl font-semibold">{{ launch.launch_service_provider.name }}</h2>
-              <p class="text-sm">{{ launch.name }}</p>
-            </div>
-            <div class="flex flex-col justify-between">
-              <p class="countdown text-lg font-medium text-spacepurple2" data-launch-date="{{ launch.window_start|date:"m/d/Y" }}"></p>
-              <p class="text-sm sm:text-base">{{ launch.window_start }}</p>
-              <p class="text-sm sm:text-base">{{ launch.pad.name }}, {{ launch.pad.location.name }}</p>
-            </div>
-            <div class="flex gap-10">
-              <a href="{{ launch.url }}" target="_blank" class="flex items-center justify-center border border-blue-600/50 text-text px-2 rounded">See more<i class="fi fi-rr-external-link"></i></a>
+        <div onclick="window.location.href = 'space/launch/{{ launch.id }}'" class="relative w-full h-64 xl:max-h-80">
+          <div class="group w-full h-full rounded-lg shadow-md cursor-pointer overflow-hidden">
+            <img src="{{ launch.image }}" alt="" class="h-full w-full object-cover rounded-lg" />
+            <div class="absolute rounded-lg overflow-hidden bottom-0 -left-0.5 right-0 h-full flex flex-col justify-end">
+              <div class="absolute rounded-lg h-[102%] flex flex-col gap-1 justify-between w-2/3 -bottom-1 px-4 pb-4 text-white bg-gradient-to-r from-black/90 via-black/70 to-transparent pt-3">
+                <div class="flex flex-col gap-1 w-2/3">
+                  <h2 class="text-xl font-semibold">{{ launch.launch_service_provider.name }}</h2>
+                  <p class="text-sm">{{ launch.name }}</p>
+                </div>
+                <div class="flex flex-col justify-between w-2/3 overflow-hidden">
+                  <p class="countdown text-lg font-medium text-spacepurple2" data-launch-date="{{ launch.window_start|date:'m/d/Y' }}"></p>
+                  <p class="text-sm sm:text-base">{{ launch.window_start }}</p>
+                  <p class="text-sm sm:text-base line-clamp-2">{{ launch.pad.name }}, {{ launch.pad.location.name }}</p>
+                </div>
+                <div class="flex gap-10">
+                  <a href="space/launch/{{ launch.id }}" class="flex items-center justify-center border border-white/20 group-hover:border-spacepurple2/70 transition-all px-2 text-white/60 py-0.5 rounded">See more<i class="fi fi-rr-external-link"></i></a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       {% endfor %}
     </div>
-        <div class="flex justify-center items-center my-4">
-            <span class="text-sm text-gray-600 me-3">
-                Page {{ launches.number }} of {{ launches.paginator.num_pages }}
-            </span>
-            <div class="flex items-center space-x-2">
-                {% if launches.has_previous %}
-                    <a href="?page=1" class="px-3 py-1.5 bg-primary text-text/50 rounded">First</a>
-                    <a href="?page={{ launches.previous_page_number }}" class="px-3 py-1.5 bg-primary text-text/50 rounded">Previous</a>
-                {% endif %}
-                {% for num in launches.paginator.page_range %}
-                    {% if launches.number == num %}
-                        <span class="px-3 py-1.5 bg-gradient-to-br from-spaceblue to-spacepurple2 rounded text-white max-w-min" >{{ num }}</span>
-                    {% elif num > launches.number|add:'-3' and num < launches.number|add:'3' %}
-                        <a href="?page={{ num }}" class="px-3 py-1.5 bg-primary text-text/50 rounded">{{ num }}</a>
-                    {% endif %}
-                {% endfor %}
-                {% if launches.has_next %}
-                    <a href="?page={{ launches.next_page_number }}" class="px-2 py-1.5 bg-primary text-text/50 rounded">Next</a>
-                    <a href="?page={{ launches.paginator.num_pages }}" class="px-3 py-1.5 bg-primary text-text/50 rounded">Last</a>
-                {% endif %}
-            </div>
-        </div>
+    <div class="flex justify-center items-center my-4">
+      <span class="text-sm text-gray-600 me-3">Page {{ launches.number }} of {{ launches.paginator.num_pages }}</span>
+      <div class="flex items-center space-x-2">
+        {% if launches.has_previous %}
+          <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&amp;{% endif %}{% endfor %}page=1" class="px-3 py-1.5 bg-primary text-text/50 rounded">First</a>
+          <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&amp;{% endif %}{% endfor %}page={{ launches.previous_page_number }}" class="px-3 py-1.5 bg-primary text-text/50 rounded">Previous</a>
+        {% endif %}
+        {% for num in launches.paginator.page_range %}
+          {% if launches.number == num %}
+            <span class="px-3 py-1.5 bg-gradient-to-br from-spaceblue to-spacepurple2 rounded text-white max-w-min">{{ num }}</span>
+          {% elif num > launches.number|add:'-3' and num < launches.number|add:'3' %}
+            <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&amp;{% endif %}{% endfor %}page={{ num }}" class="px-3 py-1.5 bg-primary text-text/50 rounded">{{ num }}</a>
+          {% endif %}
+        {% endfor %}
+        {% if launches.has_next %}
+          <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&amp;{% endif %}{% endfor %}page={{ launches.next_page_number }}" class="px-2 py-1.5 bg-primary text-text/50 rounded">Next</a>
+          <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&amp;{% endif %}{% endfor %}page={{ launches.paginator.num_pages }}" class="px-3 py-1.5 bg-primary text-text/50 rounded">Last</a>
+        {% endif %}
+      </div>
+    </div>
   </section>
   <script src="{% static 'js/launch_time.js' %}"></script>
 {% endblock %}

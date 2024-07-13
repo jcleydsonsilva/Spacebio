@@ -20,7 +20,9 @@ from django.urls import include, path
 from articles import (
     views as articles_views,    
 )
-
+from space import (
+    views as space_views,
+)
 
 DJANGO_PATHS = [
     path("admin/", admin.site.urls, name='admin:index'),
@@ -34,5 +36,8 @@ ARTICLES_PATHS = [
     path('news', articles_views.news, name="news"),
 ]
 
+SPACE_PATHS = [
+    path('space/launch/<str:launch_id>', articles_views.launch, name="launch"),
+]
 
-urlpatterns = DJANGO_PATHS + ARTICLES_PATHS
+urlpatterns = DJANGO_PATHS + ARTICLES_PATHS + SPACE_PATHS

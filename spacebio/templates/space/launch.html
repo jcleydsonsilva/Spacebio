@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+  <!-- Breadcrumb Start -->
+  <section class="flex flex-col container mx-auto mt-4 sm:mt-12">
+    <div class="flex justify-between items-center flex-wrap gap-3 text-sm sm:text-base mb-6 sm:mt-12 px-2 min-[390px]:px-7 lg:px-20">
+      <h2 class="font-bold w-1/2 text-text text-xl sm:text-2xl">Launches</h2>
+      <div>
+        <ol class="flex items-baseline gap-2 text-sm sm:text-base">
+          <li>
+            <a class="font-medium text-text text-nowrap" href="{% url 'home' %}">SpaceBio /</a>
+          </li>
+          <li>
+            <a class="font-medium text-text text-nowrap" href="{% url 'launches' %}">Launches</a>
+          </li>
+          <li class="font-medium hidden sm:inline text-text/60">/ {{ launch.name }}</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="grid md:grid-cols-2 sm:gap-6 px-2 min-[390px]:px-7 lg:px-20 mb-20">
+      <div onclick="window.open('space/launch/{{ launch.id }}')" class="relative w-full h-64 xl:max-h-80">
+        <div class="group w-full h-full rounded-t-lg shadow-md cursor-pointer overflow-hidden">
+          <img src="{{ launch.image }}" alt="" class="h-full w-full object-cover rounded-t-lg" />
+        </div>
+      </div>
+
+      <div class="w-full h-full flex flex-col gap-1 sm:rounded-lg bg-gradient-to-br from-slate-800 to-background text-text justify-between p-4">
+        <div class="">
+          <p class="text-sm">{{ launch.launch_service_provider.name }}</p>
+          <h2 class="text-xl font-semibold">{{ launch.name }}</h2>
+        </div>
+        {% comment %} <div class="flex flex-col justify-between overflow-hidden">
+          <p class="countdown text-lg font-medium text-spacepurple2" data-launch-date="{{ launch.window_start|date:'m/d/Y' }}"></p>
+          <p class="text-sm sm:text-base">{{ launch.window_start }}</p>
+          <p class="text-sm sm:text-base line-clamp-2">{{ launch.pad.name }}, {{ launch.pad.location.name }}</p>
+        </div>
+        <div class="flex">
+          <a href="{{ launch.url }}" target="_blank" class="flex items-center justify-center border border-white/20 group-hover:border-spacepurple2/70 transition-all px-2 text-white/60 py-0.5 rounded">See more<i class="fi fi-rr-external-link"></i></a>
+        </div> {% endcomment %}
+      </div>
+    </div>
+    <div class="w-full h-full flex flex-col gap-1 sm:rounded-lg bg-gradient-to-br from-slate-800 to-background text-text justify-between p-4">
+      <div class="">
+        <p class="text-sm">{{ launch.launch_service_provider.name }}</p>
+        <h2 class="text-xl font-semibold">{{ launch.name }}</h2>
+      </div>
+      
+    </div>
+  </section>
+  <script src="{% static 'js/launch_time.js' %}"></script>
+{% endblock %}
