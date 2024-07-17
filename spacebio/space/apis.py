@@ -31,7 +31,7 @@ def get_nextspacelaunch():
 # gets data from database
 def fecth_spacelaunchs(limit=None):
     current_time = now()
-    nextspacelaunch = Launch.objects.filter(net__gte=current_time).order_by('net')
+    nextspacelaunch = Launch.objects.filter(net__gte=current_time).order_by('window_start')
     
     if limit is not None:
         nextspacelaunch = nextspacelaunch[:limit]

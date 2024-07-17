@@ -31,17 +31,20 @@
         <div class="flex gap-4">
           <div>
             <label for="window_start" class="block text-sm font-medium text-gray-700">Date</label>
-            <input type="date" name="window_start" id="window_start" value="{{ request.GET.window_start|date:'Y-m-d' }}" class="appearance-none mt-1 p-2 block w-full shadow-sm sm:text-sm bg-primary text-text rounded-md date:text-text" />
+            <input type="date" name="start_date" id="window_start" value="{{ request.GET.start_date }}" class="appearance-none mt-1 p-2 block w-full shadow-sm sm:text-sm bg-primary text-text rounded-md date:text-text" />
           </div>
           <div>
             <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
-            <select name="status" id="status" class="mt-1 p-2 block w-full shadow-sm sm:text-sm bg-primary text-text rounded-md">
-              <option value="">Any</option>
-              <option value="upcoming" {% if request.GET.status == 'upcoming' %}selected{% endif %}>Upcoming</option>
-              <option value="completed" {% if request.GET.status == 'completed' %}selected{% endif %}>Completed</option>
-            </select>
+                <select name="status" id="status" class="mt-1 p-2 block w-full shadow-sm sm:text-sm bg-primary text-text rounded-md">
+                    {% for status_choice in filter.filters.status.field.choices %}
+                        <option value="{{ status_choice.0 }}" {% if request.GET.status == status_choice.0 %}selected{% endif %}>{{ status_choice.1 }}</option>
+                    {% endfor %}
+                </select>
           </div>
-          <div class="flex items-end">
+          <div class="flex items-end gap-2">
+            {% if request.GET %}
+                <button type="button" onclick="window.location.href = '{% url 'launches' %}'" class="py-1.5 px-2 align-text-bottom bg-gradient-to-br from-spaceblue to-spacepurple2 text-white rounded-md"><i class="fi fi-rr-cross-small"></i></button>
+            {% endif %}
             <button type="submit" class="px-3 py-1.5 bg-gradient-to-br from-spaceblue to-spacepurple2 text-white rounded-md">Filter</button>
           </div>
         </div>
