@@ -9,6 +9,7 @@ from django.core.cache import cache
 from django.shortcuts import render
 from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django_filters.views import FilterView
 
 from articles.models import SpaceExploration
 from space.models import *
@@ -60,12 +61,12 @@ def article_list(request):
 
 def launches(request):
     # Fetch space launches from the database
-    launches = Launch.objects.all()
+    launches = Launch.objects.all().order_by('window_start')
     
     # Aplicar o filtro
     launch_filter = LaunchFilter(request.GET, queryset=launches)
     filtered_launches = launch_filter.qs
-     # Debug: print query to check applied filters
+    # Debug: print query to check applied filters
     print(filtered_launches.query)
     # Create a paginator for the launches
     launches_paginator = Paginator(filtered_launches, 10)
