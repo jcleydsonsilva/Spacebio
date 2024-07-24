@@ -4,14 +4,14 @@ from django.utils.timezone import now
 from .models import *
 
 
-# gets data from api
+# get data from api
 def get_spacelaunches():
     cached_data = cache.get('spacelaunches')
     if cached_data:
         return cached_data
     else:
-        url = "https://lldev.thespacedevs.com/2.2.0/launch/upcoming"
-        response = requests.get(url, params={'limit': 8})
+        url = "https://lldev.thespacedevs.com/2.2.0/launch/previous"
+        response = requests.get(url, params={'limit': 10000})
         spacelaunches = response.json
         cache.set('spacelaunchs', spacelaunches, timeout=(60*10))
         return spacelaunches
@@ -31,7 +31,7 @@ def get_nextspacelaunch():
 # gets data from database
 def fecth_spacelaunchs(limit=None):
     current_time = now()
-    nextspacelaunch = Launch.objects.filter(net__gte=current_time).order_by('window_start')
+    nextspacelaunch = Launch.objects.filter(net__gte=current_time).order_by('-window_start')
     
     if limit is not None:
         nextspacelaunch = nextspacelaunch[:limit]
