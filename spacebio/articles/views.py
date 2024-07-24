@@ -64,7 +64,7 @@ def launches(request):
     current_time = datetime.now().astimezone(timezone.utc)
     
     # Fetch space launches from the database
-    launches = Launch.objects.all()
+    launches = Launch.objects.all().order_by("-window_start")
     
     # Aplicar o filtro
     launch_filter = LaunchFilter(request.GET, queryset=launches)
