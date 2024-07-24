@@ -7,6 +7,7 @@ file_path = os.path.join(current_directory, 'inputs.txt')
 
 from django.core.cache import cache
 from django.shortcuts import render
+from django.utils.timezone import now
 from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django_filters.views import FilterView
@@ -60,18 +61,20 @@ def article_list(request):
 
 
 def launches(request):
+    current_time = datetime.now().astimezone(timezone.utc)
+    
     # Fetch space launches from the database
-    launches = Launch.objects.all().order_by('window_start')
+    launches = Launch.objects.all()
     
     # Aplicar o filtro
     launch_filter = LaunchFilter(request.GET, queryset=launches)
     filtered_launches = launch_filter.qs
+    
     # Debug: print query to check applied filters
     print(filtered_launches.query)
+    
     # Create a paginator for the launches
     launches_paginator = Paginator(filtered_launches, 10)
-    
-    # Get the page number from the request
     page_number = request.GET.get('page')
     
     try:

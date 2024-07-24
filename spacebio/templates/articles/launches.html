@@ -18,37 +18,56 @@
     </div>
     <!-- Filtros -->
     <form method="get" class="mb-4 px-2 lg:px-20">
-      <div class="flex justify-between items-center w-full gap-4">
+    <div class="flex justify-between items-center w-full gap-4">
         <div class="flex gap-2">
-          <div class="">
+        <div class="">
             <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
             <input type="text" name="name" id="name" placeholder="Filter by name" value="{{ request.GET.name }}" class="w-full shadow-sm sm:text-sm bg-primary text-text rounded-md p-2" />
-          </div>
-          <div class="flex items-end">
+        </div>
+        <div class="flex items-end">
             <button type="submit" class="px-3 py-1.5 bg-gradient-to-br from-spaceblue to-spacepurple2 text-white rounded-md"><i class="fi fi-rr-search"></i></button>
-          </div>
+        </div>
         </div>
         <div class="flex gap-4">
-          <div>
-            <label for="window_start" class="block text-sm font-medium text-gray-700">Date</label>
-            <input type="date" name="start_date" id="window_start" value="{{ request.GET.start_date }}" class="appearance-none mt-1 p-2 block w-full shadow-sm sm:text-sm bg-primary text-text rounded-md date:text-text" />
-          </div>
-          <div>
+        <div>
+            <label for="start_date" class="block text-sm font-medium text-gray-700">Date Range</label>
+            <input type="date" name="start_date_after" id="start_date" value="{{ request.GET.start_date_after }}" class="appearance-none mt-1 p-2 block w-full shadow-sm sm:text-sm bg-primary text-text rounded-md date:text-text" />
+            <input type="date" name="start_date_before" id="end_date" value="{{ request.GET.start_date_before }}" class="appearance-none mt-1 p-2 block w-full shadow-sm sm:text-sm bg-primary text-text rounded-md date:text-text" />
+        </div>
+        <div>
             <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
-                <select name="status" id="status" class="mt-1 p-2 block w-full shadow-sm sm:text-sm bg-primary text-text rounded-md">
-                    {% for status_choice in filter.filters.status.field.choices %}
-                        <option value="{{ status_choice.0 }}" {% if request.GET.status == status_choice.0 %}selected{% endif %}>{{ status_choice.1 }}</option>
-                    {% endfor %}
-                </select>
-          </div>
-          <div class="flex items-end gap-2">
+            <select name="status" id="status" class="mt-1 p-2 block w-full shadow-sm sm:text-sm bg-primary text-text rounded-md">
+            {% for status_choice in filter.filters.status.field.choices %}
+                <option value="{{ status_choice.0 }}" {% if request.GET.status == status_choice.0 %}selected{% endif %}>{{ status_choice.1 }}</option>
+            {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label for="launch_service_provider" class="block text-sm font-medium text-gray-700">Launch Service Provider</label>
+            <select name="launch_service_provider" id="launch_service_provider" class="mt-1 p-2 block w-full shadow-sm sm:text-sm bg-primary text-text rounded-md">
+                <option value="" {% if not request.GET.launch_service_provider %}selected{% endif %}>Any</option>
+            {% for provider in filter.filters.launch_service_provider.field.queryset %}
+                <option value="{{ provider.id }}" {% if request.GET.launch_service_provider == provider.id|stringformat:"s" %}selected{% endif %}>{{ provider.name }}</option>
+            {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label for="location" class="block text-sm font-medium text-gray-700">Launch Location</label>
+            <select name="location" id="location" class="mt-1 p-2 block w-full shadow-sm sm:text-sm bg-primary text-text rounded-md">
+                <option value="" {% if not request.GET.location %}selected{% endif %}>Any</option>
+            {% for location in filter.filters.location.field.queryset %}
+                <option value="{{ location.id }}" {% if request.GET.location == location.id|stringformat:"s" %}selected{% endif %}>{{ location.name }}</option>
+            {% endfor %}
+            </select>
+        </div>
+        <div class="flex items-end gap-2">
             {% if request.GET %}
-                <button type="button" onclick="window.location.href = '{% url 'launches' %}'" class="py-1.5 px-2 align-text-bottom bg-gradient-to-br from-spaceblue to-spacepurple2 text-white rounded-md"><i class="fi fi-rr-cross-small"></i></button>
+            <button type="button" onclick="window.location.href = '{% url 'launches' %}'" class="py-1.5 px-2 align-text-bottom bg-gradient-to-br from-spaceblue to-spacepurple2 text-white rounded-md"><i class="fi fi-rr-cross-small"></i></button>
             {% endif %}
             <button type="submit" class="px-3 py-1.5 bg-gradient-to-br from-spaceblue to-spacepurple2 text-white rounded-md">Filter</button>
-          </div>
         </div>
-      </div>
+        </div>
+    </div>
     </form>
     <!-- Breadcrumb End -->
     <div class="grid md:grid-cols-2 gap-6 px-2 lg:px-20 mb-20">
