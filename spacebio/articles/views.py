@@ -20,12 +20,17 @@ from space.filters import LaunchFilter
  
 def home(request):
     space_news = cache.get('space_news')
+    
+    articles_count = SpaceExploration.objects.all().count()
+    recent_articles = SpaceExploration.objects.all().order_by('-id')[:5]
 
     nextspacelaunch = fecth_spacelaunchs(limit=2)
     space_news = fetch_spacenews(limit=10)
     
-    return render(request, 'articles/home.html', {'space_news': space_news, 'nextspacelaunch': nextspacelaunch})
+    return render(request, 'articles/home.html', {'space_news': space_news, 'nextspacelaunch': nextspacelaunch, 'articles_count': articles_count, 'recent_articles': recent_articles})
 
+def space_literature(request):
+    return render(request, 'articles/space_literature.html')
 
 def article_list(request):
     query = request.GET.get('query')
