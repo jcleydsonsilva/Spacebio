@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+  <div class="px-2 py-5 sm:py-8 md:pb-12 md:pt-3 flex flex-col gap-4 items-center text-text">
+    <p class="mb-2 text-center sm:mt-2 font-pavelt">The First Space Exploration Literature Database focused on human space exploration</p>
+
+    <img class="" src="{% static 'articles/img/Figure.png' %}" alt="" />
+    <p class="text-sm sm:text-base text-center text-text mt-2">Write a short sentence to select papers, for example, Growing plants at the International Space Station, and press enter.</p>
+
+    <form action="{% url 'articles' %}" method="GET" class="mt-2 relative group w-full min-[390px]:px-1 sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-4xl">
+      <div class="absolute -inset-0.5 rounded-2xl blur bg-gradient-to-r from-spacepurple1 to-spacepurple2 opacity-55 group-hover:opacity-100 group-hover:duration-200 transition duration-1000 overflow-hidden">
+        <div class="w-full h-48 bg-spaceblue blur-xl animate-rotating"></div>
+      </div>
+
+      <div class="relative flex justify-between items-stretch w-full bg-primary2 rounded-2xl p-2 border-2 ring-1 ring-text/40 border-text/40 bg-clip-padding">
+        <input class="w-full bg-primary2 font-medium sm:text-lg placeholder:text-text/60 placeholder:font-medium sm:placeholder:text-lg p-4 sm:p-3 outline-none" type="text" placeholder="" name="query" minlength="2" required />
+        <button type="submit" class="pt-1 sm:pb-1.5 px-5 rounded-xl bg-gradient-to-br from-spaceblue to-spacepurple2 text-white transition-all font-medium"><span class="hidden sm:block">Search</span><i class="fi fi-rr-search sm:hidden"></i></button>
+      </div>
+    </form>
+
+    <div class="relative flex py-3 rounded-xl mb-12">
+      <div class="absolute -z-20 -bottom-10 left-1/2 w-20 h-20 sm:w-32 md:w-60 rounded-full blur-3xl bg-spaceblue animate-blob"></div>
+      <div class="absolute -z-20 -bottom-10 right-1/2 w-20 h-20 sm:w-32 md:w-60 rounded-full blur-3xl bg-spaceblue animate-blob animation-delay-2000"></div>
+      <div class="relative rounded-2xl p-3 mb-3 bg-gradient-to-b from-transparent via-background/70 to-transparent">
+        {% comment %} <div style="background-image: url({% static 'articles/img/galaxy1.png' %});" class="absolute w-full h-full top-0 left-0 -z-10 bg-cover bg-center opacity-40"></div> {% endcomment %}
+        <p class="text-sm sm:text-base md:text-lg font-bold text-center leading-4 sm:p-3 max-w-6xl">
+          With over <span class="text-spacegreen">{{ articles_count }}</span> papers on topics such as <span class="text-violet-600">spaceflight, microgravity research, astrobiology, and exoplanet exploration</span>, the Space Exploration Literature Data warehouse is a valuable resource for researchers and enthusiasts alike.
+        </p>
+      </div>
+    </div>
+  </div>
+{% endblock %}
