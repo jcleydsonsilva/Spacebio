@@ -21,6 +21,25 @@
 
     <script></script>
   </head>
+  <style>
+    /* Custom CSS for tooltip */
+    .tooltip {
+      position: absolute;
+      left: 100%;
+      margin-left: 0.5rem;
+      background-color: black;
+      color: white;
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.25rem;
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    
+    .group:hover .tooltip {
+      opacity: 1;
+    }
+  </style>
   <body class="flex flex-col h-full bg-background duration-500 accent-spacepurple2">
     <!-- NAVBAR -->
     <div id="navWrap" class="top-0 w-full z-10">
@@ -92,72 +111,75 @@
             <div class="flex justify-start flex-1 text-text py-10 overflow-x-hidden">
               {% comment %}LINKS{% endcomment %}
               <ul id="sideItems" class="flex flex-col gap-1 w-full ps-2.5 pe-2 items-stretch justify-start">
-                <span class="w-2/3 place-self-center h-0.5 bg-gradient-to-r from-text/10 via-text to-text/10"></span>
+                <div class="w-2/3 place-self-center h-0.5 bg-gradient-to-r from-text/5 via-text/60 to-text/5"></div>
                 <a href="{% url 'home' %}" data-url="{% url 'home' %}" class="w-full">
-                  <li class="flex flex-nowrap justify-start items-center gap-1 ps-1 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
+                  <li class="flex flex-nowrap justify-start items-center gap-1 ps-2 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
                     <i class="fi fi-rr-home text-xl text-text p-3"></i>
                     <span class="hidden opacity-0 duration-300 text-nowrap">Home</span>
                   </li>
                 </a>
-                <span class="w-2/3 place-self-center h-0.5 bg-gradient-to-r from-text/10 via-text to-text/10"></span>
-                <a href="{% url "space_literature" %}" data-url="teste" class="w-full">
-                  <li class="flex flex-nowrap justify-start items-center gap-1 ps-1 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
+
+                <div class="w-2/3 place-self-center h-0.5 bg-gradient-to-r from-text/5 via-text/60 to-text/5"></div>
+
+                <a href="{% url 'space_literature' %}" data-url="teste" class="w-full">
+                  <li class="flex flex-nowrap justify-start items-center gap-1 ps-2 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
                     <i class="fi fi-rr-book text-xl text-text p-3"></i>
-                    <span class="hidden opacity-0 duration-300 indent-3">Space Literature</span>
+                    <span class="hidden opacity-0 duration-300">Space Literature</span>
                   </li>
                 </a>
                 <a href="teste" data-url="teste" class="w-full">
-                  <li class="flex flex-nowrap justify-start items-center gap-1 ps-1 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
+                  <li class="flex flex-nowrap justify-start items-center gap-1 ps-2 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
                     <i class="fi fi-rr-microchip-ai text-xl text-text p-3"></i>
                     <span class="hidden opacity-0 duration-300">LupeGPT</span>
                   </li>
                 </a>
                 <a href="teste" data-url="teste" class="w-full">
-                  <li class="flex flex-nowrap justify-start items-center gap-1 ps-1 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
+                  <li class="flex flex-nowrap justify-start items-center gap-1 ps-2 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
                     <i class="fi fi-rr-api text-xl text-text p-3"></i>
                     <span class="hidden opacity-0 duration-300">Lupe API</span>
                   </li>
                 </a>
                 <a href="teste" data-url="teste" class="w-full">
-                  <li class="flex flex-nowrap justify-start items-center gap-1 ps-1 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
+                  <li class="flex flex-nowrap justify-start items-center gap-1 ps-2 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
                     <i class="fi fi-rr-chart-histogram text-xl text-text p-3"></i>
                     <span class="hidden opacity-0 duration-300">Lupe Stats</span>
                   </li>
                 </a>
-                <span class="w-2/3 place-self-center h-0.5 bg-gradient-to-r from-text/10 via-text to-text/10"></span>
+                <div class="w-2/3 place-self-center h-0.5 bg-gradient-to-r from-text/5 via-text/60 to-text/5"></div>
+                <a href="{% url 'launches' %}" data-url="{% url 'launches' %}" class="w-full">
+                  <li class="flex flex-nowrap justify-start items-center gap-1 ps-2 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
+                    <i class="fi fi-rr-rocket-lunch text-xl text-text p-3"></i>
+                    <span class="hidden opacity-0 duration-300 text-nowrap">Launches</span>
+                  </li>
+                </a>
                 <a href="teste" data-url="teste" class="w-full">
-                  <li class="flex flex-nowrap justify-start items-center gap-1 ps-1 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
+                  <li class="flex flex-nowrap justify-start items-center gap-1 ps-2 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
                     <i class="fi fi-rr-tv-retro text-xl text-text p-3"></i>
                     <span class="hidden opacity-0 duration-300">Spacebio TV</span>
                   </li>
                 </a>
-                <a href="{% url 'launches' %}" data-url="{% url 'launches' %}" class="w-full">
-                    <li class="flex flex-nowrap justify-start items-center gap-1 ps-1 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
-                        <i class="fi fi-rr-rocket-lunch text-xl text-text p-3"></i>
-                        <span class="hidden opacity-0 duration-300 text-nowrap">Launches</span>
-                    </li>
-                </a>
-
                 <a href="{% url 'news' %}" data-url="{% url 'news' %}" class="w-full">
-                  <li class="flex flex-nowrap justify-start items-center gap-1 ps-1 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
+                  <li class="flex flex-nowrap justify-start items-center gap-1 ps-2 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
                     <i class="fi fi-rr-newspaper text-xl text-text p-3"></i>
                     <span class="hidden opacity-0 duration-300 text-nowrap">News</span>
                   </li>
                 </a>
-                <span class="w-2/3 place-self-center h-0.5 bg-gradient-to-r from-text/10 via-text to-text/10"></span>
-                <li class="flex flex-nowrap justify-start items-center gap-1 ps-1 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
+
+                <div class="w-2/3 place-self-center h-0.5 bg-gradient-to-r from-text/5 via-text/60 to-text/5"></div>
+
+                <li class="flex flex-nowrap justify-start items-center gap-1 ps-2 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
                   <i class="fi fi-rr-users-alt text-xl text-text p-3"></i>
                   <span class="hidden opacity-0 duration-300 text-nowrap">Team</span>
                 </li>
-                <li class="flex flex-nowrap justify-start items-center gap-1 ps-1 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
-                    <i class="fi fi-rr-list-timeline text-xl text-text p-3"></i>
-                    <span class="hidden opacity-0 duration-300 text-nowrap">Time line</span>
+                <li class="flex flex-nowrap justify-start items-center gap-1 ps-2 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
+                  <i class="fi fi-rr-list-timeline text-xl text-text p-3"></i>
+                  <span class="hidden opacity-0 duration-300 text-nowrap">Time line</span>
                 </li>
-                <li class="flex flex-nowrap justify-start items-center gap-1 ps-1 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
+                <li class="flex flex-nowrap justify-start items-center gap-1 ps-2 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
                   <i class="fi fi-rr-refer text-xl text-text p-3"></i>
                   <span class="hidden opacity-0 duration-300 text-nowrap">Get Involved</span>
                 </li>
-                <span class="w-2/3 place-self-center h-0.5 bg-gradient-to-r from-text/10 via-text to-text/10"></span>
+                <div class="w-2/3 place-self-center h-0.5 bg-gradient-to-r from-text/5 via-text/60 to-text/5"></div>
               </ul>
             </div>
           </div>
@@ -182,7 +204,7 @@
         </main>
         {% comment %}FOOTER{% endcomment %}
         <footer class="mt-10 bg-primary2 md:px-10 text-text border-t border-text/20">
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {% comment %}ABOUT{% endcomment %}
             <div class="flex flex-col rounded-xl my-6 p-4 border border-text/20">
               <p class="mb-2 text-xs sm:text-base">About Lupe Project</p>
@@ -213,6 +235,18 @@
                 <div class="w-2/3 p-2">
                   <script type="text/javascript" src="//rf.revolvermaps.com/0/0/8.js?i=5rmb1qk8bht&amp;m=2&amp;c=ff0000&amp;cr1=ffffff&amp;f=arial&amp;l=33&amp;v0=50&amp;z=11" async="async"></script>
                 </div>
+              </div>
+            </div>
+            {% comment %}SUPPORT{% endcomment %}
+            <div class="rounded-xl my-6 p-4 border w-full border-text/20 text-text flex flex-col">
+              <p class="">Support</p>
+              <div class="flex h-full gap-4">
+                <span class="flex justify-center items-center size-1/3 rounded-full overflow-hidden shadow-lg shadow-spacepurple2/40">
+                    <img src="{% static 'articles/img/spacebio.png' %}" alt="" class="w-4/5">
+                </span>
+                <span class="flex justify-center items-center size-1/3 rounded-full overflow-hidden shadow-lg shadow-spaceblue/40">
+                    <img src="https://genelab.nasa.gov/sites/default/files/2023-03/new%20GL%20logo_social%20media_b_0.JPG" alt="" class="w-4/5 rounded-full">
+                </span>
               </div>
             </div>
           </div>
