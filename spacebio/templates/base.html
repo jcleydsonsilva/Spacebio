@@ -92,6 +92,7 @@
             <div class="flex justify-start flex-1 text-text py-10 overflow-x-hidden">
               {% comment %}LINKS{% endcomment %}
               <ul id="sideItems" class="flex flex-col gap-1 w-full ps-2.5 pe-2 items-stretch justify-start">
+                <span class="w-2/3 place-self-center h-0.5 bg-gradient-to-r from-text/10 via-text to-text/10"></span>
                 <a href="{% url 'home' %}" data-url="{% url 'home' %}" class="w-full">
                   <li class="flex flex-nowrap justify-start items-center gap-1 ps-1 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
                     <i class="fi fi-rr-home text-xl text-text p-3"></i>
@@ -124,18 +125,19 @@
                   </li>
                 </a>
                 <span class="w-2/3 place-self-center h-0.5 bg-gradient-to-r from-text/10 via-text to-text/10"></span>
+                <a href="teste" data-url="teste" class="w-full">
+                  <li class="flex flex-nowrap justify-start items-center gap-1 ps-1 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
+                    <i class="fi fi-rr-tv-retro text-xl text-text p-3"></i>
+                    <span class="hidden opacity-0 duration-300">Spacebio TV</span>
+                  </li>
+                </a>
                 <a href="{% url 'launches' %}" data-url="{% url 'launches' %}" class="w-full">
                     <li class="flex flex-nowrap justify-start items-center gap-1 ps-1 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
                         <i class="fi fi-rr-rocket-lunch text-xl text-text p-3"></i>
                         <span class="hidden opacity-0 duration-300 text-nowrap">Launches</span>
                     </li>
                 </a>
-                <a href="teste" data-url="teste" class="w-full">
-                  <li class="flex flex-nowrap justify-start items-center gap-1 ps-1 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
-                    <i class="fi fi-rr-tv-retro text-xl text-text p-3"></i>
-                    <span class="hidden opacity-0 duration-300">Lupe TV</span>
-                  </li>
-                </a>
+
                 <a href="{% url 'news' %}" data-url="{% url 'news' %}" class="w-full">
                   <li class="flex flex-nowrap justify-start items-center gap-1 ps-1 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
                     <i class="fi fi-rr-newspaper text-xl text-text p-3"></i>
@@ -155,6 +157,7 @@
                   <i class="fi fi-rr-refer text-xl text-text p-3"></i>
                   <span class="hidden opacity-0 duration-300 text-nowrap">Get Involved</span>
                 </li>
+                <span class="w-2/3 place-self-center h-0.5 bg-gradient-to-r from-text/10 via-text to-text/10"></span>
               </ul>
             </div>
           </div>
