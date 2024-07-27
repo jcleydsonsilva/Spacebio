@@ -100,7 +100,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'spacebio',
         'USER': 'postgres',
-        'PASSWORD': 'admin',
+        'PASSWORD': 'Spacebio2050',
         'HOST': 'localhost',
         'PORT': '5432',
     }

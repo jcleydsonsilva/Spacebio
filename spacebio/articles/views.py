@@ -97,7 +97,6 @@ def launches(request):
 def launch(request, launch_id):
     launch = Launch.objects.get(id=launch_id)
     
-    
     return render(request, 'space/launch.html', {'launch': launch})
 
 def news(request):
@@ -121,3 +120,7 @@ def news(request):
         space_news = news_paginator.page(news_paginator.num_pages)
     
     return render(request, 'articles/news.html', {'space_news': space_news})
+
+
+def stellarium_view(request):
+    return render(request, 'articles/stellarium.html')
