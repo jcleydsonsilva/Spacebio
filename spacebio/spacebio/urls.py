@@ -35,6 +35,7 @@ ARTICLES_PATHS = [
     path('space_literature', articles_views.space_literature, name='space_literature'),
     path('launches', articles_views.launches, name="launches"),
     path('news', articles_views.news, name="news"),
+    path('stellarium/', articles_views.stellarium_view, name='stellarium_view'),
 ]
 
 SPACE_PATHS = [
