@@ -124,3 +124,28 @@ def news(request):
 
 def stellarium_view(request):
     return render(request, 'articles/stellarium.html')
+
+def team_view(request):
+
+    collaborators = [
+        {
+            'name': 'Alice Smith',
+            'role': 'Data Scientist',
+            'bio': 'Alice is an experienced data scientist with a focus on machine learning and AI.',
+            'image': 'https://via.placeholder.com/400',
+        },
+        {
+            'name': 'Bob Johnson',
+            'role': 'Backend Developer',
+            'bio': 'Bob is a seasoned backend developer specializing in Django and REST APIs.',
+            'image': 'https://via.placeholder.com/400',
+        },
+        {
+            'name': 'Charlie Brown',
+            'role': 'Frontend Developer',
+            'bio': 'Charlie is a creative frontend developer with expertise in React and Tailwind CSS.',
+            'image': 'https://via.placeholder.com/400',
+        },
+        # Adicione mais colaboradores conforme necessário
+    ]
+    return render(request, 'articles/team.html',{'collaborators': collaborators})
