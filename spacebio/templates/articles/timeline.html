@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static date_format humanize %}
+{% block content %}
+  <section class="flex flex-col container mx-auto">
+
+    <div class="container mx-auto px-4 py-8">
+        <div class="relative wrap overflow-hidden">
+            <div class="border-2-2 absolute border-opacity-20 border-gray-700 h-full border left-1/2"></div>
+
+            <!-- Event 1: Biology -->
+            <div class="mb-8 flex justify-between items-center w-full right-timeline">
+                <div class="order-1 w-5/12"></div>
+                <div class="z-20 flex items-center order-1 bg-green-500 shadow-xl w-12 h-12 rounded-full">
+                    <h1 class="mx-auto font-semibold text-lg text-white">1</h1>
+                </div>
+                <div class="order-1 bg-gray-800 rounded-lg shadow-xl w-5/12 px-6 py-4">
+                    <h3 class="mb-3 font-bold text-green-500 text-xl">Biology Event</h3>
+                    <p class="text-white leading-tight">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum in nisi commodo, aliquet velit ac, dapibus elit.</p>
+                </div>
+            </div>
+
+            <!-- Event 2: Space and Technology -->
+            <div class="mb-8 flex justify-between flex-row-reverse items-center w-full left-timeline">
+                <div class="order-1 w-5/12"></div>
+                <div class="z-20 flex items-center order-1 bg-purple-500 shadow-xl w-12 h-12 rounded-full">
+                    <h1 class="mx-auto font-semibold text-lg text-white">2</h1>
+                </div>
+                <div class="order-1 bg-gray-800 rounded-lg shadow-xl w-5/12 px-6 py-4">
+                    <h3 class="mb-3 font-bold text-purple-500 text-xl">Space and Technology Event</h3>
+                    <p class="text-white leading-tight">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum in nisi commodo, aliquet velit ac, dapibus elit.</p>
+                </div>
+            </div>
+
+            <!-- Event 3: New Member -->
+            <div class="mb-8 flex justify-between items-center w-full right-timeline">
+                <div class="order-1 w-5/12"></div>
+                <div class="z-20 flex items-center order-1 bg-blue-500 shadow-xl w-12 h-12 rounded-full">
+                    <h1 class="mx-auto font-semibold text-lg text-white">3</h1>
+                </div>
+                <div class="order-1 bg-gray-800 rounded-lg shadow-xl w-5/12 px-6 py-4">
+                    <h3 class="mb-3 font-bold text-blue-500 text-xl">New Member</h3>
+                    <p class="text-white leading-tight">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum in nisi commodo, aliquet velit ac, dapibus elit.</p>
+                </div>
+            </div>
+
+            <!-- Event 4: Scientific Literature -->
+            <div class="mb-8 flex justify-between flex-row-reverse items-center w-full left-timeline">
+                <div class="order-1 w-5/12"></div>
+                <div class="z-20 flex items-center order-1 bg-blue-500 shadow-xl w-12 h-12 rounded-full">
+                    <h1 class="mx-auto font-semibold text-lg text-white">4</h1>
+                </div>
+                <div class="order-1 bg-gray-800 rounded-lg shadow-xl w-5/12 px-6 py-4">
+                    <h3 class="mb-3 font-bold text-blue-500 text-xl">Scientific Literature</h3>
+                    <p class="text-white leading-tight">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum in nisi commodo, aliquet velit ac, dapibus elit.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {% comment %}Highlighted Papers{% endcomment %}
+  </section>
+  <script src="{% static 'js/launch_time.js' %}"></script>
+  <script src="{% static 'js/type_effect.js' %}"></script>
+  {% include 'articles/slider_build.html' %}
+{% endblock %}
