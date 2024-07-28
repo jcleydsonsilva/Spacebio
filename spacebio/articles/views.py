@@ -149,3 +149,17 @@ def team_view(request):
         # Adicione mais colaboradores conforme necessário
     ]
     return render(request, 'articles/team.html',{'collaborators': collaborators})
+
+def timeline_view(request):
+    return render(request, 'articles/timeline.html')
+
+def getInvolved_view(request):
+    return render(request, 'articles/getInvolved.html')
+
+def spacebiotv_view(request):
+    videos=[
+        {'1':'https://www.youtube.com/watch?v=8sy2XXk_UwQ'},
+        {'2':'https://www.youtube.com/watch?v=mhJRzQsLZGg'},
+        {'4':'https://www.youtube.com/watch?v=21X5lGlDOfg'},
+    ]
+    return render(request, 'articles/spacebiotv.html',{'videos':videos})

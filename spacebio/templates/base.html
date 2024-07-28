@@ -146,7 +146,7 @@
                   </li>
                 </a>
                 <div class="w-2/3 place-self-center h-0.5 bg-gradient-to-r from-text/5 via-text/60 to-text/5"></div>
-                <a href="teste" data-url="teste" class="w-full">
+                <a href="{% url 'spacebiotv_view' %}" data-url="{% url 'spacebiotv_view' %}" class="w-full">
                   <li class="flex flex-nowrap justify-start items-center gap-1 ps-2 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
                     <i class="fi fi-rr-tv-retro text-xl text-text p-3"></i>
                     <span class="hidden opacity-0 duration-300">Spacebio TV</span>
@@ -154,7 +154,7 @@
                 </a>
                 <a href="{% url 'stellarium_view' %}" data-url="{% url 'stellarium_view' %}" class="w-full">
                   <li class="flex flex-nowrap justify-start items-center gap-1 ps-2 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
-                    <i class="fi fi-tr-galaxy-alt text-xl text-text p-3"></i>
+                    <i class="fi fi-tr-galaxy-alt text-text p-3"></i>
                     <span class="hidden opacity-0 duration-300 text-nowrap">The Universe</span>
                   </li>
                 </a>
@@ -177,14 +177,18 @@
                   <span class="hidden opacity-0 duration-300 text-nowrap">Team</span>
                 </li>
               </a>
+              <a href="{% url 'timeline_view' %}" data-url="{% url 'timeline_view' %}" class="w-full">
                 <li class="flex flex-nowrap justify-start items-center gap-1 ps-2 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
                   <i class="fi fi-rr-list-timeline text-xl text-text p-3"></i>
-                  <span class="hidden opacity-0 duration-300 text-nowrap">Time line</span>
+                  <span class="hidden opacity-0 duration-300 text-nowrap">Timeline</span>
                 </li>
+              </a>
+              <a href="{% url 'getInvolved_view' %}" data-url="{% url 'getInvolved_view' %}" class="w-full">
                 <li class="flex flex-nowrap justify-start items-center gap-1 ps-2 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
                   <i class="fi fi-rr-refer text-xl text-text p-3"></i>
                   <span class="hidden opacity-0 duration-300 text-nowrap">Get Involved</span>
                 </li>
+              </a>
                 <div class="w-2/3 place-self-center h-0.5 bg-gradient-to-r from-text/5 via-text/60 to-text/5"></div>
               </ul>
             </div>
