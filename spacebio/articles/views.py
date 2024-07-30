@@ -157,9 +157,22 @@ def getInvolved_view(request):
     return render(request, 'articles/getInvolved.html')
 
 def spacebiotv_view(request):
-    videos=[
-        {'1':'https://www.youtube.com/watch?v=8sy2XXk_UwQ'},
-        {'2':'https://www.youtube.com/watch?v=mhJRzQsLZGg'},
-        {'4':'https://www.youtube.com/watch?v=21X5lGlDOfg'},
-    ]
+    videos = VidURL.objects.all()
+    
+    #create a paginator for the news
+    videos_paginator = Paginator(videos, 6)
+    
+    # Get the page number from the request
+    page_number = request.GET.get('page')
+    
+    try:
+        # Get the news for the requested page
+        videos = videos_paginator.page(page_number)
+    except PageNotAnInteger:
+        # If page number is not an integer, deliver first page.
+        videos = videos_paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        videos = videos_paginator.page(videos_paginator.num_pages)
+    
     return render(request, 'articles/spacebiotv.html',{'videos':videos})

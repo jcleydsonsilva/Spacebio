@@ -60,7 +60,7 @@ class Agency(models.Model):
     administrator = models.CharField(max_length=255, null=True, blank=True)
     founding_year = models.CharField(max_length=4, null=True, blank=True)
     info_url = models.URLField(blank=True, default='')
-    wiki_url = models.URLField(blank=True, default='')
+    wiki_url = models.URLField(blank=True, default='-')
     logo_url = models.URLField(null=True, blank=True, default='')
     image_url = models.URLField(null=True, blank=True, default='')
     
@@ -104,6 +104,11 @@ class Pad(models.Model):
     longitude = models.CharField(max_length=50, null=True, blank=True)
     total_launch_count = models.IntegerField()
     description = models.TextField(default='')
+    info_url = models.URLField(blank=True, null=True)
+    wiki_url = models.URLField(blank=True, null=True)
+    country_code = models.CharField(max_length=10, null=True, blank=True)
+    map_image = models.URLField(blank=True, null=True)
+    orbital_launch_attempt_count = models.IntegerField(null=True, blank=True)
 
     class Meta:
         db_table = 'space_pad'
@@ -115,10 +120,9 @@ class Program(models.Model):
     start_date = models.DateTimeField(blank=True, null=True)
     end_date = models.DateTimeField(null=True, blank=True)
     info_url = models.URLField(blank=True, default='')
-    wiki_url = models.URLField(blank=True)
+    wiki_url = models.URLField(blank=True, default='-')
     agencies = models.ManyToManyField(Agency)
     type = models.CharField(max_length=50)
-    description = models.TextField(default='')
 
     class Meta:
         db_table = 'space_program'
@@ -137,7 +141,7 @@ class Launch(models.Model):
     launch_service_provider = models.ForeignKey(LaunchServiceProvider, on_delete=models.CASCADE)
     rocket = models.ForeignKey(Rocket, on_delete=models.CASCADE)
     mission = models.ForeignKey(Mission, on_delete=models.CASCADE)
-    pad = models.ForeignKey(Pad, on_delete=models.CASCADE, default='Not available')
+    pad = models.ForeignKey(Pad, on_delete=models.CASCADE, default='-')
     webcast_live = models.BooleanField(default=False)
     image = models.URLField(null=True, blank=True)
     infographic = models.URLField(null=True, blank=True)
@@ -145,6 +149,45 @@ class Launch(models.Model):
 
     class Meta:
         db_table = 'space_launch'
+
+class InfoURL(models.Model):
+    launch = models.ForeignKey(Launch, related_name='info_urls', on_delete=models.CASCADE)
+    priority = models.IntegerField()
+    source = models.CharField(max_length=255, null=True, blank=True)
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    feature_image = models.URLField(null=True, blank=True)
+    url = models.URLField()
+    type = models.CharField(max_length=50, null=True, blank=True)
+    language = models.CharField(max_length=50, null=True, blank=True)
+
+    class Meta:
+        db_table = 'space_info_url'
+
+class VidURL(models.Model):
+    launch = models.ForeignKey(Launch, related_name='vid_urls', on_delete=models.CASCADE)
+    priority = models.IntegerField()
+    source = models.CharField(max_length=255, null=True, blank=True)
+    publisher = models.CharField(max_length=255, null=True, blank=True)
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    feature_image = models.URLField(null=True, blank=True)
+    url = models.URLField()
+    type = models.CharField(max_length=50, null=True, blank=True)
+    language = models.CharField(max_length=50, null=True, blank=True)
+    start_time = models.DateTimeField(null=True, blank=True)
+    end_time = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        db_table = 'space_vid_url'
+        
+    def get_embedded_url(self):
+        if 'watch?v=' in self.url:
+            return self.url.replace('watch?v=', 'embed/')
+        elif 'youtube.com/live/' in self.url:
+            return self.url.replace('youtube.com/live/', 'youtube.com/embed/')
+        else:
+            return self.url
 
 class News(models.Model):
     title = models.TextField()
@@ -160,8 +203,7 @@ class News(models.Model):
     
     class Meta:
         db_table = 'space_news'
-        
-        
+
 class ExecutionLog(models.Model):
     script_name = models.CharField(max_length=100)
     url = models.URLField(unique=True, default='No url provided')
