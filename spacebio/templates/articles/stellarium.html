@@ -1,14 +1,9 @@
 {% extends 'base.html' %}
 {% load static date_format humanize %}
 {% block content %}
-  <section class="flex flex-col container mx-auto">
-    <div class="px-2 py-5 sm:py-8 md:pb-12 md:pt-3 flex flex-col gap-4 items-center text-text">
+  <section class="flex flex-col">
+    <div class="flex items-center text-text">
     <iframe src="https://stellarium-web.org" style="width: 100%; height: 90vh; border: none;"></iframe>
     </div>
-
-    {% comment %}Highlighted Papers{% endcomment %}
   </section>
-  <script src="{% static 'js/launch_time.js' %}"></script>
-  <script src="{% static 'js/type_effect.js' %}"></script>
-  {% include 'articles/slider_build.html' %}
 {% endblock %}

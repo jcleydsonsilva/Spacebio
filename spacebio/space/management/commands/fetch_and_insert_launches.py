@@ -41,9 +41,9 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         urls = [
-            "https://lldev.thespacedevs.com/2.2.0/launch/previous/",
-            "https://lldev.thespacedevs.com/2.2.0/launch/upcoming/",
-            "https://lldev.thespacedevs.com/2.2.0/launch/"
+            "https://lldev.thespacedevs.com/2.2.0/launch/previous/?mode=detailed",
+            "https://lldev.thespacedevs.com/2.2.0/launch/upcoming/?mode=detailed",
+            "https://lldev.thespacedevs.com/2.2.0/launch/?mode=detailed"
         ]
 
         total_inserted = 0
@@ -172,6 +172,126 @@ class Command(BaseCommand):
                                 'infographic': launch_data.get('infographic', '')
                             }
                         )
+
+                        # # VidURL
+                        # try:
+                        #     vidurl_data = launch_data['vidURLs'][0]
+                        # except:
+                        #     vidurl_data = launch_data['vidURLs']
+                            
+                        # vid, _ = VidURL.objects.get_or_create(
+                        #     launch=launch,
+                        #     defaults={
+                        #         'priority': vidurl_data['priority'] or 0,
+                        #         'source': vidurl_data['source'],
+                        #         'publisher': vidurl_data['publisher'],
+                        #         'title': vidurl_data['title'],
+                        #         'description': vidurl_data['description'],
+                        #         'feature_image': vidurl_data['feature_image'],
+                        #         'url': vidurl_data['url'],
+                        #         'type': vidurl_data['type'],
+                        #         'language': vidurl_data['language'],
+                        #         'start_time': normalize_datetime(vidurl_data['start_time']),
+                        #         'end_time': normalize_datetime(vidurl_data['end_time']),
+                        #     }
+                        # )
+                        
+                        
+                        # Inside your loop processing each launch_data
+                        for vidurl_data in launch_data.get('vidURLs', []):  # Iterate over each vidURL item
+                            try:
+                                # Extract data with default values where necessary
+                                priority = int(vidurl_data.get('priority', 0))
+                                source = vidurl_data.get('source', '')
+                                publisher = vidurl_data.get('publisher', '')
+                                title = vidurl_data.get('title', '')
+                                description = vidurl_data.get('description', '')
+                                feature_image = vidurl_data.get('feature_image', '')
+                                url = vidurl_data.get('url', '')
+                                vid_type = vidurl_data.get('type', '')
+                                language_data = vidurl_data.get('language', {})
+                                language = language_data.get('code', '') if language_data else ''
+                                start_time = normalize_datetime(vidurl_data.get('start_time'))
+                                end_time = normalize_datetime(vidurl_data.get('end_time'))
+                                
+                                # Create or get the VidURL object
+                                vid, _ = VidURL.objects.get_or_create(
+                                    launch=launch,
+                                    defaults={
+                                        'priority': priority,
+                                        'source': source,
+                                        'publisher': publisher,
+                                        'title': title,
+                                        'description': description,
+                                        'feature_image': feature_image,
+                                        'url': url,
+                                        'type': vid_type,
+                                        'language': language,
+                                        'start_time': start_time,
+                                        'end_time': end_time,
+                                    }
+                                )
+                                logger.debug(f"Inserted or updated VidURL: {url}")
+
+                            except Exception as e:
+                                logger.error(f"Error processing VidURL: {vidurl_data}. Error: {e}")
+                        
+                                                
+                        
+                        # InfoURL
+                        # try:
+                        #     infourl_data = launch_data['infoURLs'][0]
+                        # except:
+                        #     infourl_data = launch_data['infoURLs']
+                            
+                        # info, _ = InfoURL.objects.get_or_create(
+                        #     launch=launch,
+                        #     defaults={
+                        #         'priority': infourl_data['priority'] or 0,
+                        #         'source': infourl_data['source'],
+                        #         'title': infourl_data['title'],
+                        #         'description': infourl_data['description'],
+                        #         'feature_image': infourl_data['feature_image'],
+                        #         'url': infourl_data['url'],
+                        #         'type': infourl_data['type'],
+                        #         'language': infourl_data['language'],
+                        #     }
+                        # )
+
+                        # Inside your loop processing each launch_data
+                        for infourl_data in launch_data.get('infoURLs', []):  # Iterate over each infoURL item
+                            try:
+                                # Extract data with default values where necessary
+                                priority = int(infourl_data.get('priority', 0))
+                                source = infourl_data.get('source', '')
+                                title = infourl_data.get('title', '')
+                                description = infourl_data.get('description', '')
+                                feature_image = infourl_data.get('feature_image', '')
+                                url = infourl_data.get('url', '')
+                                infotype = infourl_data.get('type', '')
+                                language_data = infourl_data.get('language', {})
+                                language = language_data.get('code', '') if language_data else ''
+                                
+                                # Create or get the InfoURL object
+                                info, _ = InfoURL.objects.get_or_create(
+                                    launch=launch,
+                                    defaults={
+                                        'priority': priority,
+                                        'source': source,
+                                        'title': title,
+                                        'description': description,
+                                        'feature_image': feature_image,
+                                        'url': url,
+                                        'type': infotype,
+                                        'language': language,
+                                    }
+                                )
+                                logger.debug(f"Inserted or updated InfoURL: {url}")
+
+                            except Exception as e:
+                                logger.error(f"Error processing InfoURL: {infourl_data}. Error: {e}")
+
+
 
                         if created:
                             total_inserted += 1
