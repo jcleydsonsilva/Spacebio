@@ -2,7 +2,13 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
+import threading
+import time
+from django.core.management import call_command
 
+def start_jobs():
+    time.sleep(5)
+    call_command('start_jobs')
 
 def main():
     """Run administrative tasks."""
@@ -15,6 +21,12 @@ def main():
             "available on your PYTHONPATH environment variable? Did you "
             "forget to activate a virtual environment?"
         ) from exc
+        
+        
+    # Start the job scheduler in a separate thread
+    if 'runserver' in sys.argv and os.environ.get('RUN_MAIN') != 'true':
+        threading.Thread(target=start_jobs).start()
+        
     execute_from_command_line(sys.argv)
 
 
