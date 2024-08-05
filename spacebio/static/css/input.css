@@ -5,7 +5,7 @@
 @layer base {
 
     [data-theme="light"] {
-        --background: 245, 245, 245;
+        --background: 238, 242, 248;
         --primary: 255, 255, 255;
         --primary-2: 255, 255, 255;
         --secondary: 159, 145, 204;
