@@ -15,6 +15,7 @@ from django_filters.views import FilterView
 from articles.models import SpaceExploration
 from space.models import *
 from space.apis import fecth_spacelaunchs, fetch_spacenews
+from django.templatetags.static import static
 
 from space.filters import LaunchFilter
  
@@ -129,24 +130,27 @@ def team_view(request):
 
     collaborators = [
         {
-            'name': 'Alice Smith',
+            'name': 'José Cleydson F. da Silva',
+            'image': static('articles/img/team/Cleydson.jpeg'),
+            'title': 'Project Leader',
             'role': 'Data Scientist',
-            'bio': 'Alice is an experienced data scientist with a focus on machine learning and AI.',
-            'image': 'https://via.placeholder.com/400',
+            'github': 'https://github.com/jcleydsonsilva',
+            'linkedin': 'https://www.linkedin.com/in/jose-cleydson-ferreira-silva-a790b617b/',
+            'twitter': 'https://x.com/cleysinhonv',
+            'researchgate': 'https://www.researchgate.net/profile/Jose-Cleydson-Silva',
+            'googlescholar': 'https://scholar.google.com.br/citations?user=RDTNcYkAAAAJ',
+            'bio': 'Cleydson is an experienced data scientist with a focus on machine learning and AI.',
         },
         {
-            'name': 'Bob Johnson',
-            'role': 'Backend Developer',
-            'bio': 'Bob is a seasoned backend developer specializing in Django and REST APIs.',
-            'image': 'https://via.placeholder.com/400',
+            'name': 'Arthur Vieira',
+            'image': static('articles/img/team/Arthur.jpeg'),
+            'title': 'Developer',
+            'role': 'Fullstack Developer',
+            'github': 'https://github.com/ArthurSSJ',
+            'linkedin': 'https://www.linkedin.com/in/arthurvieira/',
+            'email': 'arthurvieira@me.com',
+            'bio': 'Arthur is a seasoned fullstack developer specializing in Django and REST APIs.',
         },
-        {
-            'name': 'Charlie Brown',
-            'role': 'Frontend Developer',
-            'bio': 'Charlie is a creative frontend developer with expertise in React and Tailwind CSS.',
-            'image': 'https://via.placeholder.com/400',
-        },
-        # Adicione mais colaboradores conforme necessário
     ]
     return render(request, 'articles/team.html',{'collaborators': collaborators})
 
