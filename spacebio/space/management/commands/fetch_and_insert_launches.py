@@ -51,15 +51,9 @@ class Command(BaseCommand):
         script_name = 'fetch_and_insert_launches'
 
         for url in urls:
-            execution_log, created = ExecutionLog.objects.get_or_create(script_name=script_name, url=url)
-            last_executed = execution_log.last_executed
-
-            params = {}
-            if last_executed:
-                params['updated_after'] = last_executed.isoformat()
 
             try:
-                response = requests.get(url, params=params)
+                response = requests.get(url)
                 response.raise_for_status()  # Raise an exception for bad status codes
                 logger.debug(f'{Fore.MAGENTA}Fetched data from API successfully for {url}{Style.RESET_ALL}')
 
@@ -319,10 +313,6 @@ class Command(BaseCommand):
 
                     except (RequestException, JSONDecodeError, Exception) as e:
                         logger.error(f'{Fore.RED}Error processing launch {launch_data["name"]}: {str(e)}', exc_info=True)
-
-                # Update the last executed timestamp for the URL
-                execution_log.last_executed = now()
-                execution_log.save()
 
             except RequestException as e:
                 logger.error(f'{Fore.RED}Error making API request: {str(e)}{Style.RESET_ALL}')
