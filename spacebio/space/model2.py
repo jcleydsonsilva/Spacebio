@@ -413,6 +413,14 @@ class VidURLs(models.Model):
     
     class Meta:
         db_table = 'space_vid_urls'
+        
+    def get_embedded_url(self):
+        if 'watch?v=' in self.url:
+            return self.url.replace('watch?v=', 'embed/')
+        elif 'youtube.com/live/' in self.url:
+            return self.url.replace('youtube.com/live/', 'youtube.com/embed/')
+        else:
+            return self.url
     
 
 class Mission(models.Model):
@@ -473,3 +481,27 @@ class Launch(models.Model):
     class Meta:
         db_table = 'space_launch'
     
+
+
+class News(models.Model):
+    title = models.TextField()
+    url = models.TextField()
+    image_url = models.TextField()
+    news_site = models.TextField()
+    summary = models.TextField()
+    published_at = models.DateTimeField()
+    updated_at = models.DateTimeField()
+    featured = models.BooleanField()
+    launch = models.ForeignKey(Launch, on_delete=models.CASCADE, null=True, blank=True)
+    # TODO: Add event field here. Needs to create agencies, launches, expeditios, spacestations and program models/tables first
+    
+    class Meta:
+        db_table = 'space_news'
+
+class ExecutionLog(models.Model):
+    script_name = models.CharField(max_length=100)
+    url = models.URLField(unique=True, default='No url provided')
+    last_executed = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.script_name} for {self.url} last executed at {self.last_executed}"

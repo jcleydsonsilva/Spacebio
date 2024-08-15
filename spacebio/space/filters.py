@@ -21,22 +21,22 @@ class LaunchFilter(django_filters.FilterSet):
         empty_label='Any'
     )
 
-    # Filtro de Provedor de Serviços de Lançamento
-    launch_service_provider = django_filters.ModelChoiceFilter(
-        field_name='launch_service_provider',
-        queryset=LaunchServiceProvider.objects.all(),
-        label='Launch Service Provider',
-        empty_label='Any'
-    )
+    # # Filtro de Provedor de Serviços de Lançamento
+    # launch_service_provider = django_filters.ModelChoiceFilter(
+    #     field_name='launch_service_provider',
+    #     queryset=LaunchServiceProvider.objects.all(),
+    #     label='Launch Service Provider',
+    #     empty_label='Any'
+    # )
 
-    # Filtro de Localização de Lançamento
-    location = django_filters.ModelChoiceFilter(
-        field_name='pad__location',
-        queryset=Location.objects.all(),
-        label='Launch Location',
-        empty_label='Any'
-    )
+    # # Filtro de Localização de Lançamento
+    # location = django_filters.ModelChoiceFilter(
+    #     field_name='pad__location',
+    #     queryset=Location.objects.all(),
+    #     label='Launch Location',
+    #     empty_label='Any'
+    # )
 
-    class Meta:
-        model = Launch
-        fields = ['name', 'start_date', 'status', 'launch_service_provider', 'location']
+    # class Meta:
+    #     model = Launch
+    #     fields = ['name', 'start_date', 'status', 'launch_service_provider', 'location']
