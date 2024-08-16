@@ -1,4 +1,4 @@
-# SpaceBio Django Project
+# Spacebio Django Project
 
 The SpaceBio's mission is to advance understanding of all researches outside Earth by providing exceptional access the space literature as a way smart through Artificial Intelligence and Machine Intelligence.
 
