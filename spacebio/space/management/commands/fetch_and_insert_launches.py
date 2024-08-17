@@ -67,7 +67,8 @@ class Command(BaseCommand):
                         try:
                             # Status
                             status_data = launch_data['status']
-                            status, _ = Status.objects.get_or_create(
+                            status, _ = LaunchStatus.objects.get_or_create(
+                                id = status_data['id'],
                                 name=status_data['name'],
                                 defaults={'abbrev': status_data['abbrev'], 'description': status_data['description']}
                             )
@@ -75,15 +76,20 @@ class Command(BaseCommand):
                             # NetPrecision
                             net_precision_data = launch_data.get('net_precision', {})
                             net_precision, _ = NetPrecision.objects.get_or_create(
+                                id=net_precision_data.get('id', 'Unknown'),
                                 name=net_precision_data.get('name', 'Unknown'),
                                 defaults={'abbrev': net_precision_data.get('abbrev', ''), 'description': net_precision_data.get('description', '')}
                             )
-
+                            '''
                             # LaunchServiceProvider
                             lsp_data = launch_data['launch_service_provider']
+                            print ('---------------------------')
+                            print (lsp_data)
+                            print ('_--------------------------')
                             launch_service_provider, _ = LaunchServiceProvider.objects.get_or_create(
+                                id=lsp_data['id'],
                                 name=lsp_data['name'],
-                                defaults={'type': lsp_data['type'], 'url': lsp_data['url'], 'description': ''}
+                                defaults={'type': lsp_data['type'], 'description': '', 'url': lsp_data['url']}
                             )
 
                             # RocketConfiguration
@@ -96,18 +102,19 @@ class Command(BaseCommand):
                                         'url': rocket_config_data['url'],
                                         'description': ''}
                             )
-
+                            
                             # Rocket
                             rocket, _ = Rocket.objects.get_or_create(
                                 configuration_id=rocket_configuration.id,
                                 defaults={'description': ''}
                             )
-
+                            '''
                             # Orbit
                             orbit_data = launch_data['mission']['orbit']
                             orbit, _ = Orbit.objects.get_or_create(
+                                id=orbit_data['id'],
                                 name=orbit_data['name'],
-                                defaults={'abbrev': orbit_data['abbrev'], 'description': ''}
+                                defaults={'abbrev': orbit_data['abbrev']}
                             )
 
                             # Mission (using mission ID as unique field)
@@ -131,6 +138,7 @@ class Command(BaseCommand):
                             # Location
                             location_data = launch_data['pad']['location']
                             location, _ = Location.objects.get_or_create(
+                                id=location_data['id'],
                                 name=location_data['name'],
                                 defaults={'country_code': location_data['country_code'], 'map_image': location_data['map_image'], 'timezone_name': location_data['timezone_name'], 'total_launch_count': location_data['total_launch_count'], 'total_landing_count': location_data['total_landing_count'], 'description': location_data.get('description', '')}
                             )
@@ -138,16 +146,22 @@ class Command(BaseCommand):
                             # Pad (handling nullable map_url)
                             pad_data = launch_data['pad']
                             pad, _ = Pad.objects.get_or_create(
+                                id=pad_data['id'],
                                 name=pad_data['name'],
-                                defaults={'location': location,
+                                defaults={'description': pad_data.get('description', ''),
+                                        'info_url': pad_data.get('info_url', None),
+                                        'wiki_url': pad_data.get('wiki_url', None),
                                         'map_url': pad_data.get('map_url', '') or '',  # Handling nullable map_url
                                         'latitude': pad_data.get('latitude', None),
                                         'longitude': pad_data.get('longitude', None),
+                                        'country_code':pad_data.get('country_code', None),
+                                        'map_image': pad_data.get('map_image', None),
                                         'total_launch_count': pad_data['total_launch_count'],
-                                        'description': pad_data.get('description', '') if pad_data.get('description', '') is not None else ''}
+                                        'orbital_launch_attempt_count':pad_data['orbital_launch_attempt_count'],
+                                        'agency_id_id':pad_data.get('agency_id', None),
+                                        'location_id':location_data['id']
+                                        }
                             )
-
-
                             # Launch (handling duplicate slug)
                             launch, created = Launch.objects.get_or_create(
                                 launch_id=launch_data['id'],

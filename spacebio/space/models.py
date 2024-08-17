@@ -1,7 +1,7 @@
 from django.db import models
 
 class LaunchStatus(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
     abbrev = models.CharField(max_length=50)
     description = models.TextField()
@@ -11,7 +11,7 @@ class LaunchStatus(models.Model):
         
 
 class Updates(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     profile_image = models.URLField(null=True, blank=True)
     comment = models.TextField(null=True, blank=True)
     info_url = models.URLField(null=True, blank=True)
@@ -29,8 +29,28 @@ class NetPrecision(models.Model):
     
     class Meta:
         db_table = 'space_net_precicion'
+'''
+class LaunchServiceProvider(models.Model):
+    id = models.IntegerField(primary_key=True)
+    name = models.CharField(max_length=255)
+    type = models.CharField(max_length=250)
+    description = models.TextField()
+    url = models.CharField(max_length=250)
+    
+    class Meta:
+        db_table = 'space_launch_service_provider'
 
-
+class RocketConfiguration(models.Model):
+    id = models.IntegerField(primary_key=True)
+    family = models.CharField(max_length=255)
+    full_name = models.CharField(max_length=250)
+    variant = models.TextField()
+    url = models.TextField()
+    description = models.TextField()
+    
+    class Meta:
+        db_table = 'space_rocket_configuration'
+'''
 class ProgramType(models.Model):
     id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=100)
