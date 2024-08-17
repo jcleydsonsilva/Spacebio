@@ -48,7 +48,7 @@ class Program(models.Model):
     end_date = models.DateTimeField(blank=True, null=True)
     info_url = models.URLField(blank=True, null=True)
     wiki_url = models.URLField(blank=True, null=True)
-    mission_patches = models.ManyToManyField('MissionPatches')
+    mission_patches = models.ManyToManyField('MissionPatches', related_name='programs')
     type = models.ForeignKey(ProgramType, on_delete=models.CASCADE)
     
     class Meta:
@@ -143,6 +143,182 @@ class Spacecraft(models.Model):
     
     class Meta:
         db_table = 'space_spacecraft'
+
+
+class AstronautStatus(models.Model):
+    id = models.IntegerField(primary_key=True)    
+    name = models.CharField(max_length=100)
+        
+    class Meta:
+        db_table = 'space_astronaut_status'
+
+    
+class AstronautType(models.Model):
+    id = models.IntegerField(primary_key=True)
+    name = models.CharField(max_length=100)  
+
+    class Meta:
+        db_table = 'space_astronaut_type'
+        
+        
+
+class AstronautRole(models.Model):
+    id = models.IntegerField(primary_key=True)    
+    role = models.CharField(max_length=100)
+    priority = models.IntegerField()
+    
+    class Meta:
+        db_table = 'space_astronaut_role'
+        
+        
+
+class Astronaut(models.Model):
+    id = models.IntegerField(primary_key=True)
+    name = models.CharField(max_length=100)
+    status = models.ForeignKey(AstronautStatus, on_delete=models.CASCADE)
+    type = models.ForeignKey(AstronautType, on_delete=models.CASCADE)
+    in_space = models.BooleanField()
+    time_in_space = models.CharField(max_length=100, blank=True, null=True)
+    eva_time = models.CharField(max_length=100, blank=True, null=True)
+    agency = models.ForeignKey(Agency, on_delete=models.CASCADE, null=True)
+    age = models.IntegerField(blank=True, null=True)
+    date_of_birth = models.DateField(blank=True, null=True)
+    date_of_death = models.DateField(blank=True, null=True)
+    nationality = models.CharField(max_length=100, blank=True, null=True)
+    twitter = models.URLField(blank=True, null=True)
+    instagram = models.URLField(blank=True, null=True)
+    bio = models.TextField(blank=True, null=True)
+    profile_image = models.URLField(blank=True, null=True)
+    profile_image_thumbnail = models.URLField(blank=True, null=True)
+    wiki = models.URLField(blank=True, null=True)
+    flights = models.ManyToManyField('Launch')
+    landings = models.ManyToManyField('SpacecraftFlight')
+    flights_count = models.IntegerField(blank=True, null=True)
+    landings_count = models.IntegerField(blank=True, null=True)
+    spacewalks_count = models.IntegerField(blank=True, null=True)
+    last_flight = models.DateTimeField(blank=True, null=True)
+    first_flight = models.DateTimeField(blank=True, null=True)
+    spacewalks = models.ManyToManyField('Spacewalk')
+    
+    class Meta:
+        db_table = 'space_astronaut'
+    
+    
+    
+class Spacewalk(models.Model):
+    id = models.IntegerField(primary_key=True)
+    name = models.CharField(max_length=100)
+    start = models.DateTimeField(blank=True, null=True)
+    end = models.DateTimeField(blank=True, null=True)
+    duration = models.CharField(max_length=100, blank=True, null=True)
+    location = models.CharField(max_length=100, blank=True, null=True)
+    crew = models.ManyToManyField('Crew')
+    spacestation = models.ForeignKey('Spacestation', on_delete=models.CASCADE)
+    expedition = models.ForeignKey('Expedition', on_delete=models.CASCADE, related_name='related_spacewalks')
+    spacecraft_flight = models.ForeignKey('SpacecraftFlight', on_delete=models.CASCADE, null=True, blank=True)
+    event = models.ForeignKey('DockingEvent', on_delete=models.CASCADE, null=True, blank=True)
+    program = models.ManyToManyField('Program')
+    
+    class Meta:
+        db_table = 'space_spacewalk'
+    
+class Crew(models.Model):
+    id = models.IntegerField(primary_key=True)
+    role = models.ForeignKey(AstronautRole, on_delete=models.CASCADE)
+    astronaut = models.ForeignKey(Astronaut, on_delete=models.CASCADE)
+    
+    class Meta:
+        db_table = 'space_crew'
+        
+    
+class SpacecraftFlight(models.Model):
+    id = models.IntegerField(primary_key=True)
+    destination = models.CharField(max_length=100, blank=True, null=True)
+    mission_end = models.DateTimeField(blank=True, null=True) 
+    launch_crew = models.ManyToManyField(Crew, related_name='launched_spacecraft_flights')
+    onboard_crew = models.ManyToManyField(Crew, related_name='onboard_spacecraft_flights')
+    landing_crew = models.ManyToManyField(Crew, related_name='landed_spacecraft_flights')
+    spacecraft = models.ForeignKey(Spacecraft, on_delete=models.CASCADE)
+    launch = models.ForeignKey('Launch', on_delete=models.CASCADE)
+    landing = models.ForeignKey('Landing', on_delete=models.CASCADE)
+    docking_events = models.ManyToManyField('DockingEvent')
+    
+    class Meta:
+        db_table = 'space_spacecraft_flight'
+    
+    
+class DockingEvent(models.Model):
+    id = models.IntegerField(primary_key=True)
+    launch_id = models.ForeignKey('Launch', on_delete=models.CASCADE)
+    docking = models.DateTimeField(null=True, blank=True)
+    departure = models.DateTimeField(null=True, blank=True)
+    flight_vehicle = models.ForeignKey(SpacecraftFlight, on_delete=models.CASCADE)
+    docking_location = models.ForeignKey('DockingLocation', on_delete=models.CASCADE)
+    space_station = models.ForeignKey('Spacestation', on_delete=models.CASCADE)
+        
+    class Meta:
+        db_table = 'space_docking_event'
+        
+        
+    
+class DockingLocation(models.Model):
+    id = models.IntegerField(primary_key=True)
+    name = models.CharField(max_length=255)
+    spacestation = models.ForeignKey('Spacestation', on_delete=models.CASCADE)
+    docked = models.ManyToManyField(DockingEvent)
+
+    class Meta:
+        db_table = 'space_docking_location'
+        
+        
+
+class SpacestationStatus(models.Model):
+    id = models.IntegerField(primary_key=True)
+    name = models.CharField(max_length=100)    
+    
+    class Meta:
+        db_table = 'space_spacestation_status'
+        
+    
+class Spacestation(models.Model):
+    id = models.IntegerField(primary_key=True)
+    name = models.CharField(max_length=255)
+    status = models.ForeignKey(SpacestationStatus, on_delete=models.CASCADE)
+    type = models.ForeignKey(AstronautType, on_delete=models.CASCADE)
+    founded = models.DateField(blank=True, null=True)
+    deorbited = models.DateField(blank=True, null=True)
+    height = models.FloatField(blank=True, null=True)
+    width = models.FloatField(blank=True, null=True)
+    mass = models.FloatField(blank=True, null=True)
+    volume = models.FloatField(blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+    orbit = models.CharField(max_length=100, blank=True, null=True)
+    onboard_crew = models.IntegerField(blank=True, null=True)
+    docked_vehicles = models.IntegerField(blank=True, null=True)
+    owners = models.ManyToManyField('Agency')
+    active_expeditions = models.ManyToManyField('Expedition', related_name='station_expeditions')
+    docking_location = models.ForeignKey('Spacestation', on_delete=models.CASCADE)
+    image_url = models.URLField(blank=True, null=True)
+    
+    class Meta:
+        db_table = 'space_spacestation'    
+
+
+    
+class Expedition(models.Model):
+    id = models.IntegerField(primary_key=True)
+    name = models.CharField(max_length=255)
+    start = models.DateTimeField()
+    end = models.DateTimeField()
+    spacestation = models.ForeignKey('Spacestation', on_delete=models.CASCADE, related_name='related_expeditions')
+    crew = models.ManyToManyField('Crew')
+    mission_patches = models.ManyToManyField('MissionPatches')
+    spacewalks = models.ManyToManyField('Spacewalk', related_name='related_expeditions')
+        
+    class Meta:
+        db_table = 'space_expedition'
+        
+            
     
 class MissionPatches(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -208,7 +384,7 @@ class Location(models.Model):
     timezone_name = models.CharField(max_length=50)
     total_launch_count = models.IntegerField(blank=True, null=True)
     total_landing_count = models.IntegerField(blank=True, null=True)
-    pads = models.ManyToManyField('Pad')    
+    pads = models.ManyToManyField('Pad', related_name='locations')    
 
     class Meta:
         db_table = 'space_location'
@@ -436,10 +612,19 @@ class Mission(models.Model):
     
     class Meta:
         db_table = 'space_mission'
+        
+        
+class TimelineEventType(models.Model):
+    id = models.IntegerField(primary_key=True)
+    abbrev = models.CharField(max_length=50)    
+    description = models.TextField(blank=True, null=True)
+    
+    class Meta:
+        db_table = 'space_timeline_event_type'
+    
     
 class Launch(models.Model):
-    id = models.IntegerField(primary_key=True)
-    launch_id = models.CharField(max_length=255)
+    id = models.CharField(max_length=36, primary_key=True) # UUID. Ex: "id": "e3df2ecd-c239-472f-95e4-2b89b4f75800"
     slug = models.CharField(max_length=255)
     flightclub_url = models.URLField(null=True, blank=True)
     r_spacex_api_id = models.CharField(max_length=255, null=True, blank=True)
@@ -460,10 +645,10 @@ class Launch(models.Model):
     rocket = models.ForeignKey(Rocket, on_delete=models.CASCADE)
     mission = models.ForeignKey(Mission, on_delete=models.CASCADE)
     pad = models.ForeignKey(Pad, on_delete=models.CASCADE)
-    InfoURLs = models.ManyToManyField(InfoURLs)
-    VidURLs = models.ManyToManyField(VidURLs)
+    InfoURLs = models.ManyToManyField(InfoURLs, related_name='launches')
+    VidURLs = models.ManyToManyField(VidURLs, related_name='launches')
     webcast_live = models.BooleanField()
-    timeline = models.ManyToManyField('Timeline')
+    timeline = models.ManyToManyField('TimelineEventType')
     image = models.URLField(null=True, blank=True)
     infographic = models.URLField(null=True, blank=True)
     program = models.ManyToManyField(Program)
