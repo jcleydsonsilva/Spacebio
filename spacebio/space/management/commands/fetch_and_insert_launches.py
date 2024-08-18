@@ -129,9 +129,38 @@ class Command(BaseCommand):
 
                             # Agencies
                             for agency_data in mission_data.get('agencies', []):
+                                print ('----------------------------------')
+                                print (agency_data)
+                                quit()
+                                print ('----------------------------------')
                                 agency, _ = Agency.objects.get_or_create(
+                                    id=agency_data['id'],
                                     name=agency_data['name'],
-                                    defaults={'type': agency_data['type'], 'country_code': agency_data['country_code'], 'abbrev': agency_data['abbrev'], 'description': agency_data['description'], 'administrator': agency_data.get('administrator', ''), 'founding_year': agency_data.get('founding_year', ''), 'info_url': agency_data.get('info_url', ''), 'wiki_url': agency_data.get('wiki_url', ''), 'logo_url': agency_data.get('logo_url', ''), 'image_url': agency_data.get('image_url', '')}
+                                    defaults={
+                                            'type':agency_data.get('type'),
+                                            'country_code':agency_data.get('country_code'),
+                                            'abbrev':agency_data.get('abbrev'),
+                                            'description':agency_data.get('description'),
+                                            'administrator':agency_data.get('administrator'),
+                                            'founding_year':agency_data.get('founding_year'),
+                                            'launchers':agency_data.get('launchers'),
+                                            'spacecraft':agency_data.get('spacecraft'),
+                                            'launch_library_url':agency_data.get('launch_library_url'),
+                                            'total_launch_count':agency_data.get('total_launch_count'),
+                                            'consecutive_successful_launches':agency_data.get('consecutive_successful_launches'),
+                                            'successful_launches':agency_data.get('successful_launches'),
+                                            'failed_launches':agency_data.get('failed_launches'),
+                                            'pending_launches':agency_data.get(''),
+                                            'consecutive_successful_landings':agency_data.get(''),
+                                            'successful_landings':agency_data.get('pending_launches'),
+                                            'failed_landings':agency_data.get('failed_landings'),
+                                            'attempted_landings':agency_data.get('attempted_landings'),
+                                            'info_url':agency_data.get('info_url'),
+                                            'wiki_url':agency_data.get('wiki_url'),
+                                            'logo_url':agency_data.get('wiki_url'),
+                                            'image_url':agency_data.get('image_url'),
+                                            'nation_url':agency_data.get('nation_url'),
+                                            }
                                 )
                                 mission.agencies.add(agency)
 
@@ -140,7 +169,13 @@ class Command(BaseCommand):
                             location, _ = Location.objects.get_or_create(
                                 id=location_data['id'],
                                 name=location_data['name'],
-                                defaults={'country_code': location_data['country_code'], 'map_image': location_data['map_image'], 'timezone_name': location_data['timezone_name'], 'total_launch_count': location_data['total_launch_count'], 'total_landing_count': location_data['total_landing_count'], 'description': location_data.get('description', '')}
+                                defaults={'country_code': 
+                                          location_data['country_code'], 
+                                          'map_image': location_data['map_image'], 
+                                          'timezone_name': location_data['timezone_name'], 
+                                          'total_launch_count': location_data['total_launch_count'], 
+                                          'total_landing_count': location_data['total_landing_count'], 
+                                          'description': location_data.get('description', '')}
                             )
 
                             # Pad (handling nullable map_url)

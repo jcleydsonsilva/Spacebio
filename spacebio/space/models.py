@@ -75,9 +75,8 @@ class Program(models.Model):
         db_table = 'space_program'
 
 class Agency(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
-    featured = models.BooleanField()
     type = models.CharField(max_length=50)
     country_code = models.CharField(max_length=10)
     abbrev = models.CharField(max_length=50)
@@ -86,7 +85,6 @@ class Agency(models.Model):
     founding_year = models.CharField(max_length=4, blank=True, null=True)
     launchers = models.CharField(max_length=255, blank=True, null=True)
     spacecraft = models.CharField(max_length=255, blank=True, null=True)
-    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True)
     launch_library_url = models.URLField(blank=True, null=True)
     total_launch_count = models.IntegerField(blank=True, null=True)
     successful_launches = models.IntegerField(blank=True, null=True)
@@ -102,8 +100,6 @@ class Agency(models.Model):
     logo_url = models.URLField(blank=True, null=True)
     image_url = models.URLField(blank=True, null=True)
     nation_url = models.URLField(blank=True, null=True)
-    launcher_list = models.ManyToManyField('Launcher')
-    spacecraft_list = models.ManyToManyField('Spacecraft')
     
     class Meta:
         db_table = 'space_agency'
