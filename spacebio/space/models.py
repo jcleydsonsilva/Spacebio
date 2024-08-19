@@ -510,7 +510,7 @@ class LauncherStage(models.Model):
 
     class Meta:
         db_table = 'space_launcher_stage'
-
+        
 
 class Rocket(models.Model):
     id = models.IntegerField(primary_key=True)
