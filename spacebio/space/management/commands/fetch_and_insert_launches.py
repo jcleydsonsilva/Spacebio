@@ -549,7 +549,7 @@ class Command(BaseCommand):
 
 
         def fetch_and_insert_all_launches():
-            base_url = 'https://lldev.thespacedevs.com/2.2.0/launch/?limit=100&mode=detailed&offset=6900'
+            base_url = 'https://lldev.thespacedevs.com/2.2.0/launch/?limit=100&mode=detailed'
             next_url = base_url
             page = 1
 
