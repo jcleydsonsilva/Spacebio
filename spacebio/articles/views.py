@@ -161,7 +161,7 @@ def getInvolved_view(request):
     return render(request, 'articles/getInvolved.html')
 
 def spacebiotv_view(request):
-    videos = VidURL.objects.all()
+    videos = VidURLs.objects.all().order_by('-id')
     
     #create a paginator for the news
     videos_paginator = Paginator(videos, 6)
