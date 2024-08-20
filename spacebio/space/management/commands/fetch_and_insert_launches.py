@@ -2,10 +2,12 @@ from django.core.management.base import BaseCommand
 import requests
 from django.db import transaction
 import logging
+from colorama import Fore, Style
 from space.models import *
 
-# Set up logging
+# Configure logging
 logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.DEBUG)
 
 
 class Command(BaseCommand):
@@ -13,15 +15,441 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
 
-        def insert_or_update_launch(data, dry_run=True):
+        total_inserted = 0
+        total_updated = 0
+        errors = []
+
+        def insert_or_update_launch_status(data):
             try:
-                # Obter instâncias relacionadas ou None se não houver
-                status_instance = LaunchStatus.objects.get(id=data['status']['id']) if data['status'] else None
-                net_precision_instance = NetPrecision.objects.get(id=data['net_precision']['id']) if data['net_precision'] else None
-                launch_service_provider_instance = Agency.objects.get(id=data['launch_service_provider']['id']) if data['launch_service_provider'] else None
-                rocket_instance = Rocket.objects.get(id=data['rocket']['id']) if data['rocket'] else None
-                mission_instance = Mission.objects.get(id=data['mission']['id']) if data['mission'] else None
-                pad_instance = Pad.objects.get(id=data['pad']['id']) if data['pad'] else None
+                launch_status, created = LaunchStatus.objects.update_or_create(
+                    id=data['id'],
+                    defaults={
+                        'name': data['name'],
+                        'abbrev': data['abbrev'],
+                        'description': data['description']
+                    }
+                )
+
+                return launch_status
+            except Exception as e:
+                logger.error(f"Failed to insert or update launch status: {e}")
+                raise
+
+
+        def insert_or_update_net_precision(data):
+            try:
+                net_precision, created = NetPrecision.objects.update_or_create(
+                    id=data['id'],
+                    defaults={
+                        'name': data['name'],
+                        'abbrev': data['abbrev'],
+                        'description': data['description']
+                    }
+                )
+                    
+                return net_precision
+            except Exception as e:
+                logger.error(f"Failed to insert or update net precision: {e}")
+                raise
+
+
+        def insert_or_update_expedition(data):
+            try:
+                pass
+                # expedition, created = Expedition.objects.update_or_create(
+                #     id=data['id'],
+                #     defaults={
+                #         'name': data['name'],
+                #         'start': data['start'],
+                #         'end': data['end'],
+                #         'spacestation': data['spacestation'],
+                #         'crew': data['crew'],
+                #         'mission_patches': data['mission_patches'],
+                #         'spacewalks': data['spacewalks'],
+                #     }
+                # )
+                # if created:
+                #     logger.info(f"Expedition {expedition.id} created.")
+                # else:
+                #     logger.info(f"Expedition {expedition.id} updated.")
+                # return expedition
+            except Exception as e:
+                logger.error(f"Failed to insert or update expedition: {e}")
+                raise
+
+
+        def insert_or_update_agency(data):
+            agency = None 
+            try:
+                if isinstance(data, dict):
+                    # Caso a função receba um dicionário completo
+                    agency, created = Agency.objects.update_or_create(
+                        id=data['id'],
+                        defaults={
+                            'name': data['name'],
+                            'featured': data['featured'],
+                            'type': data['type'],
+                            'country_code': data['country_code'],
+                            'abbrev': data['abbrev'],
+                            'description': data['description'],
+                            'administrator': data['administrator'],
+                            'founding_year': data['founding_year'],
+                            'launchers': data['launchers'],
+                            'spacecraft': data['spacecraft'],
+                            'launch_library_url': data['launch_library_url'],
+                            'total_launch_count': data['total_launch_count'],
+                            'successful_launches': data['successful_launches'],
+                            'consecutive_successful_launches': data['consecutive_successful_launches'],
+                            'failed_launches': data['failed_launches'],
+                            'pending_launches': data['pending_launches'],
+                            'successful_landings': data['successful_landings'],
+                            'failed_landings': data['failed_landings'],
+                            'attempted_landings': data['attempted_landings'],
+                            'consecutive_successful_landings': data['consecutive_successful_landings'],
+                            'info_url': data['info_url'],
+                            'wiki_url': data['wiki_url'],
+                            'logo_url': data['logo_url'],
+                            'image_url': data['image_url'],
+                            'nation_url': data['nation_url']
+                        }
+                    )
+                elif isinstance(data, int):
+                    # Caso a função receba apenas um ID
+                    agency, created = Agency.objects.get_or_create(id=data)
+                else:
+                    raise ValueError("Data should be either a dictionary or an integer ID.")
+                
+                return agency
+            
+            except Exception as e:
+                logger.error(f"Failed to insert or update agency: {e}")
+                # Retorna None se houver um erro
+                return None
+
+        def insert_or_update_mission_patches(data):
+            try:
+                agency = insert_or_update_agency(data['agency']) if data['agency'] else None
+
+                mission_patch, created = MissionPatches.objects.update_or_create(
+                    id=data['id'],
+                    defaults={
+                        'name': data['name'],
+                        'priority': data['priority'],
+                        'image_url': data['image_url'],
+                        'agency': agency,
+                    }
+                )
+                if created:
+                    logger.info(f"Mission patch {mission_patch.id} created.")
+
+                return mission_patch
+
+            except Exception as e:
+                logger.error(f"Failed to insert or update mission patch: {e}")
+                raise
+            
+
+        def insert_or_update_program(data):
+            try:
+                
+                program_type, created = ProgramType.objects.update_or_create(
+                    id=data['type']['id'],
+                    defaults={
+                        'name': data['type']['name']
+                    }
+                )
+                
+                program, created = Program.objects.update_or_create(
+                    id=data['id'],
+                    defaults={
+                        'name': data['name'],
+                        'description': data['description'],
+                        'image_url': data['image_url'],
+                        'start_date': data['start_date'],
+                        'end_date': data['end_date'],
+                        'info_url': data['info_url'],
+                        'wiki_url': data['wiki_url'],
+                        'type': program_type
+                    }
+                )
+                
+                # agencies
+                agencies = []
+                for agency in data.get('agencies', []):
+                    agency_data = insert_or_update_agency(agency)
+                    if agency_data:
+                        agencies.append(agency_data)
+                program.agencies.set(agencies)
+                
+                
+                # mission_patches
+                missionPatches = []
+                for mission_patch in data.get('mission_patches', []):
+                    mission_patch_data = insert_or_update_mission_patches(mission_patch)
+                    missionPatches.append(mission_patch_data)
+                program.mission_patches.set(missionPatches)
+
+                return program
+            except Exception as e:
+                logger.error(f"Failed to insert or update program: {e}")
+                raise
+
+
+        def insert_or_update_rocket(data):
+            try:
+                manufacturer = insert_or_update_agency(data['configuration']['manufacturer'])
+                
+                configuration, created = LauncherConfig.objects.update_or_create(
+                    id = data['configuration']['id'],
+                    defaults={
+                        'name': data['configuration']['name'],
+                        'active': data['configuration']['active'],
+                        'reusable': data['configuration']['reusable'],
+                        'description': data['configuration']['description'],
+                        'family': data['configuration']['family'],
+                        'full_name': data['configuration']['full_name'],
+                        'manufacturer': manufacturer,
+                        'variant': data['configuration']['variant'],
+                        'alias': data['configuration']['alias'],
+                        'min_stage': data['configuration']['min_stage'],
+                        'max_stage': data['configuration']['max_stage'],
+                        'length': data['configuration']['length'],
+                        'diameter': data['configuration']['diameter'],
+                        'maiden_flight': data['configuration']['maiden_flight'],
+                        'launch_cost': data['configuration']['launch_cost'],
+                        'launch_mass': data['configuration']['launch_mass'],
+                        'leo_capacity': data['configuration']['leo_capacity'],
+                        'gto_capacity': data['configuration']['gto_capacity'],
+                        'to_thrust': data['configuration']['to_thrust'],
+                        'apogee': data['configuration']['apogee'],
+                        'vehicle_range': data['configuration']['vehicle_range'],
+                        'image_url': data['configuration']['image_url'],
+                        'info_url': data['configuration']['info_url'],
+                        'wiki_url': data['configuration']['wiki_url'],
+                        'total_launch_count': data['configuration']['total_launch_count'],
+                        'consecutive_successful_launches': data['configuration']['consecutive_successful_launches'],
+                        'successful_launches': data['configuration']['successful_launches'],
+                        'failed_launches': data['configuration']['failed_launches'],
+                        'pending_launches': data['configuration']['pending_launches'],
+                        'attempted_landings': data['configuration']['attempted_landings'],
+                        'successful_landings': data['configuration']['successful_landings'],
+                        'failed_landings': data['configuration']['failed_landings'],
+                        'consecutive_successful_landings': data['configuration']['consecutive_successful_landings'],
+                    }
+                )
+                
+                programs = []
+                for program_data in data['configuration']['program']:
+                    program_instance = insert_or_update_program(program_data)
+                    programs.append(program_instance)
+                configuration.program.set(programs)
+                
+                rocket, created = Rocket.objects.update_or_create(
+                    id=data['id'],
+                    defaults={
+                        'configuration': configuration,
+                        # 'launcher_stage': None, TODO implement
+                        'spacecraft_stage': None # TODO implement
+                    }
+                )
+                #===========================================
+                # Rocket launcher_stage and spacecraft_stage ARE NOT IMPLEMENTED YET
+                # the code below for launcher_stage just skips the creation of the objects
+                #===========================================
+                launcher_stages = []
+                for launcher_stage in data['launcher_stage']:
+                    launcher_stage = None
+                    launcher_stages.append(launcher_stage)
+                
+                rocket.launcher_stage.set(launcher_stages)
+                #===========================================
+
+                return rocket
+            except Exception as e:
+                logger.error(f"Failed to insert or update rocket: {e}")
+                raise
+
+
+        def insert_or_update_mission(data):
+            try:
+                orbit, created = Orbit.objects.update_or_create(
+                    id=data['orbit']['id'],
+                    defaults={
+                        'name': data['orbit']['name'],
+                        'abbrev': data['orbit']['abbrev'],
+                    }
+                )
+                
+                mission, created = Mission.objects.update_or_create(
+                    id=data['id'],
+                    defaults={
+                        'name': data['name'],
+                        'description': data['description'],
+                        'launch_designator': data['launch_designator'],
+                        'type': data['type'],
+                        'orbit': orbit,
+                    }
+                )
+                #===========================================
+                # Mission agencies, info_urls and vid_urls ARE NOT IMPLEMENTED YET
+                # the code below for these fields just skips the creation of the objects
+                #===========================================
+                agencies = []
+                info_urls = []
+                vid_urls = []
+                mission.agencies.set(agencies)
+                mission.info_urls.set(info_urls)
+                mission.vid_urls.set(vid_urls)
+                #===========================================
+                
+
+                return mission
+            except Exception as e:
+                logger.error(f"Failed to insert or update mission: {e}")
+                raise
+
+
+        def insert_or_update_location(data):
+            try:
+                location, created = Location.objects.update_or_create(
+                    id=data['id'],
+                    defaults={
+                        'name': data['name'],
+                        'country_code': data['country_code'],
+                        'description': data['description'],
+                        'map_image': data['map_image'],
+                        'timezone_name': data['timezone_name'],
+                        'total_launch_count': data['total_launch_count'],
+                        'total_landing_count': data['total_landing_count'],
+                    }
+                )
+
+                return location
+            except Exception as e:
+                logger.error(f"Failed to insert or update location: {e}")
+                raise    
+                        
+
+        def insert_or_update_pad(data):
+            try:
+                
+                agency = insert_or_update_agency(data['agency_id']) if data['agency_id'] else None    
+                location = insert_or_update_location(data['location']) if data['location'] else None
+                
+                pad, created = Pad.objects.update_or_create(
+                    id=data['id'],
+                    defaults={
+                        'agency_id': agency,
+                        'name': data['name'],
+                        'description': data['description'],
+                        'info_url': data['info_url'],
+                        'wiki_url': data['wiki_url'],
+                        'map_url': data['map_url'],
+                        'latitude': data['latitude'],
+                        'longitude': data['longitude'],
+                        'location': location,
+                        'country_code': data['country_code'],
+                        'map_image': data['map_image'],
+                        'total_launch_count': data['total_launch_count'],
+                        'orbital_launch_attempt_count': data['orbital_launch_attempt_count'],
+                    }
+                )
+
+                return pad
+            except Exception as e:
+                logger.error(f"Failed to insert or update pad: {e}")
+                raise
+
+
+        def insert_or_update_vid_urls(data, launch):
+            
+            # this function utilizes two parameters because we need the launch id from the launch_info
+            # to use as the foreign key in the VidURLs model
+            
+            try:
+                
+                if data['language']:
+                    # vid url language
+                    language, created = Language.objects.update_or_create(
+                        id=data['language']['id'],
+                        defaults={
+                            'name': data['language']['name'],
+                            'code': data['language']['code'],
+                        }
+                    )
+                    
+                if data['type']:    
+                    # vid url type
+                    vid_url_type, created = VidURLType.objects.update_or_create(
+                        id=data['type']['id'],
+                        defaults={
+                            'name': data['type']['name'],
+                        }
+                    )
+
+                vid_urls, created = VidURLs.objects.update_or_create(
+                    url=data['url'],
+                    defaults={
+                        'launch': launch,
+                        'priority': data['priority'],
+                        'source': data['source'],
+                        'publisher': data['publisher'],
+                        'title': data['title'],
+                        'description': data['description'],
+                        'feature_image': data['feature_image'],
+                        'type': vid_url_type if data['type'] else None,
+                        'language': language if data['language'] else None,
+                        'start_time': data['start_time'],
+                        'end_time': data['end_time'],
+                    }
+                )
+                if created:
+                    logger.info(f"vid_urls {vid_urls.id} created.")
+
+                return vid_urls
+            except Exception as e:
+                logger.error(f"Failed to insert or update vid_urls: {e}")
+                raise
+
+
+        def insert_or_update_info_urls(data):
+            try:    
+                if data['type']:
+                    info_url_type, created = InfoURLType.objects.update_or_create(
+                        id=data['type']['id'],
+                        defaults={
+                            'name': data['type']['name'],
+                        }
+                    )
+
+                info_urls, created = InfoURLs.objects.update_or_create(
+                    url=data['url'],
+                    defaults={
+                        'priority': data['priority'],
+                        'source': data['source'],
+                        'title': data['title'],
+                        'description': data['description'],
+                        'feature_image': data['feature_image'],
+                        'type': info_url_type if data['type'] else None,
+                        'language': data['language'],
+                    }
+                )
+
+                return info_urls
+            except Exception as e:
+                logger.error(f"Failed to insert or update info_urls: {e}")
+                raise
+
+        def insert_or_update_launch(data):
+            try:
+
+                # GETS THE FOREIGN KEY FIELDS
+                status = insert_or_update_launch_status(data['status']) if data['status'] else None
+                net_precision = insert_or_update_net_precision(data['net_precision']) if data['net_precision'] else None
+                launch_service_provider = insert_or_update_agency(data['launch_service_provider']) if data['launch_service_provider'] else None
+                rocket = insert_or_update_rocket(data['rocket']) if data['rocket'] else None
+                mission = insert_or_update_mission(data['mission']) if data['mission'] else None
+                pad = insert_or_update_pad(data['pad']) if data['pad'] else None
                 
                 launch, created = Launch.objects.update_or_create(
                     id=data['id'],
@@ -30,10 +458,10 @@ class Command(BaseCommand):
                         'flightclub_url': data['flightclub_url'],
                         'r_spacex_api_id': data['r_spacex_api_id'],
                         'name': data['name'],
-                        'status': status_instance,  # instância de LaunchStatus
+                        'status': status,
                         'last_updated': data['last_updated'],
                         'net': data['net'],
-                        'net_precision': net_precision_instance,  # instância de NetPrecision
+                        'net_precision': net_precision,
                         'window_end': data['window_end'],
                         'window_start': data['window_start'],
                         'probability': data['probability'],
@@ -41,10 +469,10 @@ class Command(BaseCommand):
                         'holdreason': data['holdreason'],
                         'failreason': data['failreason'],
                         'hashtag': data['hashtag'],
-                        'launch_service_provider': launch_service_provider_instance,  # instância de LaunchServiceProvider
-                        'rocket': rocket_instance,  # instância de Rocket
-                        'mission': mission_instance,  # instância de Mission
-                        'pad': pad_instance,  # instância de Pad
+                        'launch_service_provider': launch_service_provider,
+                        'rocket': rocket,
+                        'mission': mission,
+                        'pad': pad,
                         'webcast_live': data['webcast_live'],
                         'image': data['image'],
                         'infographic': data['infographic'],
@@ -60,70 +488,98 @@ class Command(BaseCommand):
                     }
                 )
                 if created:
-                    logger.info(f"Launch {launch.id} created.")
+                    logger.info(f"{Fore.GREEN}Launch '{launch.name}' inserted successfully.{Style.RESET_ALL}")
                 else:
-                    logger.info(f"Launch {launch.id} updated.")
+                    logger.info(f"{Fore.BLUE}Launch '{launch.name}' updated successfully.{Style.RESET_ALL}")
+                
+                
+                # GETS THE MANY-TO-MANY FIELDS
+                # info_urls
+                infoURLs = []	
+                for info_url in data.get('infoURLs', []):
+                    info_url_data = insert_or_update_info_urls(info_url)
+                    infoURLs.append(info_url_data)
+                launch.InfoURLs.set(infoURLs)
+                
+                # vid_urls
+                vid_url_count=0
+                vidURLs = []
+                for vid_url in data.get('vidURLs', []):
+                    vid_url_data = insert_or_update_vid_urls(vid_url, launch) # two parameters explained in the function
+                    vidURLs.append(vid_url_data)
+                    vid_url_count += 1
+                launch.VidURLs.set(vidURLs)
+                logger.info(f"Total of {vid_url_count} vid_urls inserteds.")
+
+                # programs
+                programs = []
+                for program in data.get('programs', []):
+                    program_data = insert_or_update_program(program)
+                    programs.append(program_data)
+                launch.program.set(programs)
+                
+                # mission_patches
+                missionPatches = []
+                for mission_patch in data.get('mission_patches', []):
+                    mission_patch_data = insert_or_update_mission_patches(mission_patch)
+                    missionPatches.append(mission_patch_data)
+                launch.mission_patches.set(missionPatches)
+                
                 return launch
             except Exception as e:
-                logger.error(f"Error inserting/updating launch: {e}")
+                logger.error(f'{Fore.RED}Error updating/inserting launch: {e}{Style.RESET_ALL}')
                 raise
 
-        # def insert_or_update_rocket(data):
-        #     try:
-        #         rocket, created = Rocket.objects.update_or_create(
-        #             id=data['id'],
-        #             defaults={
-        #                 'configuration': LauncherConfig.objects.get(id=data['configuration_id']),
-        #                 'spacecraft_stage': data.get('spacecraft_stage'),
-        #             }
-        #         )
-        #         if created:
-        #             logger.info(f"Rocket {rocket.id} created.")
-        #         else:
-        #             logger.info(f"Rocket {rocket.id} updated.")
-        #         return rocket
-        #     except Exception as e:
-        #         logger.error(f"Error inserting/updating rocket: {e}")
-        #         raise
 
-        # def insert_or_update_orbit(data):
-            # try:
-            #     orbit, created = Orbit.objects.update_or_create(
-            #         id=data['id'],
-            #         defaults={
-            #             'name': data['name'],
-            #             'abbrev': data['abbrev'],
-            #         }
-            #     )
-            #     if created:
-            #         logger.info(f"Orbit {orbit.id} created.")
-            #     else:
-            #         logger.info(f"Orbit {orbit.id} updated.")
-            #     return orbit
-            # except Exception as e:
-            #     logger.error(f"Error inserting/updating orbit: {e}")
-            #     raise
 
         @transaction.atomic
         def insert_data(data):
+            #===================================
+            # In the future we can use whatever endpoint we want to get the data
+            # and call the functions here to populate the database with data such as 
+            # Astronauts, Events, Space Stations, etc.
+            #===================================
             try:
                 
-                insert_or_update_launch(data, dry_run=True)
-                
-                # Insert or update rocket
-                # rocket_data = data['rocket']
-                # rocket = insert_or_update_rocket(rocket_data)
-
-                # Insert or update orbit
-                # orbit_data = data['orbit']
-                # orbit = insert_or_update_orbit(orbit_data)
+                # this main function bellow calls all the other necessaries functions to get and insert data
+                insert_or_update_launch(data)
 
             except Exception as e:
-                logger.error(f"Transaction failed: {e}")
+                logger.error(f'{Fore.RED}Transaction failed: {e}{Style.RESET_ALL}')
                 raise
 
-        # Example usage
-        data = requests.get('https://lldev.thespacedevs.com/2.2.0/launch/?limit=1&mode=detailed').json()
-        data = data['results'][0]
 
-        insert_data(data)
+        def fetch_and_insert_all_launches():
+            base_url = 'https://lldev.thespacedevs.com/2.2.0/launch/?limit=100&mode=detailed'
+            next_url = base_url
+            page = 1
+            total_inserted = 0
+            total_updated = 0
+
+            while next_url:
+                try:
+                    logger.info(f'{Fore.MAGENTA}Fetching data from page {page}: {next_url}{Style.RESET_ALL}')
+                    response = requests.get(next_url)
+                    response.raise_for_status()
+                    data = response.json()
+
+                    for launch_data in data['results']:
+                        launch = insert_data(launch_data)
+                        
+                        if launch is not None:
+                            if launch._state.adding:
+                                total_inserted += 1
+                            else:
+                                total_updated += 1
+                                
+                    next_url = data.get('next', None)
+                    page += 1
+
+                except requests.exceptions.RequestException as e:
+                    logger.error(f'{Fore.RED}Error fetching page {page}: {e}{Style.RESET_ALL}')
+                    break
+
+            logger.info(f"{Fore.LIGHTBLUE_EX}Total launches inserted: {total_inserted}.{Style.RESET_ALL}")
+            logger.info(f"{Fore.LIGHTBLUE_EX}Total launches updated: {total_updated}.{Style.RESET_ALL}")
+
+        fetch_and_insert_all_launches()
