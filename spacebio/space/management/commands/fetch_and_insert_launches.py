@@ -257,9 +257,9 @@ class Command(BaseCommand):
                 # the code below for launcher_stage just skips the creation of the objects
                 #===========================================
                 launcher_stages = []
-                for launcher_stage in data['launcher_stage']:
-                    launcher_stage = None
-                    launcher_stages.append(launcher_stage)
+                # for launcher_stage in data['launcher_stage']:
+                #     launcher_stage = None
+                #     launcher_stages.append(launcher_stage)
                 
                 rocket.launcher_stage.set(launcher_stages)
                 #===========================================
@@ -272,13 +272,14 @@ class Command(BaseCommand):
 
         def insert_or_update_mission(data):
             try:
-                orbit, created = Orbit.objects.update_or_create(
-                    id=data['orbit']['id'],
-                    defaults={
-                        'name': data['orbit']['name'],
-                        'abbrev': data['orbit']['abbrev'],
-                    }
-                )
+                if data['orbit']:
+                    orbit, created = Orbit.objects.update_or_create(
+                        id=data['orbit']['id'],
+                        defaults={
+                            'name': data['orbit']['name'],
+                            'abbrev': data['orbit']['abbrev'],
+                        }
+                    )
                 
                 mission, created = Mission.objects.update_or_create(
                     id=data['id'],
@@ -287,7 +288,7 @@ class Command(BaseCommand):
                         'description': data['description'],
                         'launch_designator': data['launch_designator'],
                         'type': data['type'],
-                        'orbit': orbit,
+                        'orbit': orbit if data['orbit'] else None,
                     }
                 )
                 #===========================================
@@ -431,7 +432,6 @@ class Command(BaseCommand):
                         'description': data['description'],
                         'feature_image': data['feature_image'],
                         'type': info_url_type if data['type'] else None,
-                        'language': data['language'],
                     }
                 )
 
@@ -440,8 +440,10 @@ class Command(BaseCommand):
                 logger.error(f"Failed to insert or update info_urls: {e}")
                 raise
 
+
         def insert_or_update_launch(data):
             try:
+                
 
                 # GETS THE FOREIGN KEY FIELDS
                 status = insert_or_update_launch_status(data['status']) if data['status'] else None
@@ -547,11 +549,9 @@ class Command(BaseCommand):
 
 
         def fetch_and_insert_all_launches():
-            base_url = 'https://lldev.thespacedevs.com/2.2.0/launch/?limit=100&mode=detailed'
+            base_url = 'https://lldev.thespacedevs.com/2.2.0/launch/?limit=100&mode=detailed&offset=6900'
             next_url = base_url
             page = 1
-            total_inserted = 0
-            total_updated = 0
 
             while next_url:
                 try:
@@ -561,14 +561,9 @@ class Command(BaseCommand):
                     data = response.json()
 
                     for launch_data in data['results']:
-                        launch = insert_data(launch_data)
+                        insert_data(launch_data)
                         
-                        if launch is not None:
-                            if launch._state.adding:
-                                total_inserted += 1
-                            else:
-                                total_updated += 1
-                                
+
                     next_url = data.get('next', None)
                     page += 1
 
@@ -576,7 +571,11 @@ class Command(BaseCommand):
                     logger.error(f'{Fore.RED}Error fetching page {page}: {e}{Style.RESET_ALL}')
                     break
 
-            logger.info(f"{Fore.LIGHTBLUE_EX}Total launches inserted: {total_inserted}.{Style.RESET_ALL}")
-            logger.info(f"{Fore.LIGHTBLUE_EX}Total launches updated: {total_updated}.{Style.RESET_ALL}")
+            
 
         fetch_and_insert_all_launches()
+        launch_count = Launch.objects.count()
+        vidurls_count = VidURLs.objects.count()
+
+        logger.info(f'{Fore.LIGHTCYAN_EX}Total of {launch_count} launches in the database.{Style.RESET_ALL}')
+        logger.info(f'{Fore.LIGHTCYAN_EX}Total of {vidurls_count} vid_URLs in the database.{Style.RESET_ALL}')
