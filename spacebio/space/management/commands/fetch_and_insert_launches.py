@@ -502,14 +502,11 @@ class Command(BaseCommand):
                 launch.InfoURLs.set(infoURLs)
                 
                 # vid_urls
-                vid_url_count=0
                 vidURLs = []
                 for vid_url in data.get('vidURLs', []):
                     vid_url_data = insert_or_update_vid_urls(vid_url, launch) # two parameters explained in the function
                     vidURLs.append(vid_url_data)
-                    vid_url_count += 1
                 launch.VidURLs.set(vidURLs)
-                logger.info(f"Total of {vid_url_count} vid_urls inserteds.")
 
                 # programs
                 programs = []

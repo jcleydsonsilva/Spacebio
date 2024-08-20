@@ -57,9 +57,9 @@ class Program(models.Model):
 class Agency(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
-    featured = models.BooleanField(default=False, blank=True, null=True)
+    featured = models.BooleanField(blank=True, null=True)
     type = models.CharField(max_length=50)
-    country_code = models.CharField(max_length=10)
+    country_code = models.CharField(max_length=100)
     abbrev = models.CharField(max_length=50)
     description = models.TextField(blank=True, null=True)
     administrator = models.CharField(max_length=100, blank=True, null=True)
@@ -500,7 +500,7 @@ class LauncherStage(models.Model):
 class Rocket(models.Model):
     id = models.IntegerField(primary_key=True)
     configuration = models.ForeignKey(LauncherConfig, on_delete=models.CASCADE, null=True, blank=True)
-    launcher_stage = models.ManyToManyField(LauncherStage)
+    launcher_stage = models.ManyToManyField(LauncherStage,  default=1)
     spacecraft_stage = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta: 
