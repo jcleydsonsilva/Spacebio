@@ -29,28 +29,8 @@ class NetPrecision(models.Model):
     
     class Meta:
         db_table = 'space_net_precicion'
-'''
-class LaunchServiceProvider(models.Model):
-    id = models.IntegerField(primary_key=True)
-    name = models.CharField(max_length=255)
-    type = models.CharField(max_length=250)
-    description = models.TextField()
-    url = models.CharField(max_length=250)
-    
-    class Meta:
-        db_table = 'space_launch_service_provider'
 
-class RocketConfiguration(models.Model):
-    id = models.IntegerField(primary_key=True)
-    family = models.CharField(max_length=255)
-    full_name = models.CharField(max_length=250)
-    variant = models.TextField()
-    url = models.TextField()
-    description = models.TextField()
-    
-    class Meta:
-        db_table = 'space_rocket_configuration'
-'''
+
 class ProgramType(models.Model):
     id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=100)
@@ -69,7 +49,7 @@ class Program(models.Model):
     info_url = models.URLField(blank=True, null=True)
     wiki_url = models.URLField(blank=True, null=True)
     mission_patches = models.ManyToManyField('MissionPatches', related_name='programs')
-    type = models.ForeignKey(ProgramType, on_delete=models.CASCADE)
+    type = models.ForeignKey(ProgramType, on_delete=models.CASCADE, null=True, blank=True)
     
     class Meta:
         db_table = 'space_program'
@@ -77,6 +57,7 @@ class Program(models.Model):
 class Agency(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
+    featured = models.BooleanField(default=False, blank=True, null=True)
     type = models.CharField(max_length=50)
     country_code = models.CharField(max_length=10)
     abbrev = models.CharField(max_length=50)
@@ -85,6 +66,7 @@ class Agency(models.Model):
     founding_year = models.CharField(max_length=4, blank=True, null=True)
     launchers = models.CharField(max_length=255, blank=True, null=True)
     spacecraft = models.CharField(max_length=255, blank=True, null=True)
+    parent = models.CharField(max_length=255, blank=True, null=True)
     launch_library_url = models.URLField(blank=True, null=True)
     total_launch_count = models.IntegerField(blank=True, null=True)
     successful_launches = models.IntegerField(blank=True, null=True)
@@ -100,6 +82,9 @@ class Agency(models.Model):
     logo_url = models.URLField(blank=True, null=True)
     image_url = models.URLField(blank=True, null=True)
     nation_url = models.URLField(blank=True, null=True)
+    launcher_list = models.ManyToManyField('LauncherConfig', related_name='launcher_agencies')
+    spacecraft_list = models.ManyToManyField('SpacecraftConfig', related_name='spacecraft_agencies')
+    
     
     class Meta:
         db_table = 'space_agency'
@@ -114,8 +99,8 @@ class SpacecraftType(models.Model):
 class SpacecraftConfig(models.Model):    
     id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=255)
-    type = models.ForeignKey(SpacecraftType, on_delete=models.CASCADE)
-    agency = models.ForeignKey(Agency, on_delete=models.CASCADE, null=True)
+    type = models.ForeignKey(SpacecraftType, on_delete=models.CASCADE, null=True, blank=True)
+    agency = models.ForeignKey(Agency, on_delete=models.CASCADE, null=True, blank=True)
     in_use = models.BooleanField()
     capability = models.CharField(max_length=100, blank=True, null=True)
     history = models.TextField(blank=True, null=True)
@@ -341,10 +326,10 @@ class MissionPatches(models.Model):
     name = models.CharField(max_length=255)
     priority = models.IntegerField()    
     image_url = models.URLField(blank=True, null=True)
-    agency = models.ForeignKey(Agency, on_delete=models.CASCADE)
+    agency = models.ForeignKey(Agency, on_delete=models.CASCADE, blank=True, null=True)
     launches = models.ManyToManyField('Launch')
     expeditions = models.ManyToManyField('Expedition')
-    program = models.ForeignKey(Program, on_delete=models.CASCADE)
+    program = models.ForeignKey(Program, on_delete=models.CASCADE, blank=True, null=True)
     
     class Meta:
         db_table = 'space_mission_patches'
@@ -432,8 +417,8 @@ class Landing(models.Model):
     success = models.BooleanField()
     description = models.TextField(blank=True, null=True)
     downrange_distance = models.FloatField(blank=True, null=True)
-    location = models.ForeignKey(LandingLocation, on_delete=models.CASCADE)
-    type = models.ForeignKey(LandingType, on_delete=models.CASCADE)
+    location = models.ForeignKey(LandingLocation, on_delete=models.CASCADE, null=True, blank=True)
+    type = models.ForeignKey(LandingType, on_delete=models.CASCADE, null=True, blank=True)
     
     class Meta:
         db_table = 'space_landing'  
@@ -446,8 +431,8 @@ class LauncherConfig(models.Model):
     description = models.TextField(blank=True, null=True)
     family = models.CharField(max_length=50, blank=True, null=True)
     full_name = models.CharField(max_length=255, blank=True, null=True)
-    manufacturer = models.ForeignKey(Agency, on_delete=models.CASCADE)
-    program = models.ForeignKey(Program, on_delete=models.CASCADE)
+    manufacturer = models.ForeignKey(Agency, on_delete=models.CASCADE, null=True, blank=True)
+    program = models.ManyToManyField(Program)
     variant = models.CharField(max_length=50, blank=True, null=True)
     alias = models.CharField(max_length=50, blank=True, null=True)
     min_stage = models.IntegerField(blank=True, null=True)
@@ -502,8 +487,8 @@ class LauncherStage(models.Model):
     type = models.CharField(max_length=100)
     reused = models.BooleanField(blank=True, null=True)
     launcher_flight_number = models.IntegerField(blank=True, null=True)
-    launcher = models.ForeignKey(Launcher, on_delete=models.CASCADE)
-    landing = models.ForeignKey(Landing, on_delete=models.CASCADE)
+    launcher = models.ForeignKey(Launcher, on_delete=models.CASCADE, null=True, blank=True)
+    landing = models.ForeignKey(Landing, on_delete=models.CASCADE, null=True, blank=True)
     previous_flight_date = models.DateField(blank=True, null=True)
     turn_around_time_days = models.IntegerField(blank=True, null=True)
     previous_flight = models.BooleanField(blank=True, null=True)
@@ -514,7 +499,7 @@ class LauncherStage(models.Model):
 
 class Rocket(models.Model):
     id = models.IntegerField(primary_key=True)
-    configuration = models.ForeignKey(LauncherConfig, on_delete=models.CASCADE)
+    configuration = models.ForeignKey(LauncherConfig, on_delete=models.CASCADE, null=True, blank=True)
     launcher_stage = models.ManyToManyField(LauncherStage)
     spacecraft_stage = models.CharField(max_length=255, blank=True, null=True)
 
@@ -532,7 +517,7 @@ class Orbit(models.Model):
     
 class Pad(models.Model):
     id = models.IntegerField(primary_key=True)
-    agency_id  = models.ForeignKey(Agency, on_delete=models.CASCADE)
+    agency_id  = models.ForeignKey(Agency, on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
     info_url = models.URLField(blank=True, null=True)
@@ -540,7 +525,7 @@ class Pad(models.Model):
     map_url = models.URLField(blank=True, null=True)
     latitude = models.CharField(max_length=50, null=True, blank=True)
     longitude = models.CharField(max_length=50, null=True, blank=True)
-    location = models.ForeignKey(Location, on_delete=models.CASCADE)
+    location = models.ForeignKey(Location, on_delete=models.CASCADE, null=True, blank=True)
     country_code = models.CharField(max_length=10, null=True, blank=True)
     map_image = models.URLField(blank=True, null=True)
     total_launch_count = models.IntegerField(blank=True, null=True)
@@ -567,15 +552,15 @@ class InfoURLType(models.Model):
 
 
 class InfoURLs(models.Model):
-    launch = models.ForeignKey('Launch', related_name='info_urls', on_delete=models.CASCADE)
-    priority = models.IntegerField()
+    launch = models.ForeignKey('Launch', related_name='info_urls', on_delete=models.CASCADE, null=True, blank=True)
+    priority = models.IntegerField(null=True, blank=True)
     source = models.CharField(max_length=255, null=True, blank=True)
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
     feature_image = models.URLField(blank=True, null=True)
     url = models.URLField()
-    type = models.ForeignKey(InfoURLType, on_delete=models.CASCADE)
-    language = models.ForeignKey(Language, on_delete=models.CASCADE)
+    type = models.ForeignKey(InfoURLType, on_delete=models.CASCADE, null=True, blank=True)
+    language = models.ForeignKey(Language, on_delete=models.CASCADE, null=True, blank=True)
 
     class Meta:
         db_table = 'space_info_urls'
@@ -591,15 +576,15 @@ class VidURLType(models.Model):
     
 class VidURLs(models.Model):
     launch = models.ForeignKey('Launch', related_name='vid_urls', on_delete=models.CASCADE)
-    priority = models.IntegerField()
+    priority = models.IntegerField(null=True, blank=True)
     source = models.CharField(max_length=255, null=True, blank=True)
     publisher = models.CharField(max_length=255, null=True, blank=True)
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
     feature_image = models.URLField(blank=True, null=True)
     url = models.URLField()
-    type = models.ForeignKey(VidURLType, on_delete=models.CASCADE)
-    language = models.ForeignKey(Language, on_delete=models.CASCADE)
+    type = models.ForeignKey(VidURLType, on_delete=models.CASCADE, null=True, blank=True)
+    language = models.ForeignKey(Language, on_delete=models.CASCADE, null=True, blank=True)
     start_time = models.DateTimeField(null=True, blank=True)
     end_time = models.DateTimeField(null=True, blank=True)
     
@@ -621,7 +606,7 @@ class Mission(models.Model):
     description = models.TextField(blank=True, null=True)
     launch_designator = models.CharField(max_length=255, blank=True, null=True)
     type = models.CharField(max_length=100, blank=True, null=True)
-    orbit = models.ForeignKey(Orbit, on_delete=models.CASCADE)
+    orbit = models.ForeignKey(Orbit, on_delete=models.CASCADE, null=True, blank=True)
     agencies = models.ManyToManyField(Agency)
     info_urls = models.ManyToManyField(InfoURLs)
     vid_urls = models.ManyToManyField(VidURLs)   
@@ -645,25 +630,25 @@ class Launch(models.Model):
     flightclub_url = models.URLField(null=True, blank=True)
     r_spacex_api_id = models.CharField(max_length=255, null=True, blank=True)
     name = models.CharField(max_length=255)
-    status = models.ForeignKey(LaunchStatus, on_delete=models.CASCADE)
-    last_updated = models.DateTimeField()
+    status = models.ForeignKey(LaunchStatus, on_delete=models.CASCADE, null=True, blank=True)
+    last_updated = models.DateTimeField(null=True, blank=True)
     updates = models.ManyToManyField(Updates)
-    net = models.DateTimeField()
-    net_precision = models.ForeignKey(NetPrecision, on_delete=models.CASCADE)
-    window_end = models.DateTimeField()
-    window_start = models.DateTimeField()
-    probability = models.IntegerField()
+    net = models.DateTimeField(null=True, blank=True)
+    net_precision = models.ForeignKey(NetPrecision, on_delete=models.CASCADE, null=True, blank=True)
+    window_end = models.DateTimeField(null=True, blank=True)
+    window_start = models.DateTimeField(null=True, blank=True)
+    probability = models.IntegerField(null=True, blank=True)
     weather_concerns = models.CharField(max_length=255, null=True, blank=True)
     holdreason = models.CharField(max_length=255, null=True, blank=True)
-    failreason = models.CharField(max_length=255, null=True, blank=True)
+    failreason = models.TextField(null=True, blank=True)
     hashtag = models.CharField(max_length=255, null=True, blank=True)
-    launch_service_provider = models.ForeignKey(Agency, on_delete=models.CASCADE)
-    rocket = models.ForeignKey(Rocket, on_delete=models.CASCADE)
-    mission = models.ForeignKey(Mission, on_delete=models.CASCADE)
-    pad = models.ForeignKey(Pad, on_delete=models.CASCADE)
+    launch_service_provider = models.ForeignKey(Agency, on_delete=models.CASCADE, null=True, blank=True)
+    rocket = models.ForeignKey(Rocket, on_delete=models.CASCADE, null=True, blank=True)
+    mission = models.ForeignKey(Mission, on_delete=models.CASCADE, null=True, blank=True)
+    pad = models.ForeignKey(Pad, on_delete=models.CASCADE, null=True, blank=True)
     InfoURLs = models.ManyToManyField(InfoURLs, related_name='launches')
     VidURLs = models.ManyToManyField(VidURLs, related_name='launches')
-    webcast_live = models.BooleanField()
+    webcast_live = models.BooleanField(null=True, blank=True)
     timeline = models.ManyToManyField('TimelineEventType')
     image = models.URLField(null=True, blank=True)
     infographic = models.URLField(null=True, blank=True)
