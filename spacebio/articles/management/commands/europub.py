@@ -1,7 +1,8 @@
-from django.core.management.base import BaseCommand
+import time
 import requests
 from datetime import datetime
 from articles.models import Article
+from django.core.management.base import BaseCommand
 
 class Command(BaseCommand):
     help = 'Fetch and save news data from API'
@@ -55,7 +56,8 @@ class Command(BaseCommand):
                 params = {
                     'query': query,
                     'resultType': result_type,
-                    'format': format_type
+                    'format': format_type,
+                    'limit':999
                 }
 
                 response = requests.get(base_url, params=params)
@@ -65,13 +67,14 @@ class Command(BaseCommand):
                 else:
                     raise Exception(f"Failed to fetch data: {response.status_code}")
             else:
+                time.sleep(5)
                 response = requests.get(base_url)
                 
                 if response.status_code == 200:
                     return response.json()
                 else:
                     raise Exception(f"Failed to fetch data: {response.status_code}")
-        def save_to_db(articles):
+        def save_to_db(articles,search):
             for article in articles:
                 Article.objects.update_or_create(
                     id=article.id,  # Chave primária usada para encontrar o registro existente
@@ -97,11 +100,19 @@ class Command(BaseCommand):
                         'full_text_url_list': article.full_text_url_list,
                     }
                 )
-        base_url = ''
-        data = fetch_pubmed_data('microgravity',base_url)
-        articles, nextUrl = parse_article_data(data)
-        save_to_db(articles)
-        while nextUrl != '':
-            data = fetch_pubmed_data('microgravity', nextUrl)
+                print (f"Search: {search} title: {article.title}")
+        searchers = ['China space station','Tiangong space station','Bioregenerative life support systems','Lunar South Pole','lunar mare','lunar regolith','lunar highlands','Martian Regolith','Cosmonaut','spaceship','parabolic flight','space flights','spacecraft','plant diseases in space','lunar exploration','Mars exploration','microgravity','International space station','space biology','spaceflight','Moon Base','mars experiment','Astrobiology','Space omics','Mars exploration','Moon exploration','exoplanet','biosignature','extraterrestrial life','exobiology','james webb space telescope','Hubble telescope']
+        for search in searchers:
+            search_query = f'((ABSTRACT:"{search}" OR TITLE:"{search}") AND (((SRC:AGR OR SRC:CBA OR SRC:CTX OR SRC:ETH OR SRC:HIR OR SRC:MED OR SRC:NBK OR SRC:PAT OR SRC:PMC OR SRC:PRR)) OR PUB_TYPE:REVIEW OR SRC:PPR) )'
+
+            base_url = ''
+            data = fetch_pubmed_data(search_query,base_url)
             articles, nextUrl = parse_article_data(data)
-            save_to_db(articles)
+            save_to_db(articles,search)
+            while nextUrl != '':
+                data = fetch_pubmed_data(search_query, nextUrl)
+                articles, nextUrl = parse_article_data(data)
+                save_to_db(articles,search)
+                if not nextUrl:
+                    break
+                print (nextUrl)
