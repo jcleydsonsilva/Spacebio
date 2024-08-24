@@ -50,7 +50,7 @@ class Command(BaseCommand):
                         launch_data = item.get('launches')
                         if launch_data and isinstance(launch_data, list):
                             launch_info = launch_data[0]  # Ensure there's at least one element
-                            launch_id = launch_info.get('launch_id')
+                            launch_id = launch_info.get('id')
                             if launch_id:
                                 launch = Launch.objects.filter(launch_id=launch_id).first()
                                 
