@@ -3,6 +3,7 @@ import requests
 from django.db import transaction
 import logging
 from colorama import Fore, Style
+from datetime import datetime, timezone
 from space.models import *
 
 # Configure logging
@@ -14,10 +15,25 @@ class Command(BaseCommand):
     help = 'Fetch and save news data from API'
 
     def handle(self, *args, **kwargs):
+        script_name = 'fetch_and_insert_launches'
+        base_url = 'https://lldev.thespacedevs.com/2.2.0/launch/?limit=100&mode=detailed'
 
-        total_inserted = 0
-        total_updated = 0
-        errors = []
+        
+
+        # Fetch the last execution log
+        last_execution_log = ExecutionLog.objects.filter(script_name=script_name, url=base_url).first()
+        if last_execution_log:
+            last_executed = last_execution_log.last_executed
+        else:
+            last_executed = None
+            
+        # If there was a previous execution, add the timestamp to the URL
+        if last_executed:
+            last_executed_str = last_executed.isoformat().replace("+00:00", "Z")
+            url = f'{base_url}?last_updated__gte={last_executed_str}'
+        else:
+            url = base_url
+        
 
         def insert_or_update_launch_status(data):
             try:
@@ -440,11 +456,11 @@ class Command(BaseCommand):
                 logger.error(f"Failed to insert or update info_urls: {e}")
                 raise
 
-
-        def insert_or_update_launch(data):
+        total_inserted = 0
+        total_updated = 0
+        
+        def insert_or_update_launch(data, total_inserted, total_updated):
             try:
-                
-
                 # GETS THE FOREIGN KEY FIELDS
                 status = insert_or_update_launch_status(data['status']) if data['status'] else None
                 net_precision = insert_or_update_net_precision(data['net_precision']) if data['net_precision'] else None
@@ -452,6 +468,7 @@ class Command(BaseCommand):
                 rocket = insert_or_update_rocket(data['rocket']) if data['rocket'] else None
                 mission = insert_or_update_mission(data['mission']) if data['mission'] else None
                 pad = insert_or_update_pad(data['pad']) if data['pad'] else None
+                
                 
                 launch, created = Launch.objects.update_or_create(
                     id=data['id'],
@@ -490,9 +507,11 @@ class Command(BaseCommand):
                     }
                 )
                 if created:
-                    logger.info(f"{Fore.GREEN}Launch '{launch.name}' inserted successfully.{Style.RESET_ALL}")
+                    total_inserted += 1
+                    logger.info(f'{Fore.GREEN}Inserted new Launch: {launch.name}{Style.RESET_ALL}')
                 else:
-                    logger.info(f"{Fore.BLUE}Launch '{launch.name}' updated successfully.{Style.RESET_ALL}")
+                    total_updated += 1
+                    logger.info(f'{Fore.BLUE}Updated existing Launch: {launch.name}{Style.RESET_ALL}')
                 
                 
                 # GETS THE MANY-TO-MANY FIELDS
@@ -530,7 +549,6 @@ class Command(BaseCommand):
                 raise
 
 
-
         @transaction.atomic
         def insert_data(data):
             #===================================
@@ -539,9 +557,8 @@ class Command(BaseCommand):
             # Astronauts, Events, Space Stations, etc.
             #===================================
             try:
-                
                 # this main function bellow calls all the other necessaries functions to get and insert data
-                insert_or_update_launch(data)
+                insert_or_update_launch(data, total_inserted, total_updated)
 
             except Exception as e:
                 logger.error(f'{Fore.RED}Transaction failed: {e}{Style.RESET_ALL}')
@@ -549,10 +566,11 @@ class Command(BaseCommand):
 
 
         def fetch_and_insert_all_launches():
-            base_url = 'https://lldev.thespacedevs.com/2.2.0/launch/?limit=100&mode=detailed'
-            next_url = base_url
+            next_url = url
             page = 1
+            
 
+            logger.info(f'{Fore.MAGENTA}Fetching data updated after {last_executed}')
             while next_url:
                 try:
                     logger.info(f'{Fore.MAGENTA}Fetching data from page {page}: {next_url}{Style.RESET_ALL}')
@@ -571,11 +589,15 @@ class Command(BaseCommand):
                     logger.error(f'{Fore.RED}Error fetching page {page}: {e}{Style.RESET_ALL}')
                     break
 
+            # Update or create the execution log
+            ExecutionLog.objects.update_or_create(
+                script_name=script_name,
+                url=base_url,
+                defaults={'last_executed': datetime.now(timezone.utc)}
+            )
             
 
         fetch_and_insert_all_launches()
-        launch_count = Launch.objects.count()
-        vidurls_count = VidURLs.objects.count()
 
-        logger.info(f'{Fore.LIGHTCYAN_EX}Total of {launch_count} launches in the database.{Style.RESET_ALL}')
-        logger.info(f'{Fore.LIGHTCYAN_EX}Total of {vidurls_count} vid_URLs in the database.{Style.RESET_ALL}')
+        logger.info(f'{Fore.LIGHTCYAN_EX}Total of {total_inserted} launches inserted.{Style.RESET_ALL}')
+        logger.info(f'{Fore.LIGHTCYAN_EX}Total of {total_updated} launches updated.{Style.RESET_ALL}')
