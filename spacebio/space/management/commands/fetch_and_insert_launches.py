@@ -18,7 +18,6 @@ class Command(BaseCommand):
         script_name = 'fetch_and_insert_launches'
         base_url = 'https://lldev.thespacedevs.com/2.2.0/launch/?limit=100&mode=detailed'
 
-        
 
         # Fetch the last execution log
         last_execution_log = ExecutionLog.objects.filter(script_name=script_name, url=base_url).first()
@@ -27,10 +26,10 @@ class Command(BaseCommand):
         else:
             last_executed = None
             
-        # If there was a previous execution, add the timestamp to the URL
+        #If there was a previous execution, add the timestamp to the URL
         if last_executed:
             last_executed_str = last_executed.isoformat().replace("+00:00", "Z")
-            url = f'{base_url}?last_updated__gte={last_executed_str}'
+            url = f'{base_url}&last_updated__gte={last_executed_str}'
         else:
             url = base_url
         
@@ -456,10 +455,11 @@ class Command(BaseCommand):
                 logger.error(f"Failed to insert or update info_urls: {e}")
                 raise
 
-        total_inserted = 0
-        total_updated = 0
+
         
-        def insert_or_update_launch(data, total_inserted, total_updated):
+        def insert_or_update_launch(data):
+            nonlocal total_inserted
+            nonlocal total_updated
             try:
                 # GETS THE FOREIGN KEY FIELDS
                 status = insert_or_update_launch_status(data['status']) if data['status'] else None
@@ -512,7 +512,7 @@ class Command(BaseCommand):
                 else:
                     total_updated += 1
                     logger.info(f'{Fore.BLUE}Updated existing Launch: {launch.name}{Style.RESET_ALL}')
-                
+                    
                 
                 # GETS THE MANY-TO-MANY FIELDS
                 # info_urls
@@ -543,22 +543,21 @@ class Command(BaseCommand):
                     missionPatches.append(mission_patch_data)
                 launch.mission_patches.set(missionPatches)
                 
-                return launch
+                return launch, total_inserted, total_updated
+            
             except Exception as e:
                 logger.error(f'{Fore.RED}Error updating/inserting launch: {e}{Style.RESET_ALL}')
                 raise
 
+        total_inserted = 0
+        total_updated = 0
 
         @transaction.atomic
         def insert_data(data):
-            #===================================
-            # In the future we can use whatever endpoint we want to get the data
-            # and call the functions here to populate the database with data such as 
-            # Astronauts, Events, Space Stations, etc.
-            #===================================
+
             try:
                 # this main function bellow calls all the other necessaries functions to get and insert data
-                insert_or_update_launch(data, total_inserted, total_updated)
+                insert_or_update_launch(data)
 
             except Exception as e:
                 logger.error(f'{Fore.RED}Transaction failed: {e}{Style.RESET_ALL}')
@@ -568,7 +567,6 @@ class Command(BaseCommand):
         def fetch_and_insert_all_launches():
             next_url = url
             page = 1
-            
 
             logger.info(f'{Fore.MAGENTA}Fetching data updated after {last_executed}')
             while next_url:
@@ -587,7 +585,7 @@ class Command(BaseCommand):
 
                 except requests.exceptions.RequestException as e:
                     logger.error(f'{Fore.RED}Error fetching page {page}: {e}{Style.RESET_ALL}')
-                    break
+                
 
             # Update or create the execution log
             ExecutionLog.objects.update_or_create(
@@ -599,5 +597,5 @@ class Command(BaseCommand):
 
         fetch_and_insert_all_launches()
 
-        logger.info(f'{Fore.LIGHTCYAN_EX}Total of {total_inserted} launches inserted.{Style.RESET_ALL}')
-        logger.info(f'{Fore.LIGHTCYAN_EX}Total of {total_updated} launches updated.{Style.RESET_ALL}')
+        logger.info(f'{Fore.GREEN}Total of {total_inserted} launches inserted.{Style.RESET_ALL}')
+        logger.info(f'{Fore.BLUE}Total of {total_updated} launches updated.{Style.RESET_ALL}')
