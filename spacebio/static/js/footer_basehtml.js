@@ -53,9 +53,9 @@ document.addEventListener('click', function (event) {
 // sticky navbar
 function navbarToggle(clickedButton) {
     document.getElementById('stickyitems').classList.toggle('sticky')
-    document.getElementById('stickyitems').classList.toggle('top-20')
+    document.getElementById('stickyitems').classList.toggle('top-16')
     document.getElementById('sidenavWrap').classList.toggle('top-0')
-    document.getElementById('sidenavWrap').classList.toggle('top-20')
+    document.getElementById('sidenavWrap').classList.toggle('top-16')
     document.getElementById('navWrap').classList.toggle('sticky')
     document.getElementById('navbar').classList.toggle('shadow-md')
 
@@ -65,7 +65,7 @@ function navbarToggle(clickedButton) {
     stickyToggleButtons.forEach(function (button) {
         button.checked = isChecked;
     });
-    
+
     localStorage.setItem('buttonState', isChecked);
 }
 document.addEventListener('DOMContentLoaded', function () {
@@ -77,9 +77,9 @@ document.addEventListener('DOMContentLoaded', function () {
             button.checked = true;
         });
         document.getElementById('stickyitems').classList.toggle('sticky')
-        document.getElementById('stickyitems').classList.toggle('top-20')
+        document.getElementById('stickyitems').classList.toggle('top-16')
         document.getElementById('sidenavWrap').classList.toggle('top-0')
-        document.getElementById('sidenavWrap').classList.toggle('top-20')
+        document.getElementById('sidenavWrap').classList.toggle('top-16')
         document.getElementById('navWrap').classList.toggle('sticky')
         document.getElementById('navbar').classList.toggle('shadow-md')
     }

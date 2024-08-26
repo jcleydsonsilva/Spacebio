@@ -66,65 +66,6 @@ def article_list(request):
     return render(request, 'articles/article_list.html', {'articles': articles, 'query': query, 'result_count': result_count})
 
 
-def launches(request):
-    current_time = datetime.now().astimezone(timezone.utc)
-    
-    # Fetch space launches from the database
-    launches = Launch.objects.all().order_by("-window_start")
-    
-    # Aplicar o filtro
-    launch_filter = LaunchFilter(request.GET, queryset=launches)
-    filtered_launches = launch_filter.qs
-    
-    # Debug: print query to check applied filters
-    print(filtered_launches.query)
-    
-    # Create a paginator for the launches
-    launches_paginator = Paginator(filtered_launches, 10)
-    page_number = request.GET.get('page')
-    
-    try:
-        # Get the launches for the requested page
-        launches = launches_paginator.page(page_number)
-    except PageNotAnInteger:
-        # If page number is not an integer, deliver first page.
-        launches = launches_paginator.page(1)
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        launches = launches_paginator.page(launches_paginator.num_pages)
-    
-    return render(request, 'articles/launches.html', {'launches': launches, 'filter': launch_filter})
-
-def launch(request, launch_id):
-    launch = Launch.objects.get(id=launch_id)
-    
-    return render(request, 'space/launch.html', {'launch': launch})
-
-def news(request):
-    # Fetch space news from the database
-    space_news = fetch_spacenews()
-    
-    #create a paginator for the news
-    news_paginator = Paginator(space_news, 10)
-    
-    # Get the page number from the request
-    page_number = request.GET.get('page')
-    
-    try:
-        # Get the news for the requested page
-        space_news = news_paginator.page(page_number)
-    except PageNotAnInteger:
-        # If page number is not an integer, deliver first page.
-        space_news = news_paginator.page(1)
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        space_news = news_paginator.page(news_paginator.num_pages)
-    
-    return render(request, 'articles/news.html', {'space_news': space_news})
-
-
-def stellarium_view(request):
-    return render(request, 'articles/stellarium.html')
 
 def team_view(request):
 
@@ -160,23 +101,3 @@ def timeline_view(request):
 def getInvolved_view(request):
     return render(request, 'articles/getInvolved.html')
 
-def spacebiotv_view(request):
-    videos = VidURLs.objects.all().filter(url__contains="youtube.com").order_by('-id')
-    
-    #create a paginator for the news
-    videos_paginator = Paginator(videos, 6)
-    
-    # Get the page number from the request
-    page_number = request.GET.get('page')
-    
-    try:
-        # Get the news for the requested page
-        videos = videos_paginator.page(page_number)
-    except PageNotAnInteger:
-        # If page number is not an integer, deliver first page.
-        videos = videos_paginator.page(1)
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        videos = videos_paginator.page(videos_paginator.num_pages)
-    
-    return render(request, 'articles/spacebiotv.html',{'videos':videos})

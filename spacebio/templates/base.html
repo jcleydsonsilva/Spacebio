@@ -21,25 +21,7 @@
 
     <script></script>
   </head>
-  <style>
-    /* Custom CSS for tooltip */
-    .tooltip {
-      position: absolute;
-      left: 100%;
-      margin-left: 0.5rem;
-      background-color: black;
-      color: white;
-      padding: 0.25rem 0.5rem;
-      border-radius: 0.25rem;
-      white-space: nowrap;
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-    
-    .group:hover .tooltip {
-      opacity: 1;
-    }
-  </style>
+
   <body class="flex flex-col h-full bg-background duration-500 accent-spacepurple2">
     <!-- NAVBAR -->
     <div id="navWrap" class="top-0 w-full z-10">
@@ -124,7 +106,7 @@
                 <a href="{% url 'space_literature' %}" data-url="teste" class="w-full">
                   <li class="flex flex-nowrap justify-start items-center gap-1 ps-2 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
                     <i class="fi fi-rr-book text-xl text-text p-3"></i>
-                    <span class="hidden opacity-0 duration-300">Space Literature</span>
+                    <span class="hidden opacity-0 duration-300 text-nowrap">Space Literature</span>
                   </li>
                 </a>
                 <a href="teste" data-url="teste" class="w-full">
