@@ -33,18 +33,18 @@ ARTICLES_PATHS = [
     path('', articles_views.home, name='home'),
     path('articles/list', articles_views.article_list, name='articles'),
     path('space_literature', articles_views.space_literature, name='space_literature'),
-    path('launches', articles_views.launches, name="launches"),
-    path('news', articles_views.news, name="news"),
-    path('stellarium/', articles_views.stellarium_view, name='stellarium_view'),
     path('team/', articles_views.team_view, name='team_view'),
     path('timeline/', articles_views.timeline_view, name='timeline_view'),
     path('getInvolved/', articles_views.getInvolved_view, name='getInvolved_view'),
-    path('spacebiotv/', articles_views.spacebiotv_view, name='spacebiotv_view'),
     
 ]
 
 SPACE_PATHS = [
-    path('space/launch/<str:launch_id>', articles_views.launch, name="launch"),
+    path('launches', space_views.launches, name="launches"),
+    path('news', space_views.news, name="news"),
+    path('space/launch/<str:launch_id>', space_views.launch, name="launch"),
+    path('spacebiotv/', space_views.spacebiotv_view, name='spacebiotv_view'),
+    path('stellarium/', space_views.stellarium_view, name='stellarium_view'),
 ]
 
 urlpatterns = DJANGO_PATHS + ARTICLES_PATHS + SPACE_PATHS

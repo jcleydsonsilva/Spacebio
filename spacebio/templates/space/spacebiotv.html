@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load static date_format humanize %}
+{% block content %}
+  <!-- Breadcrumb Start -->
+  <section class="flex flex-col container mx-auto mt-4 sm:mt-8 md:mt-12">
+    <div class="flex justify-between items-center flex-wrap gap-3 text-sm sm:text-base mb-6 px-2 min-[390px]:px-7 lg:px-20">
+      <h1 class="font-bold w-1/2 text-text text-xl sm:text-2xl">Spacebio TV</h1>
+      <div>
+        <ol class="flex items-center gap-2">
+          <li>
+            <a class="font-medium text-text" href="{% url 'home' %}">SpaceBio /</a>
+          </li>
+          <li class="font-medium text-text/60">Spacebio TV</li>
+        </ol>
+      </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+    <!-- Video Modal -->
+    <div id="modal" class="fixed inset-0 items-center justify-center bg-black bg-opacity-80 hidden z-30" onclick="closeModalOutside(event)">
+      <div class="bg-background/25 bg-opacity-5 backdrop-blur-2xl rounded-lg overflow-hidden shadow-lg md:w-2/3 w-full relative aspect-video" onclick="event.stopPropagation();">
+        <button onclick="toggleModal(false)" class="absolute -top-2 right-0 m-4 text-text text-3xl font-bold text-white">&times;</button>
+        <div class="p-4 border-b">
+          <h2 class="text-lg font-semibold text-white">Watch Video</h2>
+        </div>
+        <div class="p-4 h-full">
+          <iframe id="modalVideo" src="" class="w-full h-5/6" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-y-12 lg:gap-y-20 gap-6 px-2 min-[390px]:px-7 lg:px-20 mb-20">
+      {% for video in videos %}
+        <div class="relative">
+          <iframe src="{{ video.get_embedded_url }}" frameborder="0" class="w-full  xl:max-h-80 rounded-xl aspect-video"></iframe>
+          <!-- Invisible Overlay to capture the click -->
+          <div class="absolute inset-0 cursor-pointer" onclick="playInModal('{{ video.get_embedded_url }}?autoplay=1')"></div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="flex justify-center items-center my-4">
+      <span class="text-sm text-gray-600 me-3">Page {{ videos.number }} of {{ videos.paginator.num_pages }}</span>
+      <div class="flex items-center space-x-2">
+        {% if videos.has_previous %}
+          <a href="?page=1" class="px-3 py-1.5 bg-primary text-text/50 rounded">First</a>
+          <a href="?page={{ videos.previous_page_number }}" class="px-3 py-1.5 bg-primary text-text/50 rounded">Previous</a>
+        {% endif %}
+        {% for num in videos.paginator.page_range %}
+          {% if videos.number == num %}
+            <span class="px-3 py-1.5 bg-gradient-to-br from-spaceblue to-spacepurple2 rounded text-white max-w-min">{{ num }}</span>
+          {% elif num > videos.number|add:'-3' and num < videos.number|add:'3' %}
+            <a href="?page={{ num }}" class="px-3 py-1.5 bg-primary text-text/50 rounded">{{ num }}</a>
+          {% endif %}
+        {% endfor %}
+        {% if videos.has_next %}
+          <a href="?page={{ videos.next_page_number }}" class="px-2 py-1.5 bg-primary text-text/50 rounded">Next</a>
+          <a href="?page={{ videos.paginator.num_pages }}" class="px-3 py-1.5 bg-primary text-text/50 rounded">Last</a>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+  <script>
+    function toggleModal(show, videoUrl = '') {
+      const modal = document.getElementById('modal')
+      const modalVideo = document.getElementById('modalVideo')
+    
+      if (show) {
+        modal.classList.add('flex')
+        modal.classList.remove('hidden')
+        modalVideo.src = videoUrl // Carregar o vídeo no iframe do modal
+      } else {
+        modal.classList.add('hidden')
+        modal.classList.remove('flex')
+        modalVideo.src = '' // Parar o vídeo ao fechar o modal
+      }
+    }
+    // Função para fechar o modal ao clicar fora dele
+    function closeModalOutside(event) {
+      if (event.target.id === 'modal') {
+        toggleModal(false)
+      }
+    }
+    function playInModal(videoUrl) {
+      toggleModal(true, videoUrl)
+    }
+  </script>
+{% endblock %}
