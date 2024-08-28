@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static date_format humanize %}
+{% block content %}
+  <header style="background-image: url({% static 'articles/img/astronaut.jpeg' %});" class="relative h-full w-full bg-cover bg-center bg-no-repeat overflow-hidden">
+    <div class="h-full flex flex-col gap-10 py-6 bg-gradient-to-r from-black via-transparent/15 to-transparent">
+      <!-- Breadcrumb Start -->
+      <div class="flex justify-between items-center flex-wrap gap-3 text-sm sm:text-base mb-6 px-2 min-[390px]:px-7 lg:px-20 lg:mb-28">
+        <h1 class="font-bold sm:text-lg md:text-xl lg:text-2xl text-white/60">Spacebio TV</h1>
+        <div>
+          <ol class="flex items-center gap-2 text-sm sm:text-base">
+            <li>
+              <a class="font-medium text-white/60" href="{% url 'home' %}">SpaceBio /</a>
+            </li>
+            <li class="font-medium text-white/40">Spacebio TV</li>
+          </ol>
+        </div>
+      </div>
+      <!-- Breadcrumb End -->
+
+      <div class="flex flex-col justify-end items-start text-white/70 mx-auto w-5/6 mt-10 sm:mb-4 md:mb-10 lg:mb-16">
+        <span class="uppercase text-sm md:text-base lg:text-lg">upcoming launch</span>
+        <span class="text-xs sm:text-sm md:text-base mt-2 text-white/40">Space X</span>
+        <h2 class="uppercase text-xl sm:text-2xl md:text-3xl font-bold">Falcon Heavy</h2>
+        <a href="" class="uppercase border-2 border-white font-semibold px-10 py-2 mt-8 hover:bg-white transition-all hover:text-black">Watch</a>
+      </div>
+    </div>
+    <div class="absolute bottom-0 w-full bg-gradient-to-t from-black to-transparent h-20"></div>
+  </header>
+
+  <div class="bg-black">
+    <div class="mx-auto w-5/6 flex py-3 justify-between items-start">
+      <ul class="flex gap-8 text-white">
+        <li class="relative group border-b-2 border-spacepurple2">
+          <i class="fi fi-rr-home"></i>
+          <!-- Tooltip -->
+          <div class="absolute top-full mt-2 -translate-x-1/4 hidden group-hover:block group-focus:block bg-gray-800 text-white text-sm rounded px-2 py-1 whitespace-nowrap z-10">Home</div>
+        </li>
+        <li class="relative group">
+          <i class="fi fi-rr-film"></i>
+          <!-- Tooltip -->
+          <div class="absolute top-full mt-2 -translate-x-1/4 hidden group-hover:block group-focus:block bg-gray-800 text-white text-sm rounded px-2 py-1 whitespace-nowrap z-10">Videos</div>
+        </li>
+        <li class="relative group">
+          <i class="fi fi-rr-camera-movie"></i>
+          <!-- Tooltip -->
+          <div class="absolute top-full mt-2 -translate-x-1/4 hidden group-hover:block group-focus:block bg-gray-800 text-white text-sm rounded px-2 py-1 whitespace-nowrap z-10">Live Streams</div>
+        </li>
+      </ul>
+
+      <div class="flex items-center py-1.5 px-4 border border-spacepurple2 rounded-lg">
+        <input type="text" name="name" id="name" placeholder="Search" class="placeholder:italic placeholder:font-sm placeholder:text-white/50 text-white/70 bg-transparent ring-0 border-0 outline-none" />
+        <i class="fi fi-rr-search ms-2 text-white/80"></i>
+      </div>
+    </div>
+  </div>
+  <section class="flex flex-col">
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-2 gap-y-10 px-2 min-[390px]:px-7 lg:px-20 mb-20 mt-4">
+      {% for video in videos %}
+        <div class="relative">
+          <img src="{{ video.get_thumbnail }}" frameborder="0" class="w-full xl:max-h-80 rounded-md aspect-video" />
+          <!-- Invisible Overlay to capture the click -->
+        </div>
+      {% endfor %}
+    </div>
+
+  </section>
+{% endblock %}
