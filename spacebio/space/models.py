@@ -591,6 +591,16 @@ class VidURLs(models.Model):
     class Meta:
         db_table = 'space_vid_urls'
         
+    def get_thumbnail(self):
+        if 'watch?v=' in self.url:
+            video_id = self.url.split('watch?v=')[1]
+            thumbnail_url = f"https://img.youtube.com/vi/{video_id}/maxresdefault.jpg"
+        elif 'youtube.com/live/' in self.url:
+            thumbnail_url = f"https://img.youtube.com/vi/{self.url.split('youtube.com/live/')[1]}/maxresdefault.jpg"
+        else:
+            thumbnail_url = None
+        return thumbnail_url
+
     def get_embedded_url(self):
         if 'watch?v=' in self.url:
             return self.url.replace('watch?v=', 'embed/')

@@ -95,7 +95,7 @@
               <ul id="sideItems" class="flex flex-col gap-1 w-full ps-2.5 pe-2 items-stretch justify-start">
                 <div class="w-2/3 place-self-center h-0.5 bg-gradient-to-r from-text/5 via-text/60 to-text/5"></div>
                 <a href="{% url 'home' %}" data-url="{% url 'home' %}" class="w-full">
-                  <li class="flex flex-nowrap justify-start items-center gap-1 ps-2 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
+                  <li class="relative group flex flex-nowrap justify-start items-center gap-1 ps-2 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
                     <i class="fi fi-rr-home text-xl text-text p-3"></i>
                     <span class="hidden opacity-0 duration-300 text-nowrap">Home</span>
                   </li>
@@ -187,7 +187,7 @@
         </aside>
       </div>
 
-      <div class="flex-1 mt-5 sm:mt-0">
+      <div class="flex-1">
         {% comment %}CONTENT{% endcomment %}
         <main class="min-h-screen">
           {% block content %}

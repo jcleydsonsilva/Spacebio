@@ -104,3 +104,8 @@ def spacebiotv_view(request):
 
 def stellarium_view(request):
     return render(request, 'space/stellarium.html')
+
+def netflix_view(request):
+    videos = VidURLs.objects.filter(url__contains="youtube.com").order_by('-id')[:10]
+        
+    return render(request, 'space/netflix.html',{'videos':videos})
