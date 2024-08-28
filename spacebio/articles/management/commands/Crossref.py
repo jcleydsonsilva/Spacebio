@@ -17,7 +17,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         cr = Crossref()
-        searchers = ['Space Station','China space station','Tiangong space station','Bioregenerative life+support systems','Lunar South Pole','lunar mare','lunar regolith','lunar highlands','Martian Regolith','Cosmonaut','spaceship','parabolic flight','space flights','spacecraft','lunar exploration','Mars exploration','microgravity','International space+station','space biology','spaceflight','Moon Base','mars experiment','Astrobiology','Space omics','Mars exploration','Moon exploration','exoplanet','biosignature','extraterrestrial life','exobiology','james webb space telescope','Hubble telescope']
+        searchers = ['Space mission','Spacelab','Space Shuttle','Micro-gravity','Space Station','China space station','Tiangong space station','Bioregenerative life+support systems','Lunar South Pole','lunar mare','lunar regolith','lunar highlands','Martian Regolith','Cosmonaut','spaceship','parabolic flight','space flights','spacecraft','lunar exploration','Mars exploration','microgravity','International space+station','space biology','spaceflight','Moon Base','mars experiment','Astrobiology','Space omics','Mars exploration','Moon exploration','exoplanet','biosignature','extraterrestrial life','exobiology','james webb space telescope','Hubble telescope']
         for query in searchers:
             results = cr.works(query=query, filter={'has-abstract':True}, limit=1000,offset=9000,order='desc')
             for item in results['message']['items']:

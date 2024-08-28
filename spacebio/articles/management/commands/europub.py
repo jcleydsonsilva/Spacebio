@@ -101,7 +101,7 @@ class Command(BaseCommand):
                     }
                 )
                 print (f"Search: {search} title: {article.title}")
-        searchers = ['China space station','Tiangong space station','Bioregenerative life support systems','Lunar South Pole','lunar mare','lunar regolith','lunar highlands','Martian Regolith','Cosmonaut','spaceship','parabolic flight','space flights','spacecraft','plant diseases in space','lunar exploration','Mars exploration','microgravity','International space station','space biology','spaceflight','Moon Base','mars experiment','Astrobiology','Space omics','Mars exploration','Moon exploration','exoplanet','biosignature','extraterrestrial life','exobiology','james webb space telescope','Hubble telescope']
+        searchers = ['Space mission','Spacelab','Space Shuttle','Micro-gravity','China space station','Tiangong space station','Bioregenerative life support systems','Lunar South Pole','lunar mare','lunar regolith','lunar highlands','Martian Regolith','Cosmonaut','spaceship','parabolic flight','space flights','spacecraft','plant diseases in space','lunar exploration','Mars exploration','microgravity','International space station','space biology','spaceflight','Moon Base','mars experiment','Astrobiology','Space omics','Mars exploration','Moon exploration','exoplanet','biosignature','extraterrestrial life','exobiology','james webb space telescope','Hubble telescope']
         for search in searchers:
             search_query = f'((ABSTRACT:"{search}" OR TITLE:"{search}") AND (((SRC:AGR OR SRC:CBA OR SRC:CTX OR SRC:ETH OR SRC:HIR OR SRC:MED OR SRC:NBK OR SRC:PAT OR SRC:PMC OR SRC:PRR)) OR PUB_TYPE:REVIEW OR SRC:PPR) )'
 
@@ -116,3 +116,4 @@ class Command(BaseCommand):
                 if not nextUrl:
                     break
                 print (nextUrl)
+                time.sleep(1)
