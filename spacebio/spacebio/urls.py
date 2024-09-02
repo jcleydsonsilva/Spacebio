@@ -45,7 +45,6 @@ SPACE_PATHS = [
     path('space/launch/<str:launch_id>', space_views.launch, name="launch"),
     path('spacebiotv/', space_views.spacebiotv_view, name='spacebiotv_view'),
     path('stellarium/', space_views.stellarium_view, name='stellarium_view'),
-    path('netflix/', space_views.netflix_view, name='netflix_view'),
 ]
 
 urlpatterns = DJANGO_PATHS + ARTICLES_PATHS + SPACE_PATHS

@@ -84,7 +84,7 @@ def spacebiotv_view(request):
     videos = VidURLs.objects.all().filter(url__contains="youtube.com").order_by('-id')
     
     #create a paginator for the news
-    videos_paginator = Paginator(videos, 12)
+    videos_paginator = Paginator(videos, 15)
     
     # Get the page number from the request
     page_number = request.GET.get('page')
@@ -98,14 +98,13 @@ def spacebiotv_view(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         videos = videos_paginator.page(videos_paginator.num_pages)
-    
-    return render(request, 'space/spacebiotv.html',{'videos':videos})
+        
+        
+    context = {
+        'videos': videos
+    }
+    return render(request, 'space/spacebiotv.html', context)
 
 
 def stellarium_view(request):
     return render(request, 'space/stellarium.html')
-
-def netflix_view(request):
-    videos = VidURLs.objects.filter(url__contains="youtube.com").order_by('-id')[:10]
-        
-    return render(request, 'space/netflix.html',{'videos':videos})
