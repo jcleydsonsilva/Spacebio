@@ -1,20 +1,63 @@
 {% extends 'base.html' %}
 {% load static date_format humanize %}
 {% block content %}
-  <!-- Breadcrumb Start -->
-  <section class="flex flex-col container mx-auto mt-4 sm:mt-8 md:mt-12">
-    <div class="flex justify-between items-center flex-wrap gap-3 text-sm sm:text-base mb-6 px-2 min-[390px]:px-7 lg:px-20">
-      <h1 class="font-bold w-1/2 text-text text-xl sm:text-2xl">Spacebio TV</h1>
-      <div>
-        <ol class="flex items-center gap-2">
-          <li>
-            <a class="font-medium text-text" href="{% url 'home' %}">SpaceBio /</a>
-          </li>
-          <li class="font-medium text-text/60">Spacebio TV</li>
-        </ol>
+  <header class="relative h-full w-full overflow-hidden">
+    <!-- Vídeo de fundo -->
+    <img id="video-placeholder" src="{% static 'articles/img/spacebio_background.jpg' %}" alt="Background" class="absolute top-0 left-0 w-full h-full object-cover">
+    <video id="background-video" autoplay muted playsinline class="absolute top-0 left-0 w-full h-full object-cover p-px pr-0"></video>
+    <div class="relative h-full flex flex-col gap-10 py-6 bg-gradient-to-r from-black via-transparent/15 to-transparent">
+      <!-- Breadcrumb Start -->
+      <div class="flex justify-between items-center flex-wrap gap-3 text-sm sm:text-base mb-6 px-2 min-[390px]:px-7 lg:px-20 lg:mb-28 xl:mb-36">
+        <h1 class="font-bold sm:text-lg md:text-xl lg:text-2xl text-white/60">Spacebio TV</h1>
+        <div>
+          <ol class="flex items-center gap-2 text-sm sm:text-base">
+            <li>
+              <a class="font-medium text-white/60" href="{% url 'home' %}">SpaceBio /</a>
+            </li>
+            <li class="font-medium text-white/40">Spacebio TV</li>
+          </ol>
+        </div>
+      </div>
+      <!-- Breadcrumb End -->
+
+      <div class="flex flex-col justify-end items-start text-white/70 mx-auto w-5/6 mt-10 sm:mb-4 md:mb-10 lg:mb-16 xl:mb-28">
+        <span class="uppercase text-sm md:text-base lg:text-lg">upcoming launch</span>
+        <span class="text-xs sm:text-sm md:text-base mt-2 text-white/40">Space X</span>
+        <h2 class="uppercase text-xl sm:text-2xl md:text-3xl font-bold">Falcon Heavy</h2>
+        <a href="" class="uppercase border-2 border-white font-semibold px-10 py-2 mt-8 hover:bg-white transition-all hover:text-black">Watch</a>
       </div>
     </div>
-    <!-- Breadcrumb End -->
+    <div class="absolute bottom-0 w-full bg-gradient-to-t from-black to-transparent h-20"></div>
+  </header>
+
+  <div class="bg-black -mt-px">
+    <div class="mx-auto px-2 min-[390px]:px-4 sm:w-5/6 flex py-3 justify-between items-start">
+      <ul class="flex gap-8 text-white">
+        <li class="relative group border-b-2 border-spacepurple2">
+          <i class="fi fi-rr-home"></i>
+          <!-- Tooltip -->
+          <div class="absolute top-full mt-2 -translate-x-1/4 hidden group-hover:block group-focus:block bg-gray-800 text-white text-sm rounded px-2 py-1 whitespace-nowrap z-10">Home</div>
+        </li>
+        <li class="relative group">
+          <i class="fi fi-rr-film"></i>
+          <!-- Tooltip -->
+          <div class="absolute top-full mt-2 -translate-x-1/4 hidden group-hover:block group-focus:block bg-gray-800 text-white text-sm rounded px-2 py-1 whitespace-nowrap z-10">Videos</div>
+        </li>
+        <li class="relative group">
+          <i class="fi fi-rr-camera-movie"></i>
+          <!-- Tooltip -->
+          <div class="absolute top-full mt-2 -translate-x-1/4 hidden group-hover:block group-focus:block bg-gray-800 text-white text-sm rounded px-2 py-1 whitespace-nowrap z-10">Live Streams</div>
+        </li>
+      </ul>
+
+      <div class="flex items-center py-1.5 px-4 border-2 border-spacepurple2/40 focus-within:border-spacepurple2 rounded-lg">
+        <input type="text" name="name" id="name" placeholder="Search not working yet" class="placeholder:italic placeholder:font-sm placeholder:text-white/50 text-white/70 bg-transparent ring-0 border-0 outline-none" />
+        <i class="fi fi-rr-search ms-2 text-white/80"></i>
+      </div>
+    </div>
+  </div>
+
+  <section class="flex flex-col">
 
     <!-- Video Modal -->
     <div id="modal" class="fixed inset-0 items-center justify-center bg-black bg-opacity-80 hidden z-30" onclick="closeModalOutside(event)">
@@ -29,15 +72,23 @@
       </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-y-12 lg:gap-y-20 gap-6 px-2 min-[390px]:px-7 lg:px-20 mb-20">
-      {% for video in videos %}
-        <div class="relative">
-          <iframe src="{{ video.get_embedded_url }}" frameborder="0" class="w-full  xl:max-h-80 rounded-xl aspect-video"></iframe>
-          <!-- Invisible Overlay to capture the click -->
-          <div class="absolute inset-0 cursor-pointer" onclick="playInModal('{{ video.get_embedded_url }}?autoplay=1')"></div>
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-2 gap-y-10 px-2 sm:px-7 lg:px-20 mb-20 mt-4">
+      {% if live_stream %}
+        <div class="live-stream">
+            <h2>{{ live_stream.title }}</h2>
+            <video src="{{ live_stream.url }}" controls autoplay></video>
         </div>
-      {% endfor %}
+      {% else %}
+        {% for video in videos %}
+            <div class="relative">
+            <img src="{{ video.get_thumbnail }}" frameborder="0" class="w-full xl:max-h-80 rounded-xl aspect-video"></img>
+            <!-- Invisible Overlay to capture the click -->
+            <div class="absolute inset-0 cursor-pointer" onclick="playInModal('{{ video.get_embedded_url }}?autoplay=1')"></div>
+            </div>
+        {% endfor %}
+      {% endif %}
     </div>
+
 
     <div class="flex justify-center items-center my-4">
       <span class="text-sm text-gray-600 me-3">Page {{ videos.number }} of {{ videos.paginator.num_pages }}</span>
@@ -61,6 +112,49 @@
     </div>
   </section>
   <script>
+    // header background video
+    document.addEventListener('DOMContentLoaded', function () {
+      const videos = [
+        "{% static 'space/videos/vid1.mp4' %}",
+        "{% static 'space/videos/vid2.mp4' %}",
+        "{% static 'space/videos/vid3.mp4' %}",
+        "{% static 'space/videos/vid4.mp4' %}",
+        "{% static 'space/videos/vid5.mp4' %}",
+        "{% static 'space/videos/vid6.mp4' %}",
+        "{% static 'space/videos/vid7.mp4' %}",
+        "{% static 'space/videos/vid8.mp4' %}",
+        "{% static 'space/videos/vid9.mp4' %}",
+        "{% static 'space/videos/vid10.mp4' %}",
+        "{% static 'space/videos/vid11.mp4' %}",
+        "{% static 'space/videos/vid12.mp4' %}",
+        "{% static 'space/videos/vid13.mp4' %}",
+        "{% static 'space/videos/vid14.mp4' %}",
+        "{% static 'space/videos/vid15.mp4' %}",
+        "{% static 'space/videos/vid16.mp4' %}"
+      ]
+      const videoElement = document.getElementById('background-video');
+      const placeholder = document.getElementById('video-placeholder');
+    
+      function changeVideo() {
+        const randomIndex = Math.floor(Math.random() * videos.length)
+        videoElement.src = videos[randomIndex]
+        
+        // Quando o vídeo começar a carregar, mostrar o vídeo e esconder a imagem
+        videoElement.addEventListener('canplay', function () {
+            placeholder.classList.add('hidden');
+            videoElement.classList.remove('hidden');
+            videoElement.play();
+        });
+      }
+
+
+    // Video modal script
+    videoElement.addEventListener('ended', changeVideo);
+
+    changeVideo(); // reproduce videos after page load
+
+    })
+
     function toggleModal(show, videoUrl = '') {
       const modal = document.getElementById('modal')
       const modalVideo = document.getElementById('modalVideo')
