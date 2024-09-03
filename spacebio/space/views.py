@@ -17,7 +17,8 @@ from space.models import *
 from space.apis import fecth_spacelaunchs, fetch_spacenews
 from django.templatetags.static import static
 
-from space.filters import LaunchFilter
+from space.filters_launch import LaunchFilter
+from space.filters_video import VideoFilter
 
 
 def launches(request):
@@ -81,7 +82,25 @@ def news(request):
 
 
 def spacebiotv_view(request):
+    query = request.GET.get('search')
+    filter_type = request.GET.get('filter')
     videos = VidURLs.objects.all().filter(url__contains="youtube.com").order_by('-id')
+    
+    if filter_type:
+        if filter_type == 'videos':
+            videos = videos.filter(~Q(title__icontains='live'))
+        elif filter_type == 'live':
+            videos = videos.filter(title__contains='live')
+        elif filter_type == 'all':
+            pass  # Mostrar todos os vídeos
+    
+    if query:
+        videos = videos.filter(
+            Q(title__icontains=query) |
+            Q(description__icontains=query) |
+            Q(publisher__icontains=query)
+        )
+
     
     #create a paginator for the news
     videos_paginator = Paginator(videos, 15)
@@ -101,7 +120,9 @@ def spacebiotv_view(request):
         
         
     context = {
-        'videos': videos
+        'videos': videos,
+        'query': query,
+        'filter_type': filter_type,
     }
     return render(request, 'space/spacebiotv.html', context)
 

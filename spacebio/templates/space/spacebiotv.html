@@ -32,27 +32,42 @@
 
   <div class="bg-black -mt-px">
     <div class="mx-auto px-2 min-[390px]:px-4 sm:w-5/6 flex py-3 justify-between items-start">
-      <ul class="flex gap-8 text-white">
-        <li class="relative group border-b-2 border-spacepurple2">
-          <i class="fi fi-rr-home"></i>
-          <!-- Tooltip -->
-          <div class="absolute top-full mt-2 -translate-x-1/4 hidden group-hover:block group-focus:block bg-gray-800 text-white text-sm rounded px-2 py-1 whitespace-nowrap z-10">Home</div>
-        </li>
-        <li class="relative group">
-          <i class="fi fi-rr-film"></i>
-          <!-- Tooltip -->
-          <div class="absolute top-full mt-2 -translate-x-1/4 hidden group-hover:block group-focus:block bg-gray-800 text-white text-sm rounded px-2 py-1 whitespace-nowrap z-10">Videos</div>
-        </li>
-        <li class="relative group">
-          <i class="fi fi-rr-camera-movie"></i>
-          <!-- Tooltip -->
-          <div class="absolute top-full mt-2 -translate-x-1/4 hidden group-hover:block group-focus:block bg-gray-800 text-white text-sm rounded px-2 py-1 whitespace-nowrap z-10">Live Streams</div>
-        </li>
-      </ul>
+        <ul class="flex gap-8 text-white">
+            <li class="relative group {% if filter_type == 'all' %}border-b-2 border-spacepurple2{% endif %}">
+                <a href="{% url 'spacebiotv_view' %}?filter=all" class="flex items-center">
+                <i class="fi fi-rr-home"></i>
+                <!-- Tooltip -->
+                <div class="absolute top-full mt-2 -translate-x-1/4 hidden group-hover:block group-focus:block bg-gray-800 text-white text-sm rounded px-2 py-1 whitespace-nowrap z-10">Todos</div>
+                </a>
+            </li>
+            <li class="relative group {% if filter_type == 'videos' %}border-b-2 border-spacepurple2{% endif %}">
+                <a href="{% url 'spacebiotv_view' %}?filter=videos" class="flex items-center">
+                <i class="fi fi-rr-film"></i>
+                <!-- Tooltip -->
+                <div class="absolute top-full mt-2 -translate-x-1/4 hidden group-hover:block group-focus:block bg-gray-800 text-white text-sm rounded px-2 py-1 whitespace-nowrap z-10">Vídeos</div>
+                </a>
+            </li>
+            <li class="relative group {% if filter_type == 'live' %}border-b-2 border-spacepurple2{% endif %}">
+                <a href="{% url 'spacebiotv_view' %}?filter=live" class="flex items-center">
+                <i class="fi fi-rr-camera-movie"></i>
+                <!-- Tooltip -->
+                <div class="absolute top-full mt-2 -translate-x-1/4 hidden group-hover:block group-focus:block bg-gray-800 text-white text-sm rounded px-2 py-1 whitespace-nowrap z-10">Lives</div>
+                </a>
+            </li>
+        </ul>
 
-      <div class="flex items-center py-1.5 px-4 border-2 border-spacepurple2/40 focus-within:border-spacepurple2 rounded-lg">
-        <input type="text" name="name" id="name" placeholder="Search not working yet" class="placeholder:italic placeholder:font-sm placeholder:text-white/50 text-white/70 bg-transparent ring-0 border-0 outline-none" />
-        <i class="fi fi-rr-search ms-2 text-white/80"></i>
+      <div class="flex gap-2 justify-between items-center">
+        <div class="flex items-center py-1.5 px-4 border-2 border-spacepurple2/40 focus-within:border-spacepurple2 rounded-lg">
+            <form method="GET" action="{% url 'spacebiotv_view' %}" class="">
+                <input type="text" name="search" id="search" placeholder="Search videos" value="{{ request.GET.search }}" class="placeholder:italic placeholder:font-sm placeholder:text-white/50 text-white/70 bg-transparent ring-0 border-0 outline-none" />
+                <button type="submit" class="">
+                    <i class="fi fi-rr-search ms-2 text-white/80"></i>
+                </button>
+            </form>
+        </div>
+        {% if request.GET %}
+            <button type="button" onclick="window.location.href = '{% url 'spacebiotv_view' %}'" class="py-1 px-2 align-text-bottom bg-gradient-to-br from-spaceblue to-spacepurple2 text-white rounded-md"><i class="fi fi-rr-cross-small text-lg"></i></button>
+        {% endif %}
       </div>
     </div>
   </div>
@@ -81,7 +96,7 @@
       {% else %}
         {% for video in videos %}
             <div class="relative">
-            <img src="{{ video.get_thumbnail }}" frameborder="0" class="w-full xl:max-h-80 rounded-xl aspect-video"></img>
+            <img src="{{ video.get_thumbnail }}" frameborder="0" class="w-full xl:max-h-80 rounded-xl aspect-video">
             <!-- Invisible Overlay to capture the click -->
             <div class="absolute inset-0 cursor-pointer" onclick="playInModal('{{ video.get_embedded_url }}?autoplay=1')"></div>
             </div>
@@ -94,19 +109,19 @@
       <span class="text-sm text-gray-600 me-3">Page {{ videos.number }} of {{ videos.paginator.num_pages }}</span>
       <div class="flex items-center space-x-2">
         {% if videos.has_previous %}
-          <a href="?page=1" class="px-3 py-1.5 bg-primary text-text/50 rounded">First</a>
-          <a href="?page={{ videos.previous_page_number }}" class="px-3 py-1.5 bg-primary text-text/50 rounded">Previous</a>
+          <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&amp;{% endif %}{% endfor %}page=1" class="px-3 py-1.5 bg-primary text-text/50 rounded">First</a>
+          <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&amp;{% endif %}{% endfor %}page={{ videos.previous_page_number }}" class="px-3 py-1.5 bg-primary text-text/50 rounded">Previous</a>
         {% endif %}
         {% for num in videos.paginator.page_range %}
           {% if videos.number == num %}
             <span class="px-3 py-1.5 bg-gradient-to-br from-spaceblue to-spacepurple2 rounded text-white max-w-min">{{ num }}</span>
           {% elif num > videos.number|add:'-3' and num < videos.number|add:'3' %}
-            <a href="?page={{ num }}" class="px-3 py-1.5 bg-primary text-text/50 rounded">{{ num }}</a>
+            <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&amp;{% endif %}{% endfor %}page={{ num }}" class="px-3 py-1.5 bg-primary text-text/50 rounded">{{ num }}</a>
           {% endif %}
         {% endfor %}
         {% if videos.has_next %}
-          <a href="?page={{ videos.next_page_number }}" class="px-2 py-1.5 bg-primary text-text/50 rounded">Next</a>
-          <a href="?page={{ videos.paginator.num_pages }}" class="px-3 py-1.5 bg-primary text-text/50 rounded">Last</a>
+          <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&amp;{% endif %}{% endfor %}page={{ videos.next_page_number }}" class="px-2 py-1.5 bg-primary text-text/50 rounded">Next</a>
+          <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&amp;{% endif %}{% endfor %}page={{ videos.paginator.num_pages }}" class="px-3 py-1.5 bg-primary text-text/50 rounded">Last</a>
         {% endif %}
       </div>
     </div>
@@ -178,5 +193,6 @@
     function playInModal(videoUrl) {
       toggleModal(true, videoUrl)
     }
+
   </script>
 {% endblock %}

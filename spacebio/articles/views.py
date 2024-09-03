@@ -17,7 +17,7 @@ from space.models import *
 from space.apis import fecth_spacelaunchs, fetch_spacenews
 from django.templatetags.static import static
 
-from space.filters import LaunchFilter
+from space.filters_launch import LaunchFilter
  
 def home(request):
     space_news = cache.get('space_news')

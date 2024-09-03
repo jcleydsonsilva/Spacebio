@@ -1176,6 +1176,14 @@ video {
   margin-top: 2rem;
 }
 
+.mt-0 {
+  margin-top: 0px;
+}
+
+.mt-0\.5 {
+  margin-top: 0.125rem;
+}
+
 .box-border {
   box-sizing: border-box;
 }
@@ -3736,6 +3744,14 @@ video {
   padding-top: 1.75rem;
 }
 
+.pb-0 {
+  padding-bottom: 0px;
+}
+
+.pb-0\.5 {
+  padding-bottom: 0.125rem;
+}
+
 .text-left {
   text-align: left;
 }
@@ -5684,12 +5700,12 @@ video {
     grid-column: span 8 / span 8;
   }
 
-  .xl\:mb-36 {
-    margin-bottom: 9rem;
-  }
-
   .xl\:mb-28 {
     margin-bottom: 7rem;
+  }
+
+  .xl\:mb-36 {
+    margin-bottom: 9rem;
   }
 
   .xl\:block {
