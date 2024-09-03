@@ -19,6 +19,21 @@
     <!-- SPLIDE CSS -->
     <link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/themes/splide-sea-green.min.css" rel="stylesheet" />
 
+    <!-- Google Tag Manager -->
+    <script>
+      ;(function (w, d, s, l, i) {
+        w[l] = w[l] || []
+        w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' })
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != 'dataLayer' ? '&l=' + l : ''
+        j.async = true
+        j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl
+        f.parentNode.insertBefore(j, f)
+      })(window, document, 'script', 'dataLayer', 'GTM-W8KZ5MHP')
+    </script>
+    <!-- End Google Tag Manager -->
+
     <script></script>
   </head>
 
@@ -154,23 +169,23 @@
                 </a>
                 <div class="w-2/3 place-self-center h-0.5 bg-gradient-to-r from-text/5 via-text/60 to-text/5"></div>
                 <a href="{% url 'team_view' %}" data-url="{% url 'team_view' %}" class="w-full">
-                <li class="flex flex-nowrap justify-start items-center gap-1 ps-2 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
-                  <i class="fi fi-rr-users-alt text-xl text-text p-3"></i>
-                  <span class="hidden opacity-0 duration-300 text-nowrap">Team</span>
-                </li>
-              </a>
-              <a href="{% url 'timeline_view' %}" data-url="{% url 'timeline_view' %}" class="w-full">
-                <li class="flex flex-nowrap justify-start items-center gap-1 ps-2 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
-                  <i class="fi fi-rr-list-timeline text-xl text-text p-3"></i>
-                  <span class="hidden opacity-0 duration-300 text-nowrap">Timeline</span>
-                </li>
-              </a>
-              <a href="{% url 'getInvolved_view' %}" data-url="{% url 'getInvolved_view' %}" class="w-full">
-                <li class="flex flex-nowrap justify-start items-center gap-1 ps-2 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
-                  <i class="fi fi-rr-refer text-xl text-text p-3"></i>
-                  <span class="hidden opacity-0 duration-300 text-nowrap">Get Involved</span>
-                </li>
-              </a>
+                  <li class="flex flex-nowrap justify-start items-center gap-1 ps-2 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
+                    <i class="fi fi-rr-users-alt text-xl text-text p-3"></i>
+                    <span class="hidden opacity-0 duration-300 text-nowrap">Team</span>
+                  </li>
+                </a>
+                <a href="{% url 'timeline_view' %}" data-url="{% url 'timeline_view' %}" class="w-full">
+                  <li class="flex flex-nowrap justify-start items-center gap-1 ps-2 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
+                    <i class="fi fi-rr-list-timeline text-xl text-text p-3"></i>
+                    <span class="hidden opacity-0 duration-300 text-nowrap">Timeline</span>
+                  </li>
+                </a>
+                <a href="{% url 'getInvolved_view' %}" data-url="{% url 'getInvolved_view' %}" class="w-full">
+                  <li class="flex flex-nowrap justify-start items-center gap-1 ps-2 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
+                    <i class="fi fi-rr-refer text-xl text-text p-3"></i>
+                    <span class="hidden opacity-0 duration-300 text-nowrap">Get Involved</span>
+                  </li>
+                </a>
                 <div class="w-2/3 place-self-center h-0.5 bg-gradient-to-r from-text/5 via-text/60 to-text/5"></div>
               </ul>
             </div>
@@ -233,15 +248,9 @@
             <div class="rounded-xl my-6 p-4 border w-full border-text/20 text-text flex flex-col">
               <p class="">Support</p>
               <div class="flex h-full gap-4">
-                <span class="flex justify-center items-center size-1/3 rounded-full overflow-hidden shadow-lg shadow-spacepurple2/40">
-                    <img src="{% static 'articles/img/spacebio.png' %}" alt="" class="w-4/5">
-                </span>
-                <span class="flex justify-center items-center size-1/3 rounded-full overflow-hidden shadow-lg shadow-spaceblue/40">
-                    <img src="https://genelab.nasa.gov/sites/default/files/2023-03/new%20GL%20logo_social%20media_b_0.JPG" alt="" class="w-4/5 rounded-full">
-                </span>
-                <span class="flex justify-center items-center size-1/3 rounded-full overflow-hidden shadow-lg shadow-spacepurple2/40">
-                  <img src="{% static 'articles/img/stellarium.png' %}" alt="" class="w-4/5">
-              </span>
+                <span class="flex justify-center items-center size-1/3 rounded-full overflow-hidden shadow-lg shadow-spacepurple2/40"><img src="{% static 'articles/img/spacebio.png' %}" alt="" class="w-4/5" /></span>
+                <span class="flex justify-center items-center size-1/3 rounded-full overflow-hidden shadow-lg shadow-spaceblue/40"><img src="https://genelab.nasa.gov/sites/default/files/2023-03/new%20GL%20logo_social%20media_b_0.JPG" alt="" class="w-4/5 rounded-full" /></span>
+                <span class="flex justify-center items-center size-1/3 rounded-full overflow-hidden shadow-lg shadow-spacepurple2/40"><img src="{% static 'articles/img/stellarium.png' %}" alt="" class="w-4/5" /></span>
               </div>
             </div>
           </div>
@@ -266,4 +275,9 @@
     </div>
   </body>
   <script src="{% static 'js/footer_basehtml.js' %}"></script>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W8KZ5MHP" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+  </noscript>
+  <!-- End Google Tag Manager (noscript) -->
 </html>
