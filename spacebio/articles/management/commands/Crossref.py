@@ -17,9 +17,9 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         cr = Crossref()
-        searchers = ['Space mission','Spacelab','Space Shuttle','Micro-gravity','Space Station','China space station','Tiangong space station','Bioregenerative life+support systems','Lunar South Pole','lunar mare','lunar regolith','lunar highlands','Martian Regolith','Cosmonaut','spaceship','parabolic flight','space flights','spacecraft','lunar exploration','Mars exploration','microgravity','International space+station','space biology','spaceflight','Moon Base','mars experiment','Astrobiology','Space omics','Mars exploration','Moon exploration','exoplanet','biosignature','extraterrestrial life','exobiology','james webb space telescope','Hubble telescope']
+        searchers = ['terraformation','Space mission','Spacelab','Space Shuttle','Micro-gravity','Space Station','China space station','Tiangong space station','Bioregenerative life+support systems','Lunar South Pole','lunar mare','lunar regolith','lunar highlands','Martian Regolith','Cosmonaut','spaceship','parabolic flight','space flights','spacecraft','lunar exploration','Mars exploration','microgravity','International space+station','space biology','spaceflight','Moon Base','mars experiment','Astrobiology','Space omics','Mars exploration','Moon exploration','exoplanet','biosignature','extraterrestrial life','exobiology','james webb space telescope','Hubble telescope']
         for query in searchers:
-            results = cr.works(query=query, filter={'has-abstract':True}, limit=1000,offset=9000,order='desc')
+            results = cr.works(query=query, filter={'has-abstract':True}, limit=1000,offset=9000)
             for item in results['message']['items']:
                 if item.get('title', [])[0].__contains__(query) or item.get('abstract', '').__contains__(query):
                     article_data = {
@@ -51,7 +51,7 @@ class Command(BaseCommand):
                             # Use update_or_create to avoid duplicate entries
                     try:
                         art, created = Article.objects.update_or_create(
-                                    id=article_data['doi'],
+                                    doi=article_data['doi'],
                                     defaults=article_data
                                 )
                         if created:
@@ -60,4 +60,4 @@ class Command(BaseCommand):
                             logger.info(f'{Fore.BLUE}Updated existing paper: {query} - {article_data["doi"]} - {article_data["title"]}{Style.RESET_ALL}')
                     except:
                         logger.info(f'{article_data}')
-            time.sleep(5)
+            time.sleep(2)
