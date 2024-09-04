@@ -10,13 +10,13 @@ from django.core.management.base import BaseCommand
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG)
 
-Entrez.email = "seu_email@example.com"
+Entrez.email = "cleysinhonv@gmail.com"
 class Command(BaseCommand):
     help = 'Fetch and save news data from API'
 
     def handle(self, *args, **options):
         def search_pubmed(query):
-            handle = Entrez.esearch(db="pubmed", term=query, retmax=10)  # Retorna até 10 resultados
+            handle = Entrez.esearch(db="pubmed", term=query, retmax=10000)  # Retorna até 10 resultados
             record = Entrez.read(handle)
             handle.close()
             return record["IdList"]
@@ -26,7 +26,7 @@ class Command(BaseCommand):
             handle = Entrez.efetch(db="pubmed", id=ids, rettype="xml", retmode="text")
             records = Entrez.read(handle)
             handle.close()
-            time.sleep(3)
+            time.sleep(1.5)
             return records
 
         def save_articles_to_db(articles):
@@ -106,15 +106,18 @@ class Command(BaseCommand):
                     logger.info(f'{article_data}')
 
         # Defina sua consulta de pesquisa
-        query_ = ['Terraformation','Space+mission','Spacelab','Space+Shuttle','Micro-gravity','Space+Station','China+space+station','Tiangong+space+station','Bioregenerative+life+support+systems',
+        query_ = ['Space-flights','Terraformation','Space+mission','Spacelab','Space+Shuttle','Micro-gravity','Space+Station','China+space+station','Tiangong+space+station','Bioregenerative+life+support+systems',
 'Lunar+South+Pole','lunar+mare','lunar+regolith','lunar+highlands','Martian+Regolith','Cosmonaut','spaceship','parabolic+flight','space+flights','spacecraft','lunar+exploration',
 'Mars+exploration','microgravity','International+space+station','space+biology','spaceflight','Moon+Base','mars+experiment','Astrobiology','Space+omics','Mars+exploration',
 'Moon+exploration','exoplanet','biosignature','extraterrestrial+life','exobiology','james+webb+space+telescope','Hubble+telescope']
         for query in query_:
             # Execute a pesquisa e recupere os IDs dos artigos
-            article_ids = search_pubmed(f"({query}[Title]) OR ({query}[Title/Abstract])")
+            for year in range(1950,2030,5):
+                aux = f'( ({query}[Title]) OR ({query}[Title/Abstract]) ) AND ( ("{year}"[Date - Publication] : "{year + 5}"[Date - Publication]) )'
+                print (aux)
+                article_ids = search_pubmed(aux)
 
-            # Recupere os detalhes dos artigos
-            if article_ids:
-                articles = fetch_details(article_ids)
-                save_articles_to_db(articles)
+                # Recupere os detalhes dos artigos
+                if article_ids:
+                    articles = fetch_details(article_ids)
+                    save_articles_to_db(articles)
