@@ -106,10 +106,11 @@ class Command(BaseCommand):
                     logger.info(f'{article_data}')
 
         # Defina sua consulta de pesquisa
-        query_ = ['Space-flights','Terraformation','Space+mission','Spacelab','Space+Shuttle','Micro-gravity','Space+Station','China+space+station','Tiangong+space+station','Bioregenerative+life+support+systems',
+        query_ = ["Spacex","'Blue+Origin'","'Virgin+Galactic'",'Space-flights','Terraformation','Space+mission','Spacelab','Space+Shuttle','Micro-gravity','Space+Station','China+space+station','Tiangong+space+station','Bioregenerative+life+support+systems',
 'Lunar+South+Pole','lunar+mare','lunar+regolith','lunar+highlands','Martian+Regolith','Cosmonaut','spaceship','parabolic+flight','space+flights','spacecraft','lunar+exploration',
 'Mars+exploration','microgravity','International+space+station','space+biology','spaceflight','Moon+Base','mars+experiment','Astrobiology','Space+omics','Mars+exploration',
 'Moon+exploration','exoplanet','biosignature','extraterrestrial+life','exobiology','james+webb+space+telescope','Hubble+telescope']
+        #query_ = ["Spacex","'Blue+Origin'","'Virgin+Galactic'"]
         for query in query_:
             # Execute a pesquisa e recupere os IDs dos artigos
             for year in range(1950,2030,5):
