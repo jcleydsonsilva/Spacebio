@@ -42,3 +42,10 @@
         animation-delay: 4s;
     }
 }
+
+@font-face {
+    font-family: 'Pavelt';
+    src: url('/static/fonts/pavelt/Pavelt.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}

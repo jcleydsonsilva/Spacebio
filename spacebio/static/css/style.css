@@ -1016,6 +1016,11 @@ video {
   margin-bottom: auto;
 }
 
+.my-2 {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
 .-mb-9 {
   margin-bottom: -2.25rem;
 }
@@ -1174,14 +1179,6 @@ video {
 
 .mt-8 {
   margin-top: 2rem;
-}
-
-.mt-0 {
-  margin-top: 0px;
-}
-
-.mt-0\.5 {
-  margin-top: 0.125rem;
 }
 
 .box-border {
@@ -3744,14 +3741,6 @@ video {
   padding-top: 1.75rem;
 }
 
-.pb-0 {
-  padding-bottom: 0px;
-}
-
-.pb-0\.5 {
-  padding-bottom: 0.125rem;
-}
-
 .text-left {
   text-align: left;
 }
@@ -3808,6 +3797,14 @@ video {
   vertical-align: super;
 }
 
+.font-nunito {
+  font-family: Nunito, roboto;
+}
+
+.font-pavelt {
+  font-family: Pavelt, roboto;
+}
+
 .text-2xl {
   font-size: 1.5rem;
   line-height: 2rem;
@@ -3857,6 +3854,10 @@ video {
 
 .font-semibold {
   font-weight: 600;
+}
+
+.font-extralight {
+  font-weight: 200;
 }
 
 .uppercase {
@@ -4140,10 +4141,6 @@ video {
 .subpixel-antialiased {
   -webkit-font-smoothing: auto;
   -moz-osx-font-smoothing: auto;
-}
-
-.accent-spacepurple2 {
-  accent-color: rgba(var(--purple2));
 }
 
 .\!opacity-100 {
@@ -4635,6 +4632,16 @@ video {
 
 .animation-delay-2000 {
   animation-delay: 2s;
+}
+
+@font-face {
+  font-family: 'Pavelt';
+
+  src: url('/static/fonts/pavelt/Pavelt.ttf') format('truetype');
+
+  font-weight: normal;
+
+  font-style: normal;
 }
 
 @media (min-width: 640px) {
@@ -5648,6 +5655,14 @@ video {
 
   .lg\:pb-8 {
     padding-bottom: 2rem;
+  }
+
+  .lg\:pt-8 {
+    padding-top: 2rem;
+  }
+
+  .lg\:pt-10 {
+    padding-top: 2.5rem;
   }
 
   .lg\:text-2xl {
