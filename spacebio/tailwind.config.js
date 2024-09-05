@@ -23,6 +23,10 @@ module.exports = {
                 spaceblue: "rgba(var(--blue))",
 
             },
+            fontFamily: {
+                nunito: ['Nunito', 'roboto'],
+                pavelt: ['Pavelt', 'roboto'],
+            },
         },
         keyframes: {
             blob: {
