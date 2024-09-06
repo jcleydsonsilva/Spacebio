@@ -1,6 +1,6 @@
 import requests
 from django.core.cache import cache
-from django.utils.timezone import now
+from datetime import datetime, timezone
 from .models import *
 
 
@@ -30,7 +30,7 @@ def get_nextspacelaunch():
     
 # gets data from database
 def fecth_spacelaunchs(limit=None):
-    current_time = now()
+    current_time = datetime.now().astimezone(timezone.utc)
     nextspacelaunch = Launch.objects.filter(net__gte=current_time).order_by('-window_start')
     
     if limit is not None:

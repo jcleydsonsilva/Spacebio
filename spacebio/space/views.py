@@ -1,5 +1,5 @@
 import os
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timezone
 # Get the directory path of the current file (views.py)
 current_directory = os.path.dirname(os.path.abspath(__file__))
 # Define the path to the file within app directory
@@ -22,20 +22,23 @@ from space.filters_video import VideoFilter
 
 
 def launches(request):
-    current_time = datetime.now().astimezone(timezone.utc)
-    
+    current_time = now()
+        
     # Fetch space launches from the database
-    launches = Launch.objects.all().order_by("-window_start")
+    launches = Launch.objects.all()
     
     # Aplicar o filtro
     launch_filter = LaunchFilter(request.GET, queryset=launches)
     filtered_launches = launch_filter.qs
     
+    filtered_launches = filtered_launches.filter(window_start__gte=current_time).order_by('window_start')
+    
+    
     # Debug: print query to check applied filters
     print(filtered_launches.query)
     
     # Create a paginator for the launches
-    launches_paginator = Paginator(filtered_launches, 10)
+    launches_paginator = Paginator(filtered_launches, 16)
     page_number = request.GET.get('page')
     
     try:
@@ -62,7 +65,7 @@ def news(request):
     space_news = fetch_spacenews()
     
     #create a paginator for the news
-    news_paginator = Paginator(space_news, 10)
+    news_paginator = Paginator(space_news, 24)
     
     # Get the page number from the request
     page_number = request.GET.get('page')

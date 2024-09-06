@@ -3,7 +3,7 @@ import requests
 from django.db import transaction
 import logging
 from colorama import Fore, Style
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from space.models import *
 
 # Configure logging
@@ -22,10 +22,12 @@ class Command(BaseCommand):
         # Fetch the last execution log
         last_execution_log = ExecutionLog.objects.filter(script_name=script_name, url=base_url).first()
         if last_execution_log:
-            last_executed = last_execution_log.last_executed
+            last_executed = last_execution_log.last_executed - timedelta(days=20) # fetch from the last 20 days to avoid losing data
         else:
             last_executed = None
             
+        print(f"Last execution: {last_executed}")
+        
         #If there was a previous execution, add the timestamp to the URL
         if last_executed:
             last_executed_str = last_executed.isoformat().replace("+00:00", "Z")
@@ -97,35 +99,34 @@ class Command(BaseCommand):
             agency = None 
             try:
                 if isinstance(data, dict):
-                    # Caso a função receba um dicionário completo
                     agency, created = Agency.objects.update_or_create(
                         id=data['id'],
                         defaults={
                             'name': data['name'],
-                            'featured': data['featured'],
-                            'type': data['type'],
-                            'country_code': data['country_code'],
-                            'abbrev': data['abbrev'],
-                            'description': data['description'],
-                            'administrator': data['administrator'],
-                            'founding_year': data['founding_year'],
-                            'launchers': data['launchers'],
-                            'spacecraft': data['spacecraft'],
-                            'launch_library_url': data['launch_library_url'],
-                            'total_launch_count': data['total_launch_count'],
-                            'successful_launches': data['successful_launches'],
-                            'consecutive_successful_launches': data['consecutive_successful_launches'],
-                            'failed_launches': data['failed_launches'],
-                            'pending_launches': data['pending_launches'],
-                            'successful_landings': data['successful_landings'],
-                            'failed_landings': data['failed_landings'],
-                            'attempted_landings': data['attempted_landings'],
-                            'consecutive_successful_landings': data['consecutive_successful_landings'],
-                            'info_url': data['info_url'],
-                            'wiki_url': data['wiki_url'],
-                            'logo_url': data['logo_url'],
-                            'image_url': data['image_url'],
-                            'nation_url': data['nation_url']
+                            'featured': data.get('featured', False),
+                            'type': data.get('type', None),
+                            'country_code': data.get('country_code', None),
+                            'abbrev': data.get('abbrev', None),
+                            'description': data.get('description', None),
+                            'administrator': data.get('administrator', None),
+                            'founding_year': data.get('founding_year', None),
+                            'launchers': data.get('launchers', None),
+                            'spacecraft': data.get('spacecraft', None),
+                            'launch_library_url': data.get('launch_library_url', None),
+                            'total_launch_count': data.get('total_launch_count', 0),
+                            'successful_launches': data.get('successful_launches', 0),
+                            'consecutive_successful_launches': data.get('consecutive_successful_launches', 0),
+                            'failed_launches': data.get('failed_launches', 0),
+                            'pending_launches': data.get('pending_launches', 0),
+                            'successful_landings': data.get('successful_landings', 0),
+                            'failed_landings': data.get('failed_landings', 0),
+                            'attempted_landings': data.get('attempted_landings', 0),
+                            'consecutive_successful_landings': data.get('consecutive_successful_landings', 0),
+                            'info_url': data.get('info_url', None),
+                            'wiki_url': data.get('wiki_url', None),
+                            'logo_url': data.get('logo_url', None),
+                            'image_url': data.get('image_url', None),
+                            'nation_url': data.get('nation_url', None)
                         }
                     )
                 elif isinstance(data, int):
@@ -136,9 +137,11 @@ class Command(BaseCommand):
                 
                 return agency
             
+            except KeyError as e:
+                logger.error(f"Missing key in agency data: {e}")
+                return None
             except Exception as e:
                 logger.error(f"Failed to insert or update agency: {e}")
-                # Retorna None se houver um erro
                 return None
 
         def insert_or_update_mission_patches(data):
@@ -461,15 +464,18 @@ class Command(BaseCommand):
             nonlocal total_inserted
             nonlocal total_updated
             try:
-                # GETS THE FOREIGN KEY FIELDS
+                # Fetch existing launch from the database if it exists
+                existing_launch = Launch.objects.filter(id=data['id']).first()
+
+                # Prepare foreign key fields
                 status = insert_or_update_launch_status(data['status']) if data['status'] else None
                 net_precision = insert_or_update_net_precision(data['net_precision']) if data['net_precision'] else None
                 launch_service_provider = insert_or_update_agency(data['launch_service_provider']) if data['launch_service_provider'] else None
                 rocket = insert_or_update_rocket(data['rocket']) if data['rocket'] else None
                 mission = insert_or_update_mission(data['mission']) if data['mission'] else None
                 pad = insert_or_update_pad(data['pad']) if data['pad'] else None
-                
-                
+
+                # Create or update launch
                 launch, created = Launch.objects.update_or_create(
                     id=data['id'],
                     defaults={
@@ -506,12 +512,24 @@ class Command(BaseCommand):
                         'pad_turnaround': data['pad_turnaround'],
                     }
                 )
+
+                # Check if the launch was created or updated
                 if created:
                     total_inserted += 1
                     logger.info(f'{Fore.GREEN}Inserted new Launch: {launch.name}{Style.RESET_ALL}')
                 else:
-                    total_updated += 1
-                    logger.info(f'{Fore.BLUE}Updated existing Launch: {launch.name}{Style.RESET_ALL}')
+                    changes = []
+                    for field, new_value in data.items():
+                        if field in launch._meta.fields:  # Skip fields that aren't in the model
+                            old_value = getattr(existing_launch, field, None)
+                            if old_value != new_value:
+                                changes.append(f"{field}: '{old_value}' -> '{new_value}'")
+                    
+                    if changes:
+                        total_updated += 1
+                        logger.info(f"{Fore.BLUE}Updated Launch: {launch.name}{Style.RESET_ALL}")
+                        logger.info(f"Changes: {', '.join(changes)}")
+
                     
                 
                 # GETS THE MANY-TO-MANY FIELDS

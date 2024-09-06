@@ -3,7 +3,7 @@
 
 {% block content %}
   <!-- Breadcrumb Start -->
-  <section class="flex flex-col container mx-auto mt-12">
+  <section class="flex flex-col mx-auto mt-12 sm:w-11/12">
     <div class="flex justify-between items-center flex-wrap gap-3 text-sm sm:text-base mb-6 mt-12 px-2 lg:px-20">
       <h1 class="font-bold w-1/2 text-text text-xl sm:text-2xl">Launches</h1>
 
@@ -21,7 +21,7 @@
     <div class="flex justify-between items-center w-full gap-4">
         <div class="flex gap-2">
         <div class="">
-            <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+            <label for="name" class="block text-sm font-medium text-text">Name</label>
             <input type="text" name="name" id="name" placeholder="Filter by name" value="{{ request.GET.name }}" class="w-full shadow-sm sm:text-sm bg-primary text-text rounded-md p-2" />
         </div>
         <div class="flex items-end">
@@ -30,12 +30,12 @@
         </div>
         <div class="flex gap-4">
         <div>
-            <label for="start_date" class="block text-sm font-medium text-gray-700">Date Range</label>
+            <label for="start_date" class="block text-sm font-medium text-text">Date Range</label>
             <input type="date" name="start_date_after" id="start_date" value="{{ request.GET.start_date_after }}" class="appearance-none mt-1 p-2 block w-full shadow-sm sm:text-sm bg-primary text-text rounded-md date:text-text" />
             <input type="date" name="start_date_before" id="end_date" value="{{ request.GET.start_date_before }}" class="appearance-none mt-1 p-2 block w-full shadow-sm sm:text-sm bg-primary text-text rounded-md date:text-text" />
         </div>
         <div>
-            <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
+            <label for="status" class="block text-sm font-medium text-text">Status</label>
             <select name="status" id="status" class="mt-1 p-2 block w-full shadow-sm sm:text-sm bg-primary text-text rounded-md">
             {% for status_choice in filter.filters.status.field.choices %}
                 <option value="{{ status_choice.0 }}" {% if request.GET.status == status_choice.0 %}selected{% endif %}>{{ status_choice.1 }}</option>
@@ -43,7 +43,7 @@
             </select>
         </div>
         <div>
-            <label for="launch_service_provider" class="block text-sm font-medium text-gray-700">Launch Service Provider</label>
+            <label for="launch_service_provider" class="block text-sm font-medium text-text">Launch Service Provider</label>
             <select name="launch_service_provider" id="launch_service_provider" class="mt-1 p-2 block w-full shadow-sm sm:text-sm bg-primary text-text rounded-md">
                 <option value="" {% if not request.GET.launch_service_provider %}selected{% endif %}>Any</option>
             {% for provider in filter.filters.launch_service_provider.field.queryset %}
@@ -52,7 +52,7 @@
             </select>
         </div>
         <div>
-            <label for="location" class="block text-sm font-medium text-gray-700">Launch Location</label>
+            <label for="location" class="block text-sm font-medium text-text">Launch Location</label>
             <select name="location" id="location" class="mt-1 p-2 block w-full shadow-sm sm:text-sm bg-primary text-text rounded-md">
                 <option value="" {% if not request.GET.location %}selected{% endif %}>Any</option>
             {% for location in filter.filters.location.field.queryset %}
@@ -70,7 +70,7 @@
     </div>
     </form>
     <!-- Breadcrumb End -->
-    <div class="grid md:grid-cols-2 gap-6 px-2 lg:px-20 mb-20">
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6 lg:gap-x-10 px-2 lg:px-20 mb-20">
       {% for launch in launches %}
         <div onclick="window.location.href = 'space/launch/{{ launch.id }}'" class="relative w-full h-64 xl:max-h-80">
           <div class="group w-full h-full rounded-lg shadow-md cursor-pointer overflow-hidden">
