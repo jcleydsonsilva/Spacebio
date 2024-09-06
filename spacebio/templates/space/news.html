@@ -3,7 +3,7 @@
 {% block content %}
   <!-- Breadcrumb Start -->
 
-  <section class="flex flex-col container mx-auto mt-12">
+  <section class="flex flex-col mx-auto mt-12 sm:w-11/12">
     <div class="flex justify-between items-center flex-wrap gap-3 text-sm sm:text-base mb-6 mt-12 px-2 min-[390px]:px-7 lg:px-20">
       <h1 class="font-bold w-1/2 text-text text-xl sm:text-2xl">News</h1>
 
@@ -17,7 +17,7 @@
       </div>
     </div>
     <!-- Breadcrumb End -->
-    <div class="grid md:grid-cols-2 gap-6 px-2 min-[390px]:px-7 lg:px-20 mb-20">
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6 lg:gap-x-10 px-2 min-[390px]:px-7 lg:px-20 mb-20">
       {% for news in space_news %}
         <div class="w-full h-full xl:max-h-80">
           <div onclick="window.open('{{ news.url }}', '_blank')" class="relative group w-full h-full rounded-lg shadow-md overflow-hidden cursor-pointer">
