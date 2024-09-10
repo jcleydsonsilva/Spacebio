@@ -20,12 +20,13 @@ from django.templatetags.static import static
 from space.filters_launch import LaunchFilter
  
 def home(request):
+    current_time = now()
     space_news = cache.get('space_news')
     
     articles_count = SpaceExploration.objects.all().count()
     recent_articles = SpaceExploration.objects.all().order_by('-id')[:5]
 
-    nextspacelaunch = fecth_spacelaunchs(limit=2)
+    nextspacelaunch = Launch.objects.filter(window_start__gte=current_time).order_by('window_start')[:2]
     space_news = fetch_spacenews(limit=10)
     
     return render(request, 'articles/home.html', {'space_news': space_news, 'nextspacelaunch': nextspacelaunch, 'articles_count': articles_count, 'recent_articles': recent_articles})
@@ -68,32 +69,7 @@ def article_list(request):
 
 
 def team_view(request):
-
-    collaborators = [
-        {
-            'name': 'José Cleydson F. da Silva',
-            'image': static('articles/img/team/Cleydson.jpeg'),
-            'title': 'Project Leader',
-            'role': 'Data Scientist',
-            'github': 'https://github.com/jcleydsonsilva',
-            'linkedin': 'https://www.linkedin.com/in/jose-cleydson-ferreira-silva-a790b617b/',
-            'twitter': 'https://x.com/cleysinhonv',
-            'researchgate': 'https://www.researchgate.net/profile/Jose-Cleydson-Silva',
-            'googlescholar': 'https://scholar.google.com.br/citations?user=RDTNcYkAAAAJ',
-            'bio': 'Cleydson is an experienced data scientist with a focus on machine learning and AI.',
-        },
-        {
-            'name': 'Arthur Vieira',
-            'image': static('articles/img/team/Arthur.jpeg'),
-            'title': 'Developer',
-            'role': 'Fullstack Developer',
-            'github': 'https://github.com/ArthurSSJ',
-            'linkedin': 'https://www.linkedin.com/in/arthurvieira/',
-            'email': 'arthurvieira@me.com',
-            'bio': 'Arthur is a seasoned fullstack developer specializing in Django and REST APIs.',
-        },
-    ]
-    return render(request, 'articles/team.html',{'collaborators': collaborators})
+    return render(request, 'articles/team.html')
 
 def timeline_view(request):
     return render(request, 'articles/timeline.html')
