@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-  <div class="px-2 py-5 sm:py-8 md:pb-12 md:pt-3 flex flex-col gap-4 items-center text-text">
+  <div class="px-2 py-5 sm:py-8 md:pb-12 md:pt-3 lg:pt-10 flex flex-col gap-4 items-center text-text">
     <p class="mb-2 text-center sm:mt-2 text-lg">The First Space Exploration Literature Database focused on human space exploration</p>
 
     <img class="" src="{% static 'articles/img/Figure.png' %}" alt="" />
@@ -29,4 +29,5 @@
       </div>
     </div>
   </div>
+  <script src="{% static 'js/type_effect.js' %}"></script>
 {% endblock %}
