@@ -17,7 +17,7 @@
       </div>
     </div>
     <!-- Breadcrumb End -->
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6 lg:gap-x-10 px-2 min-[390px]:px-7 lg:px-20 mb-20">
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-x-10 px-2 min-[390px]:px-7 lg:px-20 mb-20">
       {% for news in space_news %}
         <div class="w-full h-full xl:max-h-80">
           <div onclick="window.open('{{ news.url }}', '_blank')" class="relative group w-full h-full rounded-lg shadow-md overflow-hidden cursor-pointer">

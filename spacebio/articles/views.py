@@ -32,7 +32,11 @@ def home(request):
     return render(request, 'articles/home.html', {'space_news': space_news, 'nextspacelaunch': nextspacelaunch, 'articles_count': articles_count, 'recent_articles': recent_articles})
 
 def space_literature(request):
-    return render(request, 'articles/space_literature.html')
+    
+    articles_count = SpaceExploration.objects.all().count()
+    
+    
+    return render(request, 'articles/space_literature.html', {'articles_count': articles_count})
 
 def article_list(request):
     query = request.GET.get('query')
