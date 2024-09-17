@@ -23,24 +23,28 @@ from space.filters_video import VideoFilter
 
 def launches(request):
     current_time = now()
-        
-    # Fetch space launches from the database
-    launches = Launch.objects.all()
-    
-    # Aplicar o filtro
-    launch_filter = LaunchFilter(request.GET, queryset=launches)
-    filtered_launches = launch_filter.qs
-    
-    filtered_launches = filtered_launches.filter(window_start__gte=current_time).order_by('window_start')
-    
-    
+
+    # Create a blank filter first, as it will be applied to each QuerySet
+    all_launches = Launch.objects.all()
+    launch_filter = LaunchFilter(request.GET, queryset=all_launches)
+
+    # Upcoming or current launches, ordered by ascending window_start
+    upcoming_launches = launch_filter.qs.filter(window_start__gte=current_time).order_by('window_start')
+
+    # Past launches, ordered by descending window_end
+    past_launches = launch_filter.qs.filter(window_start__lt=current_time).order_by('-window_end')
+
+    # Combine both QuerySets using union()
+    # launches = upcoming_launches.union(past_launches)
+    launches = upcoming_launches
+
     # Debug: print query to check applied filters
-    print(filtered_launches.query)
-    
+    print(launches.query)
+
     # Create a paginator for the launches
-    launches_paginator = Paginator(filtered_launches, 16)
+    launches_paginator = Paginator(launches, 16)
     page_number = request.GET.get('page')
-    
+
     try:
         # Get the launches for the requested page
         launches = launches_paginator.page(page_number)
@@ -48,10 +52,12 @@ def launches(request):
         # If page number is not an integer, deliver first page.
         launches = launches_paginator.page(1)
     except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
+        # If page is out of range, deliver last page of results.
         launches = launches_paginator.page(launches_paginator.num_pages)
-    
+
     return render(request, 'space/launches.html', {'launches': launches, 'filter': launch_filter})
+
+
 
 def launch(request, launch_id):
     launch = Launch.objects.get(id=launch_id)
