@@ -16,60 +16,106 @@
         </ol>
       </div>
     </div>
-    <!-- Filtros -->
     <form method="get" class="mb-4 px-2 lg:px-20">
-    <div class="flex justify-between items-center w-full gap-4">
+      <div class="flex justify-between items-center w-full gap-4">
         <div class="flex gap-2">
-        <div class="">
-            <label for="name" class="block text-sm font-medium text-text">Name</label>
-            <input type="text" name="name" id="name" placeholder="Filter by name" value="{{ request.GET.name }}" class="w-full shadow-sm sm:text-sm bg-primary text-text rounded-md p-2" />
-        </div>
-        <div class="flex items-end">
+          <div>
+            <label for="keywords" class="block text-sm font-medium text-text">Filter by name</label>
+            <input type="text" name="keywords" id="keywords" value="{{ request.GET.keywords }}" class="appearance-none mt-1 p-2 block w-full shadow-sm sm:text-sm bg-primary text-text rounded-md" />
+          </div>
+          <div class="flex items-end">
             <button type="submit" class="px-3 py-1.5 bg-gradient-to-br from-spaceblue to-spacepurple2 text-white rounded-md"><i class="fi fi-rr-search"></i></button>
+          </div>
         </div>
+
+        <div class="flex items-end gap-2">
+          {% if request.GET %}
+            <span onclick="window.location.href = '{% url 'launches' %}'" class="py-1.5 px-2 align-text-bottom bg-gradient-to-br from-spaceblue to-spacepurple2 text-white rounded-md cursor-pointer"><i class="fi fi-rr-cross-small"></i></span>
+          {% endif %}
+          <span onclick="filtersModal()" class="px-3 py-1.5 bg-gradient-to-br from-spaceblue to-spacepurple2 text-white rounded-md cursor-pointer"><i class="fi fi-rr-filter"></i> Filters</span>
         </div>
-        <div class="flex gap-4">
+      </div>
+    </form>
+    <!-- Breadcrumb End -->
+
+    <!-- Filters modal start -->
+    <div id="filters-modal" class="hidden fixed inset-0 justify-center items-center bg-black bg-opacity-50 p-4 gap-4 z-30">
+      <!-- Filtros -->
+      <form onclick="closeModalOutside(event)" id="filters-form" method="get" class="w-2/3 md:max-w-xl bg-background p-4 rounded-xl">
+        <h3 class="text-2xl text-text font-semibold text-center mb-6">Filters</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 justify-between items-center w-full gap-y-6 gap-4">
+          <div class="w-full flex gap-2">
+            <div class="w-full">
+              <label for="keywords" class="block font-medium text-text">Filter by name</label>
+              <input type="text" name="keywords" id="keywords" value="{{ request.GET.keywords }}" class="appearance-none mt-1 p-2 block w-full shadow-sm bg-primary text-text rounded-md" />
+            </div>
+            <div class="flex items-end">
+              <button type="submit" class="px-3 pb-1.5 pt-2.5 bg-gradient-to-br from-spaceblue to-spacepurple2 text-white rounded-md"><i class="fi fi-rr-search"></i></button>
+            </div>
+          </div>
+            <div>
+                <label for="status" class="block font-medium text-text">Status</label>
+                <select name="status" id="status" class="mt-1 p-2 block w-full shadow-sm bg-primary text-text rounded-md">
+                {% for status_choice in filter.filters.status.field.choices %}
+                    <option value="{{ status_choice.0 }}" 
+                        {% if request.GET.status == status_choice.0|stringformat:"s" %}selected{% endif %}>
+                        {{ status_choice.1 }}
+                    </option>
+                {% endfor %}
+                </select>
+            </div>
+            <div>
+                <label for="launch_service_provider" class="block  font-medium text-text">Launch Service Provider</label>
+                <select name="launch_service_provider" id="launch_service_provider" class="mt-1 p-2 block w-full shadow-sm bg-primary text-text rounded-md">
+                    <option value="" {% if not request.GET.launch_service_provider %}selected{% endif %}>Any</option>
+                {% for provider in filter.filters.launch_service_provider.field.queryset %}
+                    <option value="{{ provider.id }}" {% if request.GET.launch_service_provider == provider.id|stringformat:"s" %}selected{% endif %}>{{ provider.name }}</option>
+                {% endfor %}
+                </select>
+            </div>
         <div>
-            <label for="start_date" class="block text-sm font-medium text-text">Date Range</label>
-            <input type="date" name="start_date_after" id="start_date" value="{{ request.GET.start_date_after }}" class="appearance-none mt-1 p-2 block w-full shadow-sm sm:text-sm bg-primary text-text rounded-md date:text-text" />
-            <input type="date" name="start_date_before" id="end_date" value="{{ request.GET.start_date_before }}" class="appearance-none mt-1 p-2 block w-full shadow-sm sm:text-sm bg-primary text-text rounded-md date:text-text" />
-        </div>
-        <div>
-            <label for="status" class="block text-sm font-medium text-text">Status</label>
-            <select name="status" id="status" class="mt-1 p-2 block w-full shadow-sm sm:text-sm bg-primary text-text rounded-md">
-            {% for status_choice in filter.filters.status.field.choices %}
-                <option value="{{ status_choice.0 }}" {% if request.GET.status == status_choice.0 %}selected{% endif %}>{{ status_choice.1 }}</option>
-            {% endfor %}
-            </select>
-        </div>
-        <div>
-            <label for="launch_service_provider" class="block text-sm font-medium text-text">Launch Service Provider</label>
-            <select name="launch_service_provider" id="launch_service_provider" class="mt-1 p-2 block w-full shadow-sm sm:text-sm bg-primary text-text rounded-md">
-                <option value="" {% if not request.GET.launch_service_provider %}selected{% endif %}>Any</option>
-            {% for provider in filter.filters.launch_service_provider.field.queryset %}
-                <option value="{{ provider.id }}" {% if request.GET.launch_service_provider == provider.id|stringformat:"s" %}selected{% endif %}>{{ provider.name }}</option>
-            {% endfor %}
-            </select>
-        </div>
-        <div>
-            <label for="location" class="block text-sm font-medium text-text">Launch Location</label>
-            <select name="location" id="location" class="mt-1 p-2 block w-full shadow-sm sm:text-sm bg-primary text-text rounded-md">
+            <label for="location" class="block  font-medium text-text">Launch Location</label>
+            <select name="location" id="location" class="mt-1 p-2 block w-full shadow-sm bg-primary text-text rounded-md">
                 <option value="" {% if not request.GET.location %}selected{% endif %}>Any</option>
             {% for location in filter.filters.location.field.queryset %}
                 <option value="{{ location.id }}" {% if request.GET.location == location.id|stringformat:"s" %}selected{% endif %}>{{ location.name }}</option>
             {% endfor %}
             </select>
         </div>
-        <div class="flex items-end gap-2">
-            {% if request.GET %}
+        <div>
+              <span class="block font-medium text-text">Date Range</span>
+              <div class="flex justify-between gap-2 mt-1 p-2 mb-6 w-full shadow-sm bg-primary text-text rounded-md">
+                <label for="start_date" class="block font-medium text-text/70 me-2.5">After</label>
+                <input type="date" name="start_date_after" id="start_date" value="{{ request.GET.start_date_after }}" class="appearance-none bg-primary" />
+              </div>
+              <div class="flex justify-between gap-2 mt-1 p-2 w-full shadow-sm bg-primary text-text rounded-md">
+                <label for="end_date" class="block font-medium text-text/70">Before</label>
+                <input type="date" name="start_date_before" id="end_date" value="{{ request.GET.start_date_before }}" class="appearance-none bg-primary" />
+              </div>
+            </div>
+            <div class="">
+                <label for="launch_type" class="block font-medium text-text">Show Launches:</label>
+                <select name="launch_type" id="launch_type" class="mt-1 mb-2 p-2 block w-full shadow-sm bg-primary text-text rounded-md">
+                    <option value="upcoming_first" {% if request.GET.launch_type == 'upcoming_first' %}selected{% endif %}>Upcoming Launches First</option>
+                    <option value="past_first" {% if request.GET.launch_type == 'past_first' %}selected{% endif %}>Past Launches First</option>
+                </select>
+                
+                <label for="order" class="block font-medium text-text">Order by:</label>
+                <select name="order" id="order" class="p-2 block w-full shadow-sm bg-primary text-text rounded-md">
+                    <option value="asc" {% if request.GET.order == 'asc' %}selected{% endif %}>Closest to Today</option>
+                    <option value="desc" {% if request.GET.order == 'desc' %}selected{% endif %}>Furthest from Today</option>
+                </select>
+            </div>
+        </div>
+        <div class="w-full flex items-end justify-end gap-2 mt-4">
+          {% if request.GET %}
             <button type="button" onclick="window.location.href = '{% url 'launches' %}'" class="py-1.5 px-2 align-text-bottom bg-gradient-to-br from-spaceblue to-spacepurple2 text-white rounded-md"><i class="fi fi-rr-cross-small"></i></button>
-            {% endif %}
-            <button type="submit" class="px-3 py-1.5 bg-gradient-to-br from-spaceblue to-spacepurple2 text-white rounded-md">Filter</button>
+          {% endif %}
+          <button type="submit" class="px-8 py-1.5 bg-gradient-to-br from-spaceblue to-spacepurple2 text-white rounded-md">Filter</button>
         </div>
-        </div>
+      </form>
     </div>
-    </form>
-    <!-- Breadcrumb End -->
+    <!-- Filters modal end -->
 
     <!-- Launches Start -->
     <div class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-6 lg:gap-x-10 px-2 lg:px-20 mb-20">
@@ -84,16 +130,16 @@
                   <h2 class="text-xl font-bold">{{ launch.name }}</h2>
                 </div>
                 <div class="w-full">
-                    <p class="countdown text-2xl text-transparent font-bold bg-clip-text bg-gradient-to-br from-spacepurple2 to-pink-500" data-window-end="{{ launch.window_end|date:'c' }}" data-launch-date="{{ launch.window_start|date:'c' }}"></p>
+                  <p class="countdown text-2xl text-transparent font-bold bg-clip-text bg-gradient-to-br from-spacepurple2 to-pink-400" data-window-end="{{ launch.window_end|date:'c' }}" data-launch-date="{{ launch.window_start|date:'c' }}"></p>
                 </div>
                 <div class="flex flex-col justify-between w-full overflow-hidden">
-                  <p class="text-sm text-white/60">{{ launch.window_start }}</p>
+                  <p class="text-sm text-white/60" data-user-window-start="{{ launch.window_start|date:'c' }}"></p>
                   <p class="text-sm line-clamp-2 text-white/80">{{ launch.pad.name }}, {{ launch.pad.location.name }}</p>
                 </div>
-            </div>
-            <div class="absolute bottom-1 right-1 flex items-center pb-2 pe-2">
-              <a href="space/launch/{{ launch.id }}" class="flex items-baseline justify-center group-hover:border-spaceblue transition-all px-2 text-white rounded-lg bg-black/50 group-hover:bg-gradient-to-br group-hover:from-spaceblue group-hover:to-spacepurple2 group-hover:scale-110"><i class="text-lg fi fi-rr-arrow-right mt-1.5"></i></a>
-            </div>
+              </div>
+              <div class="absolute bottom-1 right-1 flex items-center pb-2 pe-2">
+                <a href="space/launch/{{ launch.id }}" class="flex items-baseline justify-center group-hover:border-spaceblue transition-all px-2 text-white rounded-lg bg-black/50 group-hover:bg-gradient-to-br group-hover:from-spaceblue group-hover:to-spacepurple2 group-hover:scale-110"><i class="text-lg fi fi-rr-arrow-right mt-1.5"></i></a>
+              </div>
             </div>
           </div>
         </div>
@@ -106,23 +152,76 @@
       <span class="text-sm text-gray-600 me-3">Page {{ launches.number }} of {{ launches.paginator.num_pages }}</span>
       <div class="flex items-center space-x-2">
         {% if launches.has_previous %}
-          <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&amp;{% endif %}{% endfor %}page=1" class="px-3 py-1.5 bg-primary text-text/50 rounded">First</a>
-          <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&amp;{% endif %}{% endfor %}page={{ launches.previous_page_number }}" class="px-3 py-1.5 bg-primary text-text/50 rounded">Previous</a>
+          <a href="?{% for key, value in request.GET.items %}
+              {% if key != 'page' %}
+                {{ key }}={{ value }}&amp;
+              {% endif %}
+            {% endfor %}page=1"
+            class="px-3 py-1.5 bg-primary text-text/50 rounded">
+            First
+          </a>
+          <a href="?{% for key, value in request.GET.items %}
+              {% if key != 'page' %}
+                {{ key }}={{ value }}&amp;
+              {% endif %}
+            {% endfor %}page={{ launches.previous_page_number }}"
+            class="px-3 py-1.5 bg-primary text-text/50 rounded">
+            Previous
+          </a>
         {% endif %}
         {% for num in launches.paginator.page_range %}
           {% if launches.number == num %}
             <span class="px-3 py-1.5 bg-gradient-to-br from-spaceblue to-spacepurple2 rounded text-white max-w-min">{{ num }}</span>
           {% elif num > launches.number|add:'-3' and num < launches.number|add:'3' %}
-            <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&amp;{% endif %}{% endfor %}page={{ num }}" class="px-3 py-1.5 bg-primary text-text/50 rounded">{{ num }}</a>
+            <a href="?{% for key, value in request.GET.items %}
+                {% if key != 'page' %}
+                  {{ key }}={{ value }}&amp;
+                {% endif %}
+              {% endfor %}page={{ num }}"
+              class="px-3 py-1.5 bg-primary text-text/50 rounded">
+              {{ num }}
+            </a>
           {% endif %}
         {% endfor %}
         {% if launches.has_next %}
-          <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&amp;{% endif %}{% endfor %}page={{ launches.next_page_number }}" class="px-2 py-1.5 bg-primary text-text/50 rounded">Next</a>
-          <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&amp;{% endif %}{% endfor %}page={{ launches.paginator.num_pages }}" class="px-3 py-1.5 bg-primary text-text/50 rounded">Last</a>
+          <a href="?{% for key, value in request.GET.items %}
+              {% if key != 'page' %}
+                {{ key }}={{ value }}&amp;
+              {% endif %}
+            {% endfor %}page={{ launches.next_page_number }}"
+            class="px-2 py-1.5 bg-primary text-text/50 rounded">
+            Next
+          </a>
+          <a href="?{% for key, value in request.GET.items %}
+              {% if key != 'page' %}
+                {{ key }}={{ value }}&amp;
+              {% endif %}
+            {% endfor %}page={{ launches.paginator.num_pages }}"
+            class="px-3 py-1.5 bg-primary text-text/50 rounded">
+            Last
+          </a>
         {% endif %}
       </div>
     </div>
     <!-- Pagination End -->
   </section>
   <script src="{% static 'js/launch_time.js' %}"></script>
+
+  <script>
+    function filtersModal() {
+      const modal = document.getElementById('filters-modal')
+      modal.classList.toggle('hidden')
+      modal.classList.toggle('flex')
+    }
+    function closeModalOutside(event) {
+      const form = document.getElementById('filters-form')
+      // Verifica se o clique foi fora do formulário
+      if (!event.target.closest('#filters-form')) {
+        filtersModal()
+      }
+    }
+    
+    // Adiciona um listener para fechar o modal ao clicar fora
+    document.getElementById('filters-modal').addEventListener('click', closeModalOutside)
+  </script>
 {% endblock %}
