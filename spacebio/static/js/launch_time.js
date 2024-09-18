@@ -36,11 +36,21 @@ function updateCountdown(element, launchDate, windowEnd) {
             element.innerHTML = days + 'd ' + hours + 'h ' + minutes + 'm ' + seconds + 's ';
         }
     }, 1000);
+
+    var userLaunchDateElements = document.querySelectorAll('[data-user-window-start]');
+    userLaunchDateElements.forEach(function (element) {
+        var launchDate = element.dataset.userWindowStart;
+        if (launchDate) {
+            var localLaunchTime = new Date(launchDate).toLocaleString('en-US', {
+                month: 'long',   // Nome completo do mês
+                day: 'numeric',  // Dia do mês
+                year: 'numeric', // Ano completo
+                hour: 'numeric', // Hora no formato 12 horas
+                minute: 'numeric', // Minutos
+                hour12: true    // Para usar AM/PM
+            });
+
+            element.textContent = localLaunchTime; // Atualiza o conteúdo do HTML
+        }
+    });
 }
-
-
-// Atualiza o elemento HTML com o ID 'countdown' para exibir o tempo restante formatado
-// var launchs = document.getElementsByClassName('countdown')
-// Array.from(launchs).forEach(function (launch) {
-//     launch.innerHTML = days + 'd ' + hours + 'h ' + minutes + 'm ' + seconds + 's ';
-// });

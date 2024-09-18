@@ -24,22 +24,27 @@ from space.filters_video import VideoFilter
 def launches(request):
     current_time = now()
 
+    # Get the values from the request
+    order = request.GET.get('order', 'asc')  # Default is 'asc'
+    launch_type = request.GET.get('launch_type', 'upcoming_first')  # Default is 'upcoming_first'
+
     # Create a blank filter first, as it will be applied to each QuerySet
     all_launches = Launch.objects.all()
     launch_filter = LaunchFilter(request.GET, queryset=all_launches)
 
-    # Upcoming or current launches, ordered by ascending window_start
-    upcoming_launches = launch_filter.qs.filter(window_start__gte=current_time).order_by('window_start')
+    # Order launches based on 'order' parameter
+    if order == 'asc':
+        upcoming_launches = list(launch_filter.qs.filter(window_start__gte=current_time).order_by('window_start'))
+        past_launches = list(launch_filter.qs.filter(window_start__lt=current_time).order_by('-window_end'))
+    else:
+        upcoming_launches = list(launch_filter.qs.filter(window_start__gte=current_time).order_by('-window_start'))
+        past_launches = list(launch_filter.qs.filter(window_start__lt=current_time).order_by('window_end'))
 
-    # Past launches, ordered by descending window_end
-    past_launches = launch_filter.qs.filter(window_start__lt=current_time).order_by('-window_end')
-
-    # Combine both QuerySets using union()
-    # launches = upcoming_launches.union(past_launches)
-    launches = upcoming_launches
-
-    # Debug: print query to check applied filters
-    print(launches.query)
+    # Combine based on 'launch_type' parameter
+    if launch_type == 'upcoming_first':
+        launches = upcoming_launches + past_launches
+    else:
+        launches = past_launches + upcoming_launches
 
     # Create a paginator for the launches
     launches_paginator = Paginator(launches, 16)
@@ -56,6 +61,7 @@ def launches(request):
         launches = launches_paginator.page(launches_paginator.num_pages)
 
     return render(request, 'space/launches.html', {'launches': launches, 'filter': launch_filter})
+
 
 
 

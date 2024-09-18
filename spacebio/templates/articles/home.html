@@ -46,8 +46,8 @@
               {% comment %} <span class="text-red-600 font-semibold rounded p-0.5">&circledcirc; Live</span> {% endcomment %}
               <p class="font-semibold text-sm sm:text-base md:text-xl">{{ launch.name }}</p>
               <p class="text-text/65 text-sm sm:text-base line-clamp-2">{{ launch.pad.name }}, {{ launch.pad.location.name }}</p>
-              <p class="countdown font-medium sm:text-lg text-spacepurple2" data-launch-date="{{ launch.window_start|date:"m/d/Y" }}"></p>
-              <p class="text-sm sm:text-base">Starts at: {{ launch.window_start }}</p>
+              <p class="countdown text-2xl text-transparent font-bold bg-clip-text bg-gradient-to-br from-spacepurple2 to-pink-500" data-window-end="{{ launch.window_end|date:'c' }}" data-launch-date="{{ launch.window_start|date:'c' }}"></p>
+             <p class="text-sm text-white/60" data-user-window-start="{{ launch.window_start|date:'c' }}"></p>
             </div>
           </div>
         {% endfor %}
