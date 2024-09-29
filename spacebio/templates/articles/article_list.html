@@ -3,14 +3,14 @@
 {% block content %}
   <!-- Breadcrumb Start -->
   <div class="mb-6 flex flex-wrap gap-3 text-sm sm:text-base justify-between items-center">
-    <h2 class="font-bold w-1/2 text-text text-xl sm:text-2xl">Articles</h2>
+    <h2 class="font-bold w-1/2 text-text text-xl sm:text-2xl">Space literature</h2>
 
     <nav>
       <ol class="flex items-center gap-2">
         <li>
-          <a class="font-medium text-text" href="{% url 'home' %}">SpaceBio /</a>
+          <a class="font-medium text-text" href="{% url 'home' %}"> SpaceBio /</a>
         </li>
-        <li class="font-medium text-text/60">Articles</li>
+        <li class="font-medium text-text/60">Space literature</li>
       </ol>
     </nav>
   </div>
@@ -31,21 +31,21 @@
           <div class="grid grid-flow-row gap-4 p-4 rounded-lg shadow-lg bg-primary text-text">
             <div class="">
               <h2 class="sm:text-lg md:text-xl my-auto text-center mb-3 text-blue-500"><a href="https://doi.org/{{ article.doi }}" target="_blank">{{ article.title|highlight_keywords:query }}</a></h2>
-              <p class="text-sm">{{ article.authorstring }}</p>
+              <p class="text-sm">{{ article.author_full_name }}</p>
             </div>
 
             <div class="row-span-2">
-              <p class="text-sm">{{ article.abstract|highlight_keywords:query }}</p>
+              <p class="text-sm">{{ article.abstract_text|highlight_keywords:query }}</p>
             </div>
 
             <div class="text-sm">
               <p>
-                Journal: {{ article.journaltitle }}{% if article.journalvolume %}
+                Journal: {{ article.journal_title }}{% if article.journal_volume %}
                   Vol. {{ article.journalvolume }}
                 {% endif %}
               </p>
-              <p>Publication date: {{ article.pubyear }}</p>
-              <p>ISSN: {{ article.journalissn }}</p>
+              <p>Publication date: {{ article.journal_year_of_publication }}</p>
+              <p>ISSN: {{ article.journal_issn }}</p>
               <p>doi: <a href="https://doi.org/{{ article.doi }}" target="_blank">{{ article.doi }}</a></p>
             </div>
           </div>
