@@ -5,6 +5,22 @@ class LaunchStatus(models.Model):
     name = models.CharField(max_length=255)
     abbrev = models.CharField(max_length=50)
     description = models.TextField()
+    
+    def get_status_color(self):
+        if self.id == 1: # go for launch
+            return 'rgb(22 163 74)'
+        elif self.id == 2: # to be determined
+            return 'rgb(75 85 99)'
+        elif self.id == 3: # launch successful
+            return 'rgb(37 99 235)'
+        elif self.id == 4: # launch failure
+            return 'rgb(220 38 38)'
+        elif self.id == 7: # launch was a partial failure 
+            return 'rgb(234 88 12)'
+        elif self.id == 8: # to be confirmed 
+            return 'rgb(234 179 8)'
+        else:
+            return 'rgb(75 85 99)'
 
     class Meta:
         db_table = 'space_launch_status'

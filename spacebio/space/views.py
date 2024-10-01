@@ -47,7 +47,7 @@ def launches(request):
         launches = past_launches + upcoming_launches
 
     # Create a paginator for the launches
-    launches_paginator = Paginator(launches, 16)
+    launches_paginator = Paginator(launches, 15)
     page_number = request.GET.get('page')
 
     try:

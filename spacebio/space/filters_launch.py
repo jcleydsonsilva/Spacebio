@@ -43,8 +43,6 @@ class LaunchFilter(django_filters.FilterSet):
             (1, 'Go for Launch'),
             (8, 'To Be Confirmed'),
             (2, 'To be Determined'),
-            (6, 'Launch in Flight'),
-            (5, 'On Hold'),
             (3, 'Launch Successful'),
             (4, 'Launch Failure'),
             (7, 'Launch was a Partial Failure'),

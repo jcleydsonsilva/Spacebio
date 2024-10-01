@@ -5,10 +5,10 @@
   <!-- Breadcrumb Start -->
   <section class="flex flex-col mx-auto mt-10 sm:w-11/12">
     <div class="flex justify-between items-center flex-wrap gap-3 text-sm sm:text-base mb-6 mt-12 px-2 lg:px-20">
-      <h1 class="font-bold w-1/2 text-text text-xl sm:text-2xl">Launches</h1>
+      <h1 class="font-bold w-1/2 text-text text-xl sm:text-2xl font-pavelt">Launches</h1>
 
       <div>
-        <ol class="flex items-center gap-2">
+        <ol class="flex items-center gap-2 font-pavelt">
           <li>
             <a class="font-medium text-text" href="{% url 'home' %}">SpaceBio /</a>
           </li>
@@ -146,64 +146,47 @@
       {% endfor %}
     </div>
     <!-- Launches End -->
-
+    
     <!-- Pagination Start -->
     <div class="flex justify-center items-center my-4">
-      <span class="text-sm text-gray-600 me-3">Page {{ launches.number }} of {{ launches.paginator.num_pages }}</span>
-      <div class="flex items-center space-x-2">
-        {% if launches.has_previous %}
-          <a href="?{% for key, value in request.GET.items %}
-              {% if key != 'page' %}
-                {{ key }}={{ value }}&amp;
-              {% endif %}
-            {% endfor %}page=1"
-            class="px-3 py-1.5 bg-primary text-text/50 rounded">
-            First
-          </a>
-          <a href="?{% for key, value in request.GET.items %}
-              {% if key != 'page' %}
-                {{ key }}={{ value }}&amp;
-              {% endif %}
-            {% endfor %}page={{ launches.previous_page_number }}"
-            class="px-3 py-1.5 bg-primary text-text/50 rounded">
-            Previous
-          </a>
-        {% endif %}
-        {% for num in launches.paginator.page_range %}
-          {% if launches.number == num %}
-            <span class="px-3 py-1.5 bg-gradient-to-br from-spaceblue to-spacepurple2 rounded text-white max-w-min">{{ num }}</span>
-          {% elif num > launches.number|add:'-3' and num < launches.number|add:'3' %}
-            <a href="?{% for key, value in request.GET.items %}
-                {% if key != 'page' %}
-                  {{ key }}={{ value }}&amp;
-                {% endif %}
-              {% endfor %}page={{ num }}"
-              class="px-3 py-1.5 bg-primary text-text/50 rounded">
-              {{ num }}
+        <span class="text-sm text-gray-600 me-3">Page {{ launches.number }} of {{ launches.paginator.num_pages }}</span>
+        <div class="flex items-center space-x-2">
+            {% if launches.has_previous %}
+            <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value|urlencode }}&{% endif %}{% endfor %}page=1"
+                class="px-3 py-1.5 bg-primary text-text/50 rounded">
+                First
             </a>
-          {% endif %}
-        {% endfor %}
-        {% if launches.has_next %}
-          <a href="?{% for key, value in request.GET.items %}
-              {% if key != 'page' %}
-                {{ key }}={{ value }}&amp;
-              {% endif %}
-            {% endfor %}page={{ launches.next_page_number }}"
-            class="px-2 py-1.5 bg-primary text-text/50 rounded">
-            Next
-          </a>
-          <a href="?{% for key, value in request.GET.items %}
-              {% if key != 'page' %}
-                {{ key }}={{ value }}&amp;
-              {% endif %}
-            {% endfor %}page={{ launches.paginator.num_pages }}"
-            class="px-3 py-1.5 bg-primary text-text/50 rounded">
-            Last
-          </a>
-        {% endif %}
-      </div>
+            <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value|urlencode }}&{% endif %}{% endfor %}page={{ launches.previous_page_number }}"
+                class="px-3 py-1.5 bg-primary text-text/50 rounded">
+                Previous
+            </a>
+            {% endif %}
+
+            {% for num in launches.paginator.page_range %}
+            {% if launches.number == num %}
+                <span class="px-3 py-1.5 bg-gradient-to-br from-spaceblue to-spacepurple2 rounded text-white max-w-min">{{ num }}</span>
+            {% elif num > launches.number|add:'-3' and num < launches.number|add:'3' %}
+                <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value|urlencode }}&{% endif %}{% endfor %}page={{ num }}"
+                class="px-3 py-1.5 bg-primary text-text/50 rounded">
+                {{ num }}
+                </a>
+            {% endif %}
+            {% endfor %}
+
+            {% if launches.has_next %}
+            <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value|urlencode }}&{% endif %}{% endfor %}page={{ launches.next_page_number }}"
+                class="px-2 py-1.5 bg-primary text-text/50 rounded">
+                Next
+            </a>
+            <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value|urlencode }}&{% endif %}{% endfor %}page={{ launches.paginator.num_pages }}"
+                class="px-3 py-1.5 bg-primary text-text/50 rounded">
+                Last
+            </a>
+            {% endif %}
+        </div>
     </div>
     <!-- Pagination End -->
+
   </section>
   <script src="{% static 'js/launch_time.js' %}"></script>
 
