@@ -124,3 +124,44 @@ themeToggleBtn.addEventListener('click', function () {
         }
     }
 })
+
+// open and close sections
+document.addEventListener('DOMContentLoaded', function () {
+    const links = document.querySelectorAll('.section-link');
+    const sections = document.querySelectorAll('.section');
+
+    // Função para ocultar todas as seções
+    function hideAllSections() {
+        sections.forEach(section => {
+            section.classList.add('hidden');
+        });
+    }
+
+    // Mostrar a primeira seção ao carregar a página
+    hideAllSections();
+    document.getElementById('agency-section').classList.remove('hidden');
+
+    // Adicionar o evento de clique nos links da navegação
+    links.forEach(link => {
+        link.addEventListener('click', function () {
+            const targetId = this.getAttribute('data-target');
+            // Esconder todas as seções
+            hideAllSections();
+            // Mostrar a seção clicada
+            document.getElementById(targetId).classList.toggle('hidden');
+        });
+    });
+});
+
+
+// load launch status color 
+document.addEventListener('DOMContentLoaded', function () {
+    const statusLinks = document.querySelectorAll('.launch-status');
+
+    statusLinks.forEach(status => {
+        const launchStatusColor = status.getAttribute('data-status-color') || 'rgb(75 85 99)';
+
+        // Aplicar a cor de fundo ao elemento
+        status.style.backgroundColor = launchStatusColor;
+    });
+});
