@@ -139,7 +139,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Mostrar a primeira seção ao carregar a página
     hideAllSections();
-    document.getElementById('agency-section').classList.remove('hidden');
+    document.getElementById('mission-section').classList.remove('hidden');
 
     // Adicionar o evento de clique nos links da navegação
     links.forEach(link => {
