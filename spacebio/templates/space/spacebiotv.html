@@ -3,7 +3,7 @@
 {% block content %}
   <header class="relative h-full w-full overflow-hidden">
     <!-- Vídeo de fundo -->
-    <img id="video-placeholder" src="{% static 'articles/img/spacebio_background.jpg' %}" alt="Background" class="absolute top-0 left-0 w-full h-full object-cover">
+    <img id="video-placeholder" src="{% static 'articles/img/spacebio_background.jpg' %}" alt="Background" class="absolute top-0 left-0 w-full h-full object-cover" />
     <video id="background-video" autoplay muted playsinline class="absolute top-0 left-0 w-full h-full object-cover p-px pr-0"></video>
     <div class="relative h-full flex flex-col gap-10 py-6 bg-gradient-to-r from-black via-transparent/15 to-transparent">
       <!-- Breadcrumb Start -->
@@ -22,7 +22,7 @@
 
       <div class="flex flex-col justify-end items-start text-white/70 mx-auto w-5/6 mt-10 sm:mb-4 md:mb-10 lg:mb-16 xl:mb-28">
         {% if videos.0.publisher %}
-            <span class="uppercase text-sm md:text-base lg:text-lg">{{ videos.0.publisher }}</span>
+          <span class="uppercase text-sm md:text-base lg:text-lg">{{ videos.0.publisher }}</span>
         {% endif %}
         <span class="text-xs sm:text-sm md:text-base mt-2 text-white/40">{{ videos.0.title }}</span>
         <h2 class="uppercase text-xl sm:text-2xl md:text-3xl font-bold">Most recent video</h2>
@@ -34,48 +34,45 @@
 
   <div class="bg-black -mt-px">
     <div class="mx-auto px-2 min-[390px]:px-4 sm:w-5/6 flex py-3 justify-between items-start">
-        <ul class="flex gap-8 text-white">
-            <li class="relative group {% if filter_type == 'all' %}border-b-2 border-spacepurple2{% endif %}">
-                <a href="{% url 'spacebiotv_view' %}?filter=all" class="flex items-center">
-                <i class="fi fi-rr-home"></i>
-                <!-- Tooltip -->
-                <div class="absolute top-full mt-2 -translate-x-1/4 hidden group-hover:block group-focus:block bg-gray-800 text-white text-sm rounded px-2 py-1 whitespace-nowrap z-10">Todos</div>
-                </a>
-            </li>
-            <li class="relative group {% if filter_type == 'videos' %}border-b-2 border-spacepurple2{% endif %}">
-                <a href="{% url 'spacebiotv_view' %}?filter=videos" class="flex items-center">
-                <i class="fi fi-rr-film"></i>
-                <!-- Tooltip -->
-                <div class="absolute top-full mt-2 -translate-x-1/4 hidden group-hover:block group-focus:block bg-gray-800 text-white text-sm rounded px-2 py-1 whitespace-nowrap z-10">Vídeos</div>
-                </a>
-            </li>
-            <li class="relative group {% if filter_type == 'live' %}border-b-2 border-spacepurple2{% endif %}">
-                <a href="{% url 'spacebiotv_view' %}?filter=live" class="flex items-center">
-                <i class="fi fi-rr-camera-movie"></i>
-                <!-- Tooltip -->
-                <div class="absolute top-full mt-2 -translate-x-1/4 hidden group-hover:block group-focus:block bg-gray-800 text-white text-sm rounded px-2 py-1 whitespace-nowrap z-10">Lives</div>
-                </a>
-            </li>
-        </ul>
+      <ul class="flex gap-8 text-white">
+        <li class="relative group {% if filter_type == 'all' %}border-b-2 border-spacepurple2{% endif %}">
+          <a href="{% url 'spacebiotv_view' %}?filter=all" class="flex items-center">
+            <i class="fi fi-rr-home"></i>
+            <!-- Tooltip -->
+            <div class="absolute top-full mt-2 -translate-x-1/4 hidden group-hover:block group-focus:block bg-gray-800 text-white text-sm rounded px-2 py-1 whitespace-nowrap z-10">Home</div>
+          </a>
+        </li>
+        <li class="relative group {% if filter_type == 'videos' %}border-b-2 border-spacepurple2{% endif %}">
+          <a href="{% url 'spacebiotv_view' %}?filter=videos" class="flex items-center">
+            <i class="fi fi-rr-film"></i>
+            <!-- Tooltip -->
+            <div class="absolute top-full mt-2 -translate-x-1/4 hidden group-hover:block group-focus:block bg-gray-800 text-white text-sm rounded px-2 py-1 whitespace-nowrap z-10">Videos</div>
+          </a>
+        </li>
+        <li class="relative group {% if filter_type == 'live' %}border-b-2 border-spacepurple2{% endif %}">
+          <a href="{% url 'spacebiotv_view' %}?filter=live" class="flex items-center">
+            <i class="fi fi-rr-camera-movie"></i>
+            <!-- Tooltip -->
+            <div class="absolute top-full mt-2 -translate-x-1/4 hidden group-hover:block group-focus:block bg-gray-800 text-white text-sm rounded px-2 py-1 whitespace-nowrap z-10">Live</div>
+          </a>
+        </li>
+      </ul>
 
       <div class="flex gap-2 justify-between items-center">
         <div class="flex items-center py-1.5 px-4 border-2 border-spacepurple2/40 focus-within:border-spacepurple2 rounded-lg">
-            <form method="GET" action="{% url 'spacebiotv_view' %}" class="">
-                <input type="text" name="search" id="search" placeholder="Search videos" value="{{ request.GET.search }}" class="placeholder:italic placeholder:font-sm placeholder:text-white/50 text-white/70 bg-transparent ring-0 border-0 outline-none" />
-                <button type="submit" class="">
-                    <i class="fi fi-rr-search ms-2 text-white/80"></i>
-                </button>
-            </form>
+          <form method="GET" action="{% url 'spacebiotv_view' %}" class="">
+            <input type="text" name="search" id="search" placeholder="Search videos" value="{{ request.GET.search }}" class="placeholder:italic placeholder:font-sm placeholder:text-white/50 text-white/70 bg-transparent ring-0 border-0 outline-none" />
+            <button type="submit" class=""><i class="fi fi-rr-search ms-2 text-white/80"></i></button>
+          </form>
         </div>
         {% if request.GET %}
-            <button type="button" onclick="window.location.href = '{% url 'spacebiotv_view' %}'" class="py-1 px-2 align-text-bottom bg-gradient-to-br from-spaceblue to-spacepurple2 text-white rounded-md"><i class="fi fi-rr-cross-small text-lg"></i></button>
+          <button type="button" onclick="window.location.href = '{% url 'spacebiotv_view' %}'" class="py-1 px-2 align-text-bottom bg-gradient-to-br from-spaceblue to-spacepurple2 text-white rounded-md"><i class="fi fi-rr-cross-small text-lg"></i></button>
         {% endif %}
       </div>
     </div>
   </div>
 
   <section class="flex flex-col">
-
     <!-- Video Modal -->
     <div id="modal" class="fixed inset-0 items-center justify-center bg-black bg-opacity-80 hidden z-30" onclick="closeModalOutside(event)">
       <div class="bg-background/25 bg-opacity-5 backdrop-blur-2xl rounded-lg overflow-hidden shadow-lg md:w-2/3 w-full relative aspect-video" onclick="event.stopPropagation();">
@@ -92,38 +89,76 @@
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-2 gap-y-10 px-2 sm:px-7 lg:px-20 mb-20 mt-4">
       {% if live_stream %}
         <div class="live-stream">
-            <h2>{{ live_stream.title }}</h2>
-            <video src="{{ live_stream.url }}" controls autoplay></video>
+          <h2>{{ live_stream.title }}</h2>
+          <video src="{{ live_stream.url }}" controls autoplay></video>
         </div>
       {% else %}
         {% for video in videos %}
-            <div class="relative">
-            <img src="{{ video.get_thumbnail }}" frameborder="0" class="w-full xl:max-h-80 rounded-xl aspect-video">
+          <div class="relative">
+            {% if video.get_thumbnail %}
+              <img src="{{ video.get_thumbnail }}" frameborder="0" class="w-full xl:max-h-80 rounded-xl aspect-video" />
+            {% else %}
+              <img src="{% static 'static/articles/img/space_literature.png' %}" frameborder="0" class="w-full xl:max-h-80 rounded-xl aspect-video" />
+            {% endif %}
             <!-- Invisible Overlay to capture the click -->
             <div class="absolute inset-0 cursor-pointer" onclick="playInModal('{{ video.get_embedded_url }}?autoplay=1')"></div>
-            </div>
+          </div>
         {% endfor %}
       {% endif %}
     </div>
-
 
     <div class="flex justify-center items-center my-4">
       <span class="text-sm text-gray-600 me-3">Page {{ videos.number }} of {{ videos.paginator.num_pages }}</span>
       <div class="flex items-center space-x-2">
         {% if videos.has_previous %}
-          <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&amp;{% endif %}{% endfor %}page=1" class="px-3 py-1.5 bg-primary text-text/50 rounded">First</a>
-          <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&amp;{% endif %}{% endfor %}page={{ videos.previous_page_number }}" class="px-3 py-1.5 bg-primary text-text/50 rounded">Previous</a>
+          <a href="?{% for key, value in request.GET.items %}
+              {% if key != 'page' %}
+                {{ key }}={{ value }}&amp;
+              {% endif %}
+            {% endfor %}page=1"
+            class="px-3 py-1.5 bg-primary text-text/50 rounded">
+            First
+          </a>
+          <a href="?{% for key, value in request.GET.items %}
+              {% if key != 'page' %}
+                {{ key }}={{ value }}&amp;
+              {% endif %}
+            {% endfor %}page={{ videos.previous_page_number }}"
+            class="px-3 py-1.5 bg-primary text-text/50 rounded">
+            Previous
+          </a>
         {% endif %}
         {% for num in videos.paginator.page_range %}
           {% if videos.number == num %}
             <span class="px-3 py-1.5 bg-gradient-to-br from-spaceblue to-spacepurple2 rounded text-white max-w-min">{{ num }}</span>
           {% elif num > videos.number|add:'-3' and num < videos.number|add:'3' %}
-            <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&amp;{% endif %}{% endfor %}page={{ num }}" class="px-3 py-1.5 bg-primary text-text/50 rounded">{{ num }}</a>
+            <a href="?{% for key, value in request.GET.items %}
+                {% if key != 'page' %}
+                  {{ key }}={{ value }}&amp;
+                {% endif %}
+              {% endfor %}page={{ num }}"
+              class="px-3 py-1.5 bg-primary text-text/50 rounded">
+              {{ num }}
+            </a>
           {% endif %}
         {% endfor %}
         {% if videos.has_next %}
-          <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&amp;{% endif %}{% endfor %}page={{ videos.next_page_number }}" class="px-2 py-1.5 bg-primary text-text/50 rounded">Next</a>
-          <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&amp;{% endif %}{% endfor %}page={{ videos.paginator.num_pages }}" class="px-3 py-1.5 bg-primary text-text/50 rounded">Last</a>
+          <a href="?{% for key, value in request.GET.items %}
+              {% if key != 'page' %}
+                {{ key }}={{ value }}&amp;
+              {% endif %}
+            {% endfor %}page={{ videos.next_page_number }}"
+            class="px-2 py-1.5 bg-primary text-text/50 rounded">
+            Next
+          </a>
+          <a href="?{% for key, value in request.GET.items %}
+              {% if key != 'page' %}
+                {{ key }}={{ value }}&amp;
+              {% endif %}
+            {% endfor %}page={{ videos.paginator.num_pages }}"
+            class="px-3 py-1.5 bg-primary text-text/50 rounded">
+            Last
+          </a>
         {% endif %}
       </div>
     </div>
@@ -131,47 +166,28 @@
   <script>
     // header background video
     document.addEventListener('DOMContentLoaded', function () {
-      const videos = [
-        "{% static 'space/videos/vid1.mp4' %}",
-        "{% static 'space/videos/vid2.mp4' %}",
-        "{% static 'space/videos/vid3.mp4' %}",
-        "{% static 'space/videos/vid4.mp4' %}",
-        "{% static 'space/videos/vid5.mp4' %}",
-        "{% static 'space/videos/vid6.mp4' %}",
-        "{% static 'space/videos/vid7.mp4' %}",
-        "{% static 'space/videos/vid8.mp4' %}",
-        "{% static 'space/videos/vid9.mp4' %}",
-        "{% static 'space/videos/vid10.mp4' %}",
-        "{% static 'space/videos/vid11.mp4' %}",
-        "{% static 'space/videos/vid12.mp4' %}",
-        "{% static 'space/videos/vid13.mp4' %}",
-        "{% static 'space/videos/vid14.mp4' %}",
-        "{% static 'space/videos/vid15.mp4' %}",
-        "{% static 'space/videos/vid16.mp4' %}"
-      ]
-      const videoElement = document.getElementById('background-video');
-      const placeholder = document.getElementById('video-placeholder');
+      const videos = ["{% static 'space/videos/vid1.mp4' %}", "{% static 'space/videos/vid2.mp4' %}", "{% static 'space/videos/vid3.mp4' %}", "{% static 'space/videos/vid4.mp4' %}", "{% static 'space/videos/vid5.mp4' %}", "{% static 'space/videos/vid6.mp4' %}", "{% static 'space/videos/vid7.mp4' %}", "{% static 'space/videos/vid8.mp4' %}", "{% static 'space/videos/vid9.mp4' %}", "{% static 'space/videos/vid10.mp4' %}", "{% static 'space/videos/vid11.mp4' %}", "{% static 'space/videos/vid12.mp4' %}", "{% static 'space/videos/vid13.mp4' %}", "{% static 'space/videos/vid14.mp4' %}", "{% static 'space/videos/vid15.mp4' %}", "{% static 'space/videos/vid16.mp4' %}"]
+      const videoElement = document.getElementById('background-video')
+      const placeholder = document.getElementById('video-placeholder')
     
       function changeVideo() {
         const randomIndex = Math.floor(Math.random() * videos.length)
         videoElement.src = videos[randomIndex]
-        
+    
         // Quando o vídeo começar a carregar, mostrar o vídeo e esconder a imagem
         videoElement.addEventListener('canplay', function () {
-            placeholder.classList.add('hidden');
-            videoElement.classList.remove('hidden');
-            videoElement.play();
-        });
+          placeholder.classList.add('hidden')
+          videoElement.classList.remove('hidden')
+          videoElement.play()
+        })
       }
-
-
-    // Video modal script
-    videoElement.addEventListener('ended', changeVideo);
-
-    changeVideo(); // reproduce videos after page load
-
+    
+      // Video modal script
+      videoElement.addEventListener('ended', changeVideo)
+    
+      changeVideo() // reproduce videos after page load
     })
-
+    
     function toggleModal(show, videoUrl = '') {
       const modal = document.getElementById('modal')
       const modalVideo = document.getElementById('modalVideo')
@@ -190,6 +206,5 @@
     function playInModal(videoUrl) {
       toggleModal(true, videoUrl)
     }
-
   </script>
 {% endblock %}
