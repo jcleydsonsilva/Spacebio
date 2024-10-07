@@ -17,9 +17,9 @@
     <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.2.0/uicons-regular-rounded/css/uicons-regular-rounded.css" />
 
     <!-- NUNITO FONT -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet" />
 
     <!-- SPLIDE CSS -->
     <link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/themes/splide-sea-green.min.css" rel="stylesheet" />
@@ -127,24 +127,21 @@
                     <span class="hidden opacity-0 duration-300 font-pavelt text-xs">Space Literature</span>
                   </li>
                 </a>
-                <a href="teste" data-url="teste" class="w-full">
-                  <li class="flex flex-nowrap justify-start items-center gap-1 ps-2 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
-                    <i class="fi fi-rr-microchip-ai text-xl text-text p-3 relative top-0.5"></i>
-                    <span class="hidden opacity-0 duration-300 font-pavelt text-xs">LupeGPT</span>
-                  </li>
-                </a>
-                <a href="teste" data-url="teste" class="w-full">
-                  <li class="flex flex-nowrap justify-start items-center gap-1 ps-2 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
-                    <i class="fi fi-rr-api text-xl text-text p-3 relative top-0.5"></i>
-                    <span class="hidden opacity-0 duration-300 font-pavelt text-xs">Lupe API</span>
-                  </li>
-                </a>
-                <a href="teste" data-url="teste" class="w-full">
-                  <li class="flex flex-nowrap justify-start items-center gap-1 ps-2 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
-                    <i class="fi fi-rr-chart-histogram text-xl text-text p-3 relative top-0.5"></i>
-                    <span class="hidden opacity-0 duration-300 font-pavelt text-xs">Lupe Stats</span>
-                  </li>
-                </a>
+                <li class="flex flex-nowrap justify-start text-text/60 cursor-wait items-center gap-1 ps-2 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
+                  <i class="fi fi-rr-microchip-ai text-xl p-3 relative top-0.5"></i>
+                  <span class="hidden opacity-0 duration-300 font-pavelt text-xs">LupeGPT</span>
+                </li>
+
+                <li class="flex flex-nowrap justify-start text-text/60 cursor-wait items-center gap-1 ps-2 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
+                  <i class="fi fi-rr-api text-xl p-3 relative top-0.5"></i>
+                  <span class="hidden opacity-0 duration-300 font-pavelt text-xs">Lupe API</span>
+                </li>
+
+                <li class="flex flex-nowrap justify-start text-text/60 cursor-wait items-center gap-1 ps-2 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
+                  <i class="fi fi-rr-chart-histogram text-xl p-3 relative top-0.5"></i>
+                  <span class="hidden opacity-0 duration-300 font-pavelt text-xs">Lupe Stats</span>
+                </li>
+
                 <div class="w-2/3 place-self-center h-0.5 bg-gradient-to-r from-text/5 via-text/60 to-text/5"></div>
                 <a href="{% url 'spacebiotv_view' %}" data-url="{% url 'spacebiotv_view' %}" class="w-full">
                   <li class="flex flex-nowrap justify-start items-center gap-1 ps-2 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
@@ -177,12 +174,12 @@
                     <span class="hidden opacity-0 duration-300 font-pavelt text-xs text-nowrap">Team</span>
                   </li>
                 </a>
-                <a href="{% url 'timeline_view' %}" data-url="{% url 'timeline_view' %}" class="w-full">
+                {% comment %} <a href="{% url 'timeline_view' %}" data-url="{% url 'timeline_view' %}" class="w-full">
                   <li class="flex flex-nowrap justify-start items-center gap-1 ps-2 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
                     <i class="fi fi-rr-list-timeline text-xl text-text p-3 relative top-0.5"></i>
                     <span class="hidden opacity-0 duration-300 font-pavelt text-xs text-nowrap">Timeline</span>
                   </li>
-                </a>
+                </a> {% endcomment %}
                 <a href="{% url 'getInvolved_view' %}" data-url="{% url 'getInvolved_view' %}" class="w-full">
                   <li class="flex flex-nowrap justify-start items-center gap-1 ps-2 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
                     <i class="fi fi-rr-refer text-xl text-text p-3 relative top-0.5"></i>
@@ -252,7 +249,7 @@
               <p class="text-xs font-pavelt">Support</p>
               <div class="flex justify-around h-full gap-4 flex-wrap">
                 <span class="flex justify-center items-center min-w-28 max-w-28 min-h-28 max-h-28 rounded-full overflow-hidden shadow-lg shadow-spacepurple2/40"><img src="{% static 'articles/img/spacebio.png' %}" alt="" class="w-4/5" /></span>
-                <span class="flex justify-center items-center min-w-28 max-w-28 min-h-28 max-h-28 rounded-full overflow-hidden shadow-lg shadow-spaceblue/40"><img src="https://genelab.nasa.gov/sites/default/files/2023-03/new%20GL%20logo_social%20media_b_0.JPG" alt="" class="w-4/5 rounded-full" /></span>
+                <span class="flex justify-center items-center min-w-28 max-w-28 min-h-28 max-h-28 rounded-full overflow-hidden shadow-lg shadow-spaceblue/40"><img src="{% static 'articles/img/genelab.png' %}" alt="" class="w-4/5 rounded-full" /></span>
                 <span class="flex justify-center items-center min-w-28 max-w-28 min-h-28 max-h-28 rounded-full overflow-hidden shadow-lg shadow-spacepurple2/40"><img src="{% static 'articles/img/stellarium.png' %}" alt="" class="w-4/5 rounded-full" /></span>
               </div>
             </div>

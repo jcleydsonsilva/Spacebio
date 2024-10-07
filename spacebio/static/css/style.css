@@ -1511,16 +1511,12 @@ video {
   max-height: 24rem;
 }
 
-.max-h-80 {
-  max-height: 20rem;
-}
-
-.max-h-56 {
-  max-height: 14rem;
-}
-
 .min-h-28 {
   min-height: 7rem;
+}
+
+.min-h-full {
+  min-height: 100%;
 }
 
 .min-h-screen {
@@ -1944,6 +1940,10 @@ video {
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+.cursor-wait {
+  cursor: wait;
 }
 
 .touch-auto {
@@ -5793,17 +5793,8 @@ video {
     top: -9rem;
   }
 
-  .md\:my-10 {
-    margin-top: 2.5rem;
-    margin-bottom: 2.5rem;
-  }
-
   .md\:mb-10 {
     margin-bottom: 2.5rem;
-  }
-
-  .md\:mt-10 {
-    margin-top: 2.5rem;
   }
 
   .md\:mt-12 {
@@ -6235,19 +6226,14 @@ video {
     padding-top: 1rem;
   }
 
-  .xl\:text-lg {
-    font-size: 1.125rem;
-    line-height: 1.75rem;
-  }
-
   .xl\:text-2xl {
     font-size: 1.5rem;
     line-height: 2rem;
   }
 
-  .xl\:text-3xl {
-    font-size: 1.875rem;
-    line-height: 2.25rem;
+  .xl\:text-lg {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
   }
 }
 
