@@ -12,7 +12,7 @@ from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django_filters.views import FilterView
 
-from articles.models import Article
+from articles.models import Article, SpaceExploration
 from space.models import *
 from space.apis import fecth_spacelaunchs, fetch_spacenews
 from django.templatetags.static import static
@@ -24,12 +24,11 @@ def home(request):
     space_news = cache.get('space_news')
     
     articles_count = Article.objects.all().count()
-    recent_articles = Article.objects.all().order_by('-id')[:5]
 
     nextspacelaunch = Launch.objects.filter(window_start__gte=current_time).order_by('window_start')[:2]
     space_news = fetch_spacenews(limit=10)
     
-    return render(request, 'articles/home.html', {'space_news': space_news, 'nextspacelaunch': nextspacelaunch, 'articles_count': articles_count, 'recent_articles': recent_articles})
+    return render(request, 'articles/home.html', {'space_news': space_news, 'nextspacelaunch': nextspacelaunch, 'articles_count': articles_count})
 
 def space_literature(request):
     
@@ -48,9 +47,9 @@ def article_list(request):
         
         query_filter = Q()
         for keyword in keywords:
-            query_filter |= Q(title__icontains=keyword) | Q(abstract_text__icontains=keyword) | Q(author_full_name__icontains=keyword)
+            query_filter |= Q(title__icontains=keyword) | Q(abstract__icontains=keyword) | Q(authorstring__icontains=keyword)
 
-        articles = Article.objects.filter(query_filter).order_by('-journal_year_of_publication')
+        articles = SpaceExploration.objects.filter(query_filter).order_by('-pubyear')
         result_count = articles.count()
 
     articles_paginator = Paginator(articles, 20)
