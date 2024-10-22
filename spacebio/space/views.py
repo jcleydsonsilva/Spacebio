@@ -74,25 +74,40 @@ def launch(request, launch_id):
 
 def news(request):
     # Fetch space news from the database
-    space_news = fetch_spacenews()
+    space_news = fetch_spacenews()  # Busca as notícias da sua fonte de dados
+
+    # Captura o valor da busca
+    query = request.GET.get('keywords')
     
-    #create a paginator for the news
+    if query:
+        # Cria um filtro usando Q para buscar nos campos desejados
+        space_news = space_news.filter(
+            Q(title__icontains=query) |
+            Q(featured__icontains=query) |
+            Q(summary__icontains=query) |
+            Q(news_site__icontains=query) |
+            Q(published_at__icontains=query)
+        )
+
+    # Cria um paginador para as notícias
     news_paginator = Paginator(space_news, 24)
     
-    # Get the page number from the request
+    # Obtém o número da página do request
     page_number = request.GET.get('page')
     
     try:
-        # Get the news for the requested page
+        # Pega as notícias da página solicitada
         space_news = news_paginator.page(page_number)
     except PageNotAnInteger:
-        # If page number is not an integer, deliver first page.
+        # Se o número da página não for um inteiro, entrega a primeira página
         space_news = news_paginator.page(1)
     except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
+        # Se a página estiver fora do intervalo, entrega a última página
         space_news = news_paginator.page(news_paginator.num_pages)
     
+    # Renderiza o template com os resultados filtrados
     return render(request, 'space/news.html', {'space_news': space_news})
+
 
 
 

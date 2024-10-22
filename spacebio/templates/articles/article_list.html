@@ -2,67 +2,76 @@
 {% load static highlight_keywords %}
 {% block content %}
   <!-- Breadcrumb Start -->
-  <div class="mb-6 flex flex-wrap gap-3 text-sm sm:text-base justify-between items-center">
-    <h2 class="font-bold w-1/2 text-text text-xl sm:text-2xl">Space literature</h2>
 
-    <nav>
-      <ol class="flex items-center gap-2">
-        <li>
-          <a class="font-medium text-text" href="{% url 'home' %}"> SpaceBio /</a>
-        </li>
-        <li class="font-medium text-text/60">Space literature</li>
-      </ol>
-    </nav>
-  </div>
-  <!-- Breadcrumb End -->
+  <section class="flex flex-col mx-auto mt-12 sm:w-11/12">
+    <div class="flex justify-between items-center flex-wrap gap-3 text-sm sm:text-base mb-6 mt-12 px-2 min-[390px]:px-7 lg:px-20">
+      <h1 class="font-bold w-1/2 text-text text-xl sm:text-2xl font-pavelt">Articles</h1>
 
-  
-
-  <div class="rounded-sm pb-2.5 pt-6 shadow-default sm:px-7.5 xl:pb-1">
-    {% if result_count %}
-      <h4 class="mb-6 text-lg font-bold text-text">{{ result_count }} results found for terms <span class="text-green-500">{{ query }}</span></h4>
-    {% else %}
-      <h4 class="mb-6 text-lg font-bold text-text">0 results found for terms <span class="text-green-500">{{ query }}</span></h4>
-    {% endif %}
-
-    <div class="flex flex-col pb-5 gap-4 sm:gap-10">
-      {% if articles %}
-        {% for article in articles %}
-          <div class="grid grid-flow-row gap-4 p-4 rounded-lg shadow-lg bg-primary text-text">
-            <div class="">
-              <h2 class="sm:text-lg md:text-xl my-auto text-center mb-3 text-blue-500"><a href="https://doi.org/{{ article.doi }}" target="_blank">{{ article.title|highlight_keywords:query }}</a></h2>
-              <p class="text-sm">{{ article.author_full_name }}</p>
-            </div>
-
-            <div class="row-span-2">
-              <p class="text-sm">{{ article.abstract_text|highlight_keywords:query }}</p>
-            </div>
-
-            <div class="text-sm">
-              <p>
-                Journal: {{ article.journal_title }}{% if article.journal_volume %}
-                  Vol. {{ article.journalvolume }}
-                {% endif %}
-              </p>
-              <p>Publication date: {{ article.journal_year_of_publication }}</p>
-              <p>ISSN: {{ article.journal_issn }}</p>
-              <p>doi: <a href="https://doi.org/{{ article.doi }}" target="_blank">{{ article.doi }}</a></p>
-            </div>
-          </div>
-        {% endfor %}
-
-        <nav class="flex justify-center mt-4">
-          <ul class="flex justify-center list-none items-center gap-x-2">
-            {% if articles.has_previous %}
-              <li class="p-1 rounded bg-gray-800 hover:bg-spacepurple1"><a href="?query={{ query }}&page={{ articles.previous_page_number }}" class="text-blue-500">&laquo; Previous</a></li>
-            {% endif %}
-            <li><span class="text-text/75">Page {{ articles.number }} of {{ articles.paginator.num_pages }}</span></li>
-            {% if articles.has_next %}
-              <li class="p-1 rounded bg-gray-800 hover:bg-spacepurple1"><a href="?query={{ query }}&page={{ articles.next_page_number }}" class="text-blue-500">Next &raquo;</a></li>
-            {% endif %}
-          </ul>
-        </nav>
-      {% endif %}
+      <div>
+        <ol class="flex items-center gap-2 font-pavelt">
+          <li>
+            <a class="font-medium text-text" href="{% url 'home' %}">SpaceBio /</a>
+          </li>
+          <li class="font-medium text-text/60">articles</li>
+        </ol>
+      </div>
     </div>
-  </div>
+    <!-- Breadcrumb End -->
+
+    <div class="rounded-sm pb-2.5 pt-6 shadow-default sm:px-7.5 xl:pb-1">
+      {% if result_count %}
+        <h4 class="mb-6 text-lg font-bold text-text">{{ result_count }} results found for terms <span class="text-green-500">{{ query }}</span></h4>
+      {% else %}
+        <h4 class="mb-6 text-lg font-bold text-text">0 results found for terms <span class="text-green-500">{{ query }}</span></h4>
+      {% endif %}
+
+      <div class="flex flex-col pb-5 gap-4 sm:gap-10">
+        {% if articles %}
+          {% for article in articles %}
+            <div class="grid grid-flow-row gap-4 p-4 rounded-lg shadow-lg bg-primary text-text">
+              <div class="">
+                <h2 class="sm:text-lg md:text-xl my-auto text-center mb-3 text-blue-500"><a href="https://doi.org/{{ article.doi }}" target="_blank">{{ article.title|highlight_keywords:query }}</a></h2>
+                <p class="text-sm">{{ article.author_full_name }}</p>
+              </div>
+
+              <div class="row-span-2">
+                <p class="text-sm">{{ article.abstract_text|highlight_keywords:query }}</p>
+              </div>
+
+              <div class="text-sm">
+                <p>
+                  Journal: {{ article.journal_title }}{% if article.journal_volume %}
+                    Vol. {{ article.journalvolume }}
+                  {% endif %}
+                </p>
+                <p>Publication date: {{ article.journal_year_of_publication }}</p>
+                <p>ISSN: {{ article.journal_issn }}</p>
+                <p>
+                  doi: <a href="https://doi.org/{{ article.doi }}" target="_blank">{{ article.doi }}</a>
+                </p>
+              </div>
+            </div>
+          {% endfor %}
+
+          <nav class="flex justify-center mt-4">
+            <ul class="flex justify-center list-none items-center gap-x-2">
+              {% if articles.has_previous %}
+                <li class="p-1 rounded bg-gray-800 hover:bg-spacepurple1">
+                  <a href="?query={{ query }}&page={{ articles.previous_page_number }}" class="text-blue-500">&laquo; Previous</a>
+                </li>
+              {% endif %}
+              <li>
+                <span class="text-text/75">Page {{ articles.number }} of {{ articles.paginator.num_pages }}</span>
+              </li>
+              {% if articles.has_next %}
+                <li class="p-1 rounded bg-gray-800 hover:bg-spacepurple1">
+                  <a href="?query={{ query }}&page={{ articles.next_page_number }}" class="text-blue-500">Next &raquo;</a>
+                </li>
+              {% endif %}
+            </ul>
+          </nav>
+        {% endif %}
+      </div>
+    </div>
+  </section>
 {% endblock %}
