@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static highlight_keywords %}
+{% block content %}
+  <!-- Breadcrumb Start -->
+
+  <section class="flex flex-col mx-auto mt-12 sm:w-11/12">
+    <div class="flex justify-between items-center flex-wrap gap-3 text-sm sm:text-base mb-6 mt-12 px-2 min-[390px]:px-7 lg:px-20">
+      <h1 class="font-bold w-1/2 text-text text-xl sm:text-2xl font-pavelt">Spacebio Lab</h1>
+
+      <div>
+        <ol class="flex items-center gap-2 font-pavelt">
+          <li>
+            <a class="font-medium text-text" href="{% url 'home' %}">Spacebio /</a>
+          </li>
+          <li class="font-medium text-text/60">Spacebio Lab</li>
+        </ol>
+      </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+    <div class="rounded-sm pb-2.5 pt-6 mx-auto mt-12 sm:w-11/12 px-2 min-[390px]:px-7 lg:px-20">
+      {% if result_count %}
+        <h4 class="mb-6 text-lg font-bold text-text">{{ result_count }} projects being developed <span class="text-green-500"></span></h4>
+      {% else %}
+        <h4 class="mb-6 text-lg font-bold text-text font-pavelt">Pilot project <span class="text-green-500"></span></h4>
+      {% endif %}
+
+      <div class="flex flex-col pb-5 gap-4 sm:gap-10">
+        <div class="grid grid-flow-row gap-4 p-4 rounded-lg shadow-lg bg-primary text-text">
+          <div class="">
+            <p class="bg-clip-text text-transparent bg-gradient-to-tr from-spaceblue to-pink-500 font-bold font-pavelt">Data science</p>
+            <h2 class="text-lg sm:text-xl md:text-2xl my-auto text-center mb-3 text-blue-500"><a href="https://doi.org/" target="_blank">Interactive Dashboard for Analyzing Trends and Opportunities in Human Space Exploration</a></h2>
+          </div>
+
+          <div class="flex">
+            <i class="fi fi-rr-users text-lg me-3"></i>
+            <p>
+              Arthur Vieira Evangelista<sup>1</sup>, José Cleydson F. Silva<sup>2,3</sup><i class="fi fi-rr-user"></i><i class="fi fi-rr-envelope"></i>
+            </p>
+          </div>
+
+          <div class="flex justify-start">
+            <button id="show-more" class="underline text-blue-500 hover:text-blue-700 transition-all" onclick="showMore()">Show more</button>
+          </div>
+          <div id="more" class="hidden">
+            <ol class="pl-4 list-decimal">
+              <li>Univiçosa. Centro universitário de Viçosa, Viçosa, Minas Gerais, BRA</li>
+              <li>Department of Microbiology and Cell Science, Institute of Food and Agricultural Sciences, University of Florida, 1052 Museum Road, 32611-0700, Gainesville, FL, USA</li>
+              <li>Spacebio Initiative, Center for Space Biology and Human Space Exploration Research, Online Platform.</li>
+            </ol>
+          </div>
+          <script>
+            function showMore() {
+              const element = document.getElementById('more')
+              element.classList.toggle('hidden')
+              const button = document.getElementById('show-more')
+              button.textContent = element.classList.contains('hidden') ? 'Show more' : 'Show less'
+            }
+          </script>
+
+          <div class="row-span-2">
+            <p class="text-justify">This project offers an interactive dashboard focused on analyzing trends and identifying emerging opportunities in human space exploration. By gathering and visualizing data from multiple sources, the dashboard highlights significant advancements and research gaps, enabling users to make data-driven decisions about future space missions. With an intuitive interface, the tool allows for easy exploration of various aspects, such as space biology, technological innovations and mission objectives, fostering a comprehensive understanding of the landscape of human space exploration.</p>
+          </div>
+        </div>
+        {% comment %}
+        <nav class="flex justify-center mt-4">
+          <ul class="flex justify-center list-none items-center gap-x-2">
+            {% if articles.has_previous %}
+              <li class="p-1 rounded bg-gray-800 hover:bg-spacepurple1">
+                <a href="?query={{ query }}&page={{ articles.previous_page_number }}" class="text-blue-500">&laquo; Previous</a>
+              </li>
+            {% endif %}
+            <li>
+              <span class="text-text/75">Page {{ articles.number }} of {{ articles.paginator.num_pages }}</span>
+            </li>
+            {% if articles.has_next %}
+              <li class="p-1 rounded bg-gray-800 hover:bg-spacepurple1">
+                <a href="?query={{ query }}&page={{ articles.next_page_number }}" class="text-blue-500">Next &raquo;</a>
+              </li>
+            {% endif %}
+          </ul>
+        </nav>
+        {% endcomment %}
+      </div>
+    </div>
+  </section>
+{% endblock %}

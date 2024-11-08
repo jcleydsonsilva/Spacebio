@@ -13,6 +13,6 @@ def highlight_keywords(text, query):
     # Use regular expression to find all occurrences of each word in text and wrap them with <span> tags
     highlighted_text = text
     for word in escaped_words:
-        highlighted_text = re.sub(f'({word})', r'<span class="highlight">\1</span>', highlighted_text, flags=re.IGNORECASE)
+        highlighted_text = re.sub(f'({word})', r'<span class="underline decoration-sky-600 decoration-2 font-semibold">\1</span>', highlighted_text, flags=re.IGNORECASE)
     return mark_safe(highlighted_text)
 

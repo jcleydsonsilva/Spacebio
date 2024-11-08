@@ -69,7 +69,8 @@ def article_list(request):
 
     return render(request, 'articles/article_list.html', {'articles': articles, 'query': query, 'result_count': result_count})
 
-
+def spacebio_lab_view(request):
+    return render(request, 'articles/spacebio_lab.html')
 
 def team_view(request):
     return render(request, 'articles/team.html')

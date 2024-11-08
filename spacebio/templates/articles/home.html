@@ -54,7 +54,7 @@
           </a>
         {% endfor %}
       </div>
-    </div>s{% comment %}LATEST NEWS{% endcomment %}
+    </div>{% comment %}LATEST NEWS{% endcomment %}
     <div class="flex justify-between items-center mt-4 px-2 min-[390px]:px-7 lg:px-20">
       <h2 class="text-lg sm:text-xl text-text uppercase font-pavelt">Latest News<i class="ms-4 text-2xl bg-clip-text text-transparent bg-gradient-to-tr from-spaceblue to-pink-500 fi fi-rr-newspaper relative top-0.5"></i></h2>
       <a href="{% url 'news' %}" class="mt-2 border border-text/25 rounded-md hover:border-spacepurple2/70 transition-all py-1 px-1.5 sm:pt-2 sm:px-2"><span class="text-text/75 text-sm md:text-base font-medium font-pavelt">View All</span><i class="text-spacepurple2 sm:text-xl fi fi-rr-arrow-right ms-2 align-middle"></i></a>
@@ -88,8 +88,6 @@
         </div>
       </div>
     </div>
-
-    {% comment %}Highlighted Papers{% endcomment %}
   </section>
   <script src="{% static 'js/launch_time.js' %}"></script>
   <script src="{% static 'js/type_effect.js' %}"></script>

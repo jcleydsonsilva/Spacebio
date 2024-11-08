@@ -36,6 +36,7 @@ ARTICLES_PATHS = [
     path('team/', articles_views.team_view, name='team_view'),
     path('timeline/', articles_views.timeline_view, name='timeline_view'),
     path('getInvolved/', articles_views.getInvolved_view, name='getInvolved_view'),
+    path('spacebio_lab/', articles_views.spacebio_lab_view, name='spacebio_lab_view'),
     
 ]
 

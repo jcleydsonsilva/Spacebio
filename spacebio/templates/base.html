@@ -94,10 +94,17 @@
                     <span class="">Spacebio TV</span>
                   </li>
                 </a>
+
                 <a href="{% url 'stellarium_view' %}" data-url="{% url 'news' %}/">
                   <li class="text-text p-3 relative top-0.5 hover:hover:bg-secondary rounded-lg">
                     <i class="fi fi-rr-galaxy-alt text-lg me-3"></i>
                     <span class="">The Universe</span>
+                  </li>
+                </a>
+                <a href="{% url 'spacebio_lab_view' %}" data-url="{% url 'spacebio_lab_view' %}/">
+                  <li class="text-text p-3 relative top-0.5 hover:hover:bg-secondary rounded-lg">
+                    <i class="fi fi-rr-man-scientist text-lg me-3"></i>
+                    <span class="">Spacebio Lab</span>
                   </li>
                 </a>
                 <a href="{% url 'team_view' %}" data-url="{% url 'news' %}/">
@@ -193,6 +200,12 @@
                   </li>
                 </a>
                 <div class="w-2/3 place-self-center h-0.5 bg-gradient-to-r from-text/5 via-text/60 to-text/5"></div>
+                <a href="{% url 'spacebio_lab_view' %}" data-url="{% url 'spacebio_lab_view' %}" class="w-full">
+                  <li class="flex flex-nowrap justify-start items-center gap-1 ps-2 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
+                    <i class="fi fi-rr-man-scientist text-xl text-text p-3 relative top-0.5"></i>
+                    <span class="hidden opacity-0 duration-300 font-pavelt text-xs text-nowrap">Spacebio Lab</span>
+                  </li>
+                </a>
                 <a href="{% url 'team_view' %}" data-url="{% url 'team_view' %}" class="w-full">
                   <li class="flex flex-nowrap justify-start items-center gap-1 ps-2 w-full bg-hover hover:bg-spacepurple1/20 transition-all rounded-lg">
                     <i class="fi fi-rr-users-alt text-xl text-text p-3 relative top-0.5"></i>
@@ -250,12 +263,15 @@
               <p class="mb-4 text-xs font-pavelt">Recent Articles</p>
               <ul class="flex flex-col gap-2 h-full">
                 {% for article in recent_articles %}
-                  <a href="https://www.doi.org/{{ article.doi }}" target="_blank" class="w-full">
-                    <li class="flex flex-nowrap justify-start items-center gap-1 ps-1 w-full bg-hover hover:bg-spacepurple1/20 rounded-lg">
-                      <i class="fi fi-rr-newspaper text-xl text-text p-4"></i>
-                      <span class="">{{ article.title }}</span>
-                    </li>
-                  </a>
+                  {% if 'http' in article.doi %}
+                    <a href="{{ article.doi }}" target="_blank" class="w-full"></a>
+                  {% else %}
+                    <a href="https://www.doi.org/{{ article.doi }}" target="_blank" class="w-full"></a>
+                  {% endif %}
+                  <li class="flex flex-nowrap justify-start items-center gap-1 ps-1 w-full bg-hover hover:bg-spacepurple1/20 rounded-lg">
+                    <i class="fi fi-rr-newspaper text-xl text-text p-4"></i>
+                    <span class="">{{ article.title }}</span>
+                  </li>
                 {% endfor %}
               </ul>
             </div>
