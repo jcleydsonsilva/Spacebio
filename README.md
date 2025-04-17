@@ -39,7 +39,7 @@ cd Spacebio
 
 ```bash
 python -m venv .venv
-.\.venv\Scriptsctivate
+.\.venv\Scripts activate
 ```
 
 **Unix/Linux/macOS:**
