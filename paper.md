@@ -18,9 +18,13 @@ date: 2025-04-18
 
 # Summary
 
-**SpaceBio** is an open-source platform that aggregates and organizes scientific literature related to human space exploration. With access to over 370,000 peer-reviewed papers across disciplines such as spaceflight, microgravity, astrobiology, and exoplanet research, SpaceBio enables efficient discovery and analysis of research conducted beyond Earth. 
+**SpaceBio** is an open-source platform and data warehouse that aggregates, transforms, and organizes scientific literature and related data focused on human space exploration. With access to over 370,000 peer-reviewed publications across disciplines such as spaceflight, microgravity research, astrobiology, and exoplanet science, SpaceBio enables efficient discovery and in-depth analysis of research conducted beyond Earth.
 
-The platform supports natural language queries and intelligent search strategies, empowering researchers, educators, and space enthusiasts to explore relevant studies through a smart, AI-assisted interface. SpaceBio is part of the broader Lupe Project initiative to democratize access to space science literature using modern computational tools.
+Beyond serving as a literature database, SpaceBio integrates data from multiple sources—both scientific and operational—encompassing rocket launch records, space exploration news, and other contextual information relevant to researchers and educators. The platform supports natural language queries and intelligent search strategies, empowering scientists, educators, and space enthusiasts to interact with space knowledge in meaningful ways.
+
+Additionally, SpaceBio offers a virtual telescope interface designed to enhance space education. This tool enables educators around the world to simulate observations and engage students in interactive learning experiences about the cosmos.
+
+SpaceBio is part of the broader Lupe Project, an initiative dedicated to democratizing access to space science knowledge through the use of artificial intelligence and modern data infrastructure.
 
 # Statement of Need
 
