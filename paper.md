@@ -38,15 +38,23 @@ The data warehouse is populated through an automated pipeline featuring a custom
 
 # Functionality
 
-SpaceBio is developed in Python and integrates various open-source technologies to process, classify, and retrieve scientific documents from public datasets. Core functionalities include:
+SpaceBio is a modular, scalable Python platform that integrates open-source technologies to retrieve, process, classify, and serve scientific and space-related data. Its architecture supports easy extension with new data sources, machine learning models, and domain-specific ontologies.
 
-- A user-friendly web interface for querying literature in natural language
-- Tag-based and keyword-based filtering (e.g., “plants on ISS”, “microgravity effects on muscles”)
-- AI-based enrichment and categorization of topics
-- Exporting results for meta-analysis or citation tracking
-- Support for continuous integration with new publications
+Key features:
 
-SpaceBio's backend is designed for scalability and modularity, allowing easy extension with new data sources, machine learning models, or domain-specific ontologies.
+Automated Literature Retrieval: A custom web crawler and ingestion modules connect to databases like Europe PMC, PubMed, Scopus, Crossref, and Semantic Scholar. Curated keyword strategies maximize precision and relevance, while API rate limits and data policies are respected.
+
+Real-Time Space Event Tracking: Integration with APIs such as Spaceflight News and The Space Devs provides structured data on missions, rockets, launch sites, agencies, and status updates, contextualizing literature with up-to-date exploration data.
+
+Intelligent Search Interface: A user-friendly web interface enables natural language, tag-based, and keyword-based queries (e.g., "plants on the ISS," "microgravity effects on the cardiovascular system"), streamlining interdisciplinary research access.
+
+Semantic Enrichment and Topic Categorization: AI-driven classification organizes content into thematic domains, improving discovery of relevant publications and research trends.
+
+Educational Integration and Outreach: Built-in virtual telescope and educational modules make SpaceBio accessible for interactive learning by teachers and students worldwide.
+
+Export and Interoperability: Search results are exportable for meta-analyses, systematic reviews, and citation tracking, supporting reproducible research.
+
+Continuous Updates: Regular synchronization with all connected sources ensures users access the latest scientific findings.
 
 # References
 
