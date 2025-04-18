@@ -26,7 +26,7 @@ date: 2025-04-18
 
 # Summary
 
-**SpaceBio** is an open-source platform and data warehouse that aggregates, transforms, and organizes scientific literature and related data focused on human space exploration. With access to over 370,000 peer-reviewed publications across disciplines such as spaceflight, microgravity research, astrobiology, and exoplanet science, SpaceBio enables efficient discovery and in-depth analysis of research conducted beyond Earth. Beyond serving as a literature database, SpaceBio integrates data from multiple sources—both scientific and operational—encompassing rocket launch records, space exploration news, and other contextual information relevant to researchers and educators. The platform supports natural language queries and intelligent search strategies, empowering scientists, educators, and space enthusiasts to interact with space knowledge in meaningful ways. Additionally, SpaceBio offers a virtual telescope interface designed to enhance space education. This tool enables educators around the world to simulate observations and engage students in interactive learning experiences about the cosmos. SpaceBio is part of the broader Lupe Project, an initiative dedicated to democratizing access to space science knowledge through the use of artificial intelligence and modern data infrastructure.
+**SpaceBio** (www.spacebio.space) is an open-source platform and data warehouse that aggregates, transforms, and organizes scientific literature and related data focused on human space exploration. With access to over 370,000 peer-reviewed publications across disciplines such as spaceflight, microgravity research, astrobiology, and exoplanet science, SpaceBio enables efficient discovery and in-depth analysis of research conducted beyond Earth. Beyond serving as a literature database, SpaceBio integrates data from multiple sources—both scientific and operational—encompassing rocket launch records, space exploration news, and other contextual information relevant to researchers and educators. The platform supports natural language queries and intelligent search strategies, empowering scientists, educators, and space enthusiasts to interact with space knowledge in meaningful ways. Additionally, SpaceBio offers a virtual telescope interface designed to enhance space education. This tool enables educators around the world to simulate observations and engage students in interactive learning experiences about the cosmos. SpaceBio is part of the broader Lupe Project, an initiative dedicated to democratizing access to space science knowledge through the use of artificial intelligence and modern data infrastructure.
 
 # Statement of Need
 
@@ -42,19 +42,19 @@ SpaceBio is a modular, scalable Python platform that integrates open-source tech
 
 Key features:
 
-Automated Literature Retrieval: A custom web crawler and ingestion modules connect to databases like Europe PMC, PubMed, Scopus, Crossref, and Semantic Scholar. Curated keyword strategies maximize precision and relevance, while API rate limits and data policies are respected.
+  * Automated Literature Retrieval: A custom web crawler and ingestion modules connect to databases like Europe PMC, PubMed, Scopus, Crossref, and Semantic Scholar. Curated keyword strategies maximize precision and relevance, while API rate limits and data policies are respected.
 
-Real-Time Space Event Tracking: Integration with APIs such as Spaceflight News and The Space Devs provides structured data on missions, rockets, launch sites, agencies, and status updates, contextualizing literature with up-to-date exploration data.
+  * Real-Time Space Event Tracking: Integration with APIs such as Spaceflight News and The Space Devs provides structured data on missions, rockets, launch sites, agencies, and status updates, contextualizing literature with up-to-date exploration data.
 
-Intelligent Search Interface: A user-friendly web interface enables natural language, tag-based, and keyword-based queries (e.g., "plants on the ISS," "microgravity effects on the cardiovascular system"), streamlining interdisciplinary research access.
+  * Intelligent Search Interface: A user-friendly web interface enables natural language, tag-based, and keyword-based queries (e.g., "plants on the ISS," "microgravity effects on the cardiovascular system"), streamlining interdisciplinary research access.
 
-Semantic Enrichment and Topic Categorization: AI-driven classification organizes content into thematic domains, improving discovery of relevant publications and research trends.
+  * Semantic Enrichment and Topic Categorization: AI-driven classification organizes content into thematic domains, improving discovery of relevant publications and research trends.
 
-Educational Integration and Outreach: Built-in virtual telescope and educational modules make SpaceBio accessible for interactive learning by teachers and students worldwide.
+  * Educational Integration and Outreach: Built-in virtual telescope and educational modules make SpaceBio accessible for interactive learning by teachers and students worldwide.
 
-Export and Interoperability: Search results are exportable for meta-analyses, systematic reviews, and citation tracking, supporting reproducible research.
+  * Export and Interoperability: Search results are exportable for meta-analyses, systematic reviews, and citation tracking, supporting reproducible research.
 
-Continuous Updates: Regular synchronization with all connected sources ensures users access the latest scientific findings.
+  * Continuous Updates: Regular synchronization with all connected sources ensures users access the latest scientific findings.
 
 # References
 
