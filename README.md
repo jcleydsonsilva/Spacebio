@@ -1,4 +1,4 @@
-# 🚀 SpaceBio Hub
+# 🚀 SpaceBio
 
 **SpaceBio Hub** is an AI-powered platform designed to revolutionize access to space biology research. Our mission is to accelerate the understanding of extraterrestrial science by organizing, indexing, and analyzing space-related literature using the latest advances in Artificial Intelligence and Machine Learning.
 
