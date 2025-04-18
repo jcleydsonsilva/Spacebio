@@ -7,12 +7,20 @@ tags:
   - artificial intelligence
   - space exploration
 authors:
-  - name: Seu Nome Aqui
-    orcid: 0000-0000-0000-0000
+  - name: Jose Cleydson F. Silva
+    orcid: 0000-0001-5435-702X
     affiliation: "1"
+  - name: Raquel Dias
+    orcid: 0000-0002-8387-1324
+    affiliation: "1"
+  - name: Arthur Vieira
+    affiliation: "2"
+    
 affiliations:
-  - name: Nome da Instituição ou Projeto (ex: The Lupe Project)
+  - name: Microbiology and Cell Science, University of Florida
     index: 1
+  - name: Independent author
+    index: 2
 date: 2025-04-18
 ---
 
