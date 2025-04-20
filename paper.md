@@ -57,7 +57,3 @@ Key features:
   * Continuous Updates: Regular synchronization with all connected sources ensures users access the latest scientific findings.
 
 # References
-
-[@pubmed]
-[@doi:10.1016/j.actaastro.2023.07.011]
-[@lupe_project]
