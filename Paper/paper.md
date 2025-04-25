@@ -15,16 +15,17 @@ authors:
   - name: Raquel Dias
     orcid: 0000-0002-8387-1324
     affiliation: "3"
-    - name: Jose Cleydson F. Silva
+  - name: Jose Cleydson F. Silva
     orcid: 0000-0001-5435-702X
     affiliation: "3"
 
 affiliations:
-  - name: Independent author
+  - name: Curso Centro Universitário de Viçosa (UNIVIÇOSA),Campus Sede, Análise e Desenvolvimento de Sistemas, Vicosa, MG, Brasil
     index: 1
-  - name: Pós Graduação em Licenciatura em Educação do Campo, Universidade Federal de Vicosa, MG, 36570-000, Brasil
+  - name: Departamento de Educação, Graduação em Licenciatura em Educação do Campo, Universidade Federal de Vicosa, MG, 36570-000, Brasil
     index: 2
-  - name: Microbiology and Cell Science, University of Florida
+  - name:
+Department of Microbiology and Cell Science, Institute of Food and Agricultural Sciences, University of Florida, 1052 Museum Road, Gainesville, FL 32611-0700, USA
     index: 3
 
 date: 2025-04-25
@@ -36,7 +37,7 @@ bibliography: paper.bib
 
 SpaceBio addresses the fragmented and rapidly expanding multidisciplinary research landscape in human space exploration, providing a unified platform to streamline access and collaboration. The platform interacts with major scientific literature Application Programming Interfaces (APIs)—including Europe PMC, PubMed, Scopus, Crossref, and Semantic Scholar. Beyond aggregating scientific publications, SpaceBio integrates supplementary data such as rocket launch events, space exploration news, and a virtual telescope interface for global educational engagement. The platform provides a unified (Figure 1), intelligent data warehouse that allows easy and fast retrieval of scientific work, facilitating meta analyzes, identification of key research trends, and generation of hypotheses to guide future experiments in space biology research. SpaceBio is open source and free for educational use, and can be accessed through its web-based platform at <a href="https://spacebio.space" target="_blank">www.spacebio.space</a>.
 
-<img src="Figure2.png" alt="Figure2" height="700" width="900"/>
+<img src="Figure2.png" alt="Figure2" height="620" width="900"/>
 
 
 **Figure 2. User-friendly interface of the SpaceBio platform.** This is the first literature database specifically focused on human space exploration.
@@ -55,7 +56,8 @@ The www.spacebio.space literature database backend modules were implemented usin
 
 The front-end implementation using Tailwind CSS (www.tailwindcss.com) in conjunction with Django framework templates, adhering to a modular and reusable design philosophy. This approach emphasized the componentization of user interfaces, to a cohesive and scalable design system. Tailwind's utility-first classes significantly accelerated development, minimizing the need for custom CSS and streamlining code maintenance. The synergy between Tailwind and Django templates improved overall performance and developer productivity. 
 
-![Figure1](Figure1.png)
+<img src="Figure1.png" alt="Figure1" height="420" width="700"/>
+
 
 **Figure 1. Conceptual map of the SpaceBio Hub Platform architecture and ecosystem.** The back-end components (green) encompass robust data ingestion pipelines a comprehensive database layer for organizing scientific content, and an API gateway that facilitates seamless system integration. The front-end modules (orange) deliver interactive features including search, advanced data visualization dashboards, and detailed molecular profile pages to enhance user engagement. The SpaceBio community space (pink) is designed to foster collaboration through project showcases, discussion forums, and user-contributed content. Modules currently under development (gray) include a planned multi-omics integration layer, an AI-driven literature summarization tool, and a knowledge graph generator, all of which are being designed to accelerate discovery in space biosciences.
 
