@@ -36,6 +36,12 @@ To fulfill its mission, SpaceBio is built on a modular, scalable, and production
 
 The data warehouse is populated through an automated pipeline featuring a custom web crawler and data retrieval modules. These interact with major scientific literature APIs—including Europe PMC, PubMed, Scopus, Crossref, and Semantic Scholar—using carefully curated keyword queries and adhering to API rate limits to guarantee both relevance and compliance. Beyond aggregating scientific publications, SpaceBio integrates supplementary data such as rocket launch events, space exploration news, and a virtual telescope interface for global educational engagement. This positions SpaceBio not only as a vital research tool, but also as a dynamic platform for teaching and public outreach, supporting both the scientific community and broader audiences interested in the future of human space exploration
 
+# Implementation 
+
+The www.spacebio.space literature database backend modules were implemented using an MVC (Model-View-Controller) software architecture pattern [43], programmed in the python programming language using Django framework [44] and with PostgreSQL server relational databases [45].  
+
+The front-end implementation using Tailwind CSS (www.tailwindcss.com) in conjunction with Django framework templates, adhering to a modular and reusable design philosophy. This approach emphasized the componentization of user interfaces, to a cohesive and scalable design system. Tailwind's utility-first classes significantly accelerated development, minimizing the need for custom CSS and streamlining code maintenance. The synergy between Tailwind and Django templates improved overall performance and developer productivity. 
+
 # Functionality
 
 SpaceBio is a modular, scalable Python platform that integrates open-source technologies to retrieve, process, classify, and serve scientific and space-related data. Its architecture supports easy extension with new data sources, machine learning models, and domain-specific ontologies.
