@@ -7,25 +7,24 @@ tags:
   - artificial intelligence
   - space exploration
 authors:
-  - name: Arthur Vieira
+  - name: Jose Cleydson F. Silva
+    corresponding: true
+    orcid: 0000-0001-5435-702X
     affiliation: "1"
+    email: jcleydsonsilva@gmail.com,jferreiradasilva@ufl.edu
+  - name: Arthur Vieira
+    affiliation: "2"
   - name: Sirlane Maria do Carmo da Silva
     orcid: 0009-0004-4519-4926
     affiliation:  "3"
   - name: Raquel Dias
     orcid: 0000-0002-8387-1324
-    affiliation: "2"
-  - name: Jose Cleydson F. Silva
-    corresponding: true
-    orcid: 0000-0001-5435-702X
-    affiliation: "3"
-    email: jcleydsonsilva@gmail.com,jferreiradasilva@ufl.edu
+    affiliation: "1"
 
 affiliations:
-  - name: Curso Centro Universitário de Viçosa (UNIVIÇOSA), Campus Sede, Análise e Desenvolvimento de Sistemas, Vicosa, MG, Brasil
-    index: 1
-
   - name: Department of Microbiology and Cell Science, Institute of Food and Agricultural Sciences, University of Florida, 1052 Museum Road, Gainesville, FL 32611-0700, USA
+    index: 1
+  - name: Curso Centro Universitário de Viçosa (UNIVIÇOSA), Campus Sede, Análise e Desenvolvimento de Sistemas, Vicosa, MG, Brasil
     index: 2
   - name: Departamento de Educação, Graduação em Licenciatura em Educação do Campo, Universidade Federal de Vicosa, MG, 36570-000, Brasil
     index: 3
