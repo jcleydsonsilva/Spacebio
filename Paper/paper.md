@@ -25,8 +25,7 @@ affiliations:
   - name: Curso Centro Universitário de Viçosa (UNIVIÇOSA), Campus Sede, Análise e Desenvolvimento de Sistemas, Vicosa, MG, Brasil
     index: 1
 
-  - name:
-Department of Microbiology and Cell Science, Institute of Food and Agricultural Sciences, University of Florida, 1052 Museum Road, Gainesville, FL 32611-0700, USA
+  - name: Department of Microbiology and Cell Science, Institute of Food and Agricultural Sciences, University of Florida, 1052 Museum Road, Gainesville, FL 32611-0700, USA
     index: 2
   - name: Departamento de Educação, Graduação em Licenciatura em Educação do Campo, Universidade Federal de Vicosa, MG, 36570-000, Brasil
     index: 3
