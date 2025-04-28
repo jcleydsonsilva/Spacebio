@@ -13,6 +13,7 @@ authors:
     affiliation: "1"
     email: jcleydsonsilva@gmail.com,jferreiradasilva@ufl.edu
   - name: Arthur Vieira
+    orcid: 0009-0000-7479-1720
     affiliation: "2"
   - name: Sirlane Maria do Carmo da Silva
     orcid: 0009-0004-4519-4926
