@@ -2,9 +2,9 @@
 title: 'SpaceBio: A Literature Data Warehouse for Human Space Exploration'
 tags:
   - Python
-  - literature mining
-  - space biology
-  - artificial intelligence
+  - Literature mining
+  - Space biology
+  - Artificial intelligence
   - space exploration
 authors:
   - name: Jose Cleydson F. Silva
