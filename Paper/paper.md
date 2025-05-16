@@ -30,7 +30,7 @@ affiliations:
   - name: Departamento de Educação, Graduação em Licenciatura em Educação do Campo, Universidade Federal de Vicosa, MG, 36570-000, Brasil
     index: 3
 
-date: 2025-04-25
+date: 2025-04-28
 
 bibliography: paper.bib
 ---
